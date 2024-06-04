@@ -9,11 +9,12 @@ namespace Domain.Entities
 {
     public class Appointments : Entity
     {
-        public int Id { get; set; }
         public int PatientId { get; set; }
-        public User Patient { get; set; }
+        public Patient Patient { get; set; }
         public int DoctorId { get; set; }
-        public User Doctor { get; set; }
+        public Doctor Doctor { get; set; }
+        public int DepartmentId { get; set; }
+        public Department Department { get; set; }
         public DateTime AppointmentDateTime { get; set; }
         public AppointmentStatus Status { get; set; }
     }

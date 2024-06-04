@@ -9,11 +9,9 @@ namespace Domain.Entities
 {
     public class PatientReports : Entity
     {
-        public int Id { get; set; }
-        public int PatientId { get; set; }
-        public User Patient { get; set; }
         public int DoctorId { get; set; }
-        public User Doctor { get; set; }
+        public Doctor Doctor { get; set; }
+        public int AppointmentsId { get; set; }
         public Appointments Appointments { get; set; }
         public ReportTitle ReportTitle { get; set; }
         public string ReportDetails { get; set; }

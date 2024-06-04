@@ -9,9 +9,8 @@ namespace Domain.Entities
 {
     public class AdminActions : Entity
     {
-        public int Id { get; set; }
         public int AdminId { get; set; }
-        public User Admin { get; set; }
+        public Admin Admin { get; set; }
         public AdminActionType ActionType { get; set; }
         public string ActionDescription { get; set; }
     }

@@ -9,9 +9,13 @@ namespace Domain.Entities
 {
     public class Feedback : Entity
     {
-        public int UserId { get; set; }
-        public User User { get; set; }
         public string FeedbackTitle { get; set; }
         public string FeedbackContent { get; set; }
+        public int Rating { get; set; }
+        public int PatientId { get; set; }
+        public Patient Patient { get; set; }
+
+        public int DoctorId { get; set; }
+        public Doctor Doctor { get; set; }
     }
 }

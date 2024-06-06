@@ -12,6 +12,7 @@ namespace Domain.Entities
         public User User { get; set; }
         public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
+        public string BloodType { get; set; }
         public string SocialSecurityNumber { get; set; }
         public string HealthHistory { get; set; }
         public string Allergies { get; set; }
@@ -21,5 +22,9 @@ namespace Domain.Entities
         public string EmergencyContactRelationship { get; set; }
         public bool HasInsurance { get; set; }
         public string InsuranceType { get; set; }
+
+        public ICollection<Appointments> Appointments { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
+        public ICollection<PatientReports> PatientReports { get; set; }
     }
 }

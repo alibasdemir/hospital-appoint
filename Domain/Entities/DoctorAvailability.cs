@@ -14,6 +14,5 @@ namespace Domain.Entities
         public DateTime AvailableDate { get; set; } // Doktorun müsait olduğu tarih
         public DateTime StartTime { get; set; } // Doktorun müsaitlik başlangıç saati
         public DateTime EndTime { get; set; } // Doktorun müsaitlik bitiş saati
-        public ICollection<Appointments> Appointments { get; set; }
     }
 }

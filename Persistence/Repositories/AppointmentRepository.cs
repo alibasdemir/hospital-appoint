@@ -1,4 +1,5 @@
-﻿using Core.DataAccess;
+﻿using Application.Repositories;
+using Core.DataAccess;
 using Domain.Entities;
 using Persistence.Contexts;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public class AppointmentRepository : EfRepositoryBase<Appointment, HospitalAppointDbContext>
+    public class AppointmentRepository : EfRepositoryBase<Appointment, HospitalAppointDbContext>, IAppointmentRepository
     {
         public AppointmentRepository(HospitalAppointDbContext context) : base(context)
         {

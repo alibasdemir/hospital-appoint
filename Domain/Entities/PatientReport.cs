@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class PatientReports : Entity
+    public class PatientReport : Entity
     {
         public string ReportTitle { get; set; }
         public string ReportDetails { get; set; }

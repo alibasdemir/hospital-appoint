@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    internal class NotificationRepository : EfRepositoryBase<Notification, HospitalAppointDbContext>
+    public class NotificationRepository : EfRepositoryBase<Notification, HospitalAppointDbContext>
     {
         public NotificationRepository(HospitalAppointDbContext context) : base(context)
         {

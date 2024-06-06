@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    internal class FeedbackRepository : EfRepositoryBase<Feedback, HospitalAppointDbContext>
+    public class FeedbackRepository : EfRepositoryBase<Feedback, HospitalAppointDbContext>
     {
         public FeedbackRepository(HospitalAppointDbContext context) : base(context)
         {

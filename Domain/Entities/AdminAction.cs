@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class AdminActions : Entity
+    public class AdminAction : Entity
     {
         public int AdminId { get; set; }
         public Admin Admin { get; set; }

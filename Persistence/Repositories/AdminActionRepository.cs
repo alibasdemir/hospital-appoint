@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    internal class AdminActionsRepository : EfRepositoryBase<AdminActions, HospitalAppointDbContext>
+    public class AdminActionRepository : EfRepositoryBase<AdminAction, HospitalAppointDbContext>
     {
-        public AdminActionsRepository(HospitalAppointDbContext context) : base(context)
+        public AdminActionRepository(HospitalAppointDbContext context) : base(context)
         {
         }
     }

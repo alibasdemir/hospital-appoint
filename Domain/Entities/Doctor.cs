@@ -18,9 +18,9 @@ namespace Domain.Entities
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 
-        public ICollection<Appointments> Appointments { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
         public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; }
         public ICollection<Feedback> Feedbacks { get; set; }
-        public ICollection<PatientReports> PatientReports { get; set; }
+        public ICollection<PatientReport> PatientReports { get; set; }
     }
 }

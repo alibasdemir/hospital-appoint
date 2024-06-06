@@ -23,8 +23,8 @@ namespace Domain.Entities
         public bool HasInsurance { get; set; }
         public string InsuranceType { get; set; }
 
-        public ICollection<Appointments> Appointments { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
         public ICollection<Feedback> Feedbacks { get; set; }
-        public ICollection<PatientReports> PatientReports { get; set; }
+        public ICollection<PatientReport> PatientReports { get; set; }
     }
 }

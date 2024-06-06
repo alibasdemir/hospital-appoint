@@ -1,3 +1,4 @@
+using Persistence;
 using Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<HospitalAppointDbContext>();
+builder.Services.AddPersistenceServices();
 
 var app = builder.Build();
 

@@ -10,6 +10,6 @@ namespace Domain.Entities
     {
         public int UserId { get; set; }
         public User User { get; set; }
-        public ICollection<AdminActions> AdminActions { get; set; }
+        public ICollection<AdminAction> AdminActions { get; set; }
     }
 }

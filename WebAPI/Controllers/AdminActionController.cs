@@ -7,15 +7,8 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminActionController : ControllerBase
+    public class AdminActionController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public AdminActionController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         public async Task<IActionResult> Add([FromBody]CreateAdminActionCommand command)
         {

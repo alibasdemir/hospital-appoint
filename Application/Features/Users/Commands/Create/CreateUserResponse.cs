@@ -1,14 +1,12 @@
-﻿using Core.DataAccess;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.Features.Users.Commands.Create
 {
-    public class User : Entity
+    public class CreateUserResponse
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,6 +16,5 @@ namespace Domain.Entities
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string PhotoUrl { get; set; }
-
     }
 }

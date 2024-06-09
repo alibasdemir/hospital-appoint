@@ -34,8 +34,12 @@ namespace Application.Features.AdminActions.Commands.Create
                     ActionDescription = request.ActionDescription,
                 };
                 await _adminActionRepository.AddAsync(adminAction);
-                return new CreateAdminActionResponse() { AdminId = adminAction.AdminId, ActionType = adminAction.ActionType, ActionDescription = adminAction.ActionDescription};
-            }
+                return new CreateAdminActionResponse() 
+                { 
+                    AdminId = adminAction.AdminId, 
+                    ActionType = adminAction.ActionType, 
+                    ActionDescription = adminAction.ActionDescription};
+                }
         }
     }
 }

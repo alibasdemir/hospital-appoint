@@ -8,8 +8,6 @@ namespace Domain.Entities
 {
     public class Patient : User
     {
-        public int UserId { get; set; }
-        public User User { get; set; }
         public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
         public string BloodType { get; set; }

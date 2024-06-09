@@ -12,9 +12,6 @@ namespace Domain.Entities
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }
         public string Qualifications { get; set; }
-
-        public int UserId { get; set; }
-        public User User { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 

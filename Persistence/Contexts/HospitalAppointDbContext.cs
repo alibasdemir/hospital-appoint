@@ -10,18 +10,18 @@ namespace Persistence.Contexts
 {
     public class HospitalAppointDbContext : DbContext
     {
-        public DbSet<User> User { get; set; }
-        public DbSet<Admin> Admin { get; set; }
-        public DbSet<AdminAction> AdminAction { get; set; }
-        public DbSet<Doctor> Doctor { get; set; }
-        public DbSet<Department> Department { get; set; }
-        public DbSet<DoctorAvailability> DoctorAvailability { get; set; }
-        public DbSet<Patient> Patient { get; set; }
-        public DbSet<PatientReport> PatientReport { get; set; }
-        public DbSet<Appointment> Appointment { get; set; }
-        public DbSet<Feedback> Feedback { get; set; }
-        public DbSet<Notification> Notification { get; set; }
-        public DbSet<SystemStat> SystemStat { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<AdminAction> AdminActions { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<PatientReport> PatientReports { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<SystemStat> SystemStats { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,8 +31,6 @@ namespace Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             // Remove cascade delete convention for one-to-many relationships
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
@@ -40,9 +38,12 @@ namespace Persistence.Contexts
             }
 
             // Configure table names for each entity in the database
+            modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Doctor>().ToTable("Doctors");
             modelBuilder.Entity<Patient>().ToTable("Patients");
             modelBuilder.Entity<Admin>().ToTable("Admins");
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

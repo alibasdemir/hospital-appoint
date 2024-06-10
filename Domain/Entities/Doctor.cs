@@ -14,7 +14,6 @@ namespace Domain.Entities
         public string Qualifications { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
-
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; }
         public ICollection<Feedback> Feedbacks { get; set; }

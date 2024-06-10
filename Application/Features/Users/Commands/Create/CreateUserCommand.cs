@@ -20,44 +20,44 @@ namespace Application.Features.Users.Commands.Create
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string PhotoUrl { get; set; }
-    }
 
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserResponse>
-    {
-        private readonly IUserRepository _userRepository;
-
-        public CreateUserCommandHandler(IUserRepository userRepository)
+        public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserResponse>
         {
-            _userRepository = userRepository;
-        }
+            private readonly IUserRepository _userRepository;
 
-        public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-        {
-            User user = new()
+            public CreateUserCommandHandler(IUserRepository userRepository)
             {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Gender = request.Gender,
-                Email = request.Email,
-                Password = request.Password,
-                PhoneNumber = request.PhoneNumber,
-                Address = request.Address,
-                PhotoUrl = request.PhotoUrl,
-            };
+                _userRepository = userRepository;
+            }
 
-            await _userRepository.AddAsync(user);
-            return new CreateUserResponse()
+            public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Gender = user.Gender,
-                Email = user.Email,
-                Password = user.Password,
-                PhoneNumber = user.PhoneNumber,
-                Address = user.Address,
-                PhotoUrl = user.PhotoUrl,
-            };
+                User user = new()
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Gender = request.Gender,
+                    Email = request.Email,
+                    Password = request.Password,
+                    PhoneNumber = request.PhoneNumber,
+                    Address = request.Address,
+                    PhotoUrl = request.PhotoUrl,
+                };
+
+                await _userRepository.AddAsync(user);
+                return new CreateUserResponse()
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Gender = user.Gender,
+                    Email = user.Email,
+                    Password = user.Password,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    PhotoUrl = user.PhotoUrl,
+                };
+            }
         }
     }
- }
+}
 

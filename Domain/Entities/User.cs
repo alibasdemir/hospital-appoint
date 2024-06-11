@@ -18,11 +18,5 @@ namespace Domain.Entities
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string PhotoUrl { get; set; }
-        public userType UserType { get; set; }
-
-        public enum userType { 
-            Patient,
-            Doctor
-        }
     }
 }

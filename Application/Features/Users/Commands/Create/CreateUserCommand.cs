@@ -1,5 +1,6 @@
 ﻿using Application.Features.AdminActions.Commands.Create;
 using Application.Repositories;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -24,38 +25,21 @@ namespace Application.Features.Users.Commands.Create
         public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserResponse>
         {
             private readonly IUserRepository _userRepository;
+            private readonly IMapper _mapper;
 
-            public CreateUserCommandHandler(IUserRepository userRepository)
+            public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
             {
                 _userRepository = userRepository;
+                _mapper = mapper;
             }
 
             public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
-                User user = new()
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    Gender = request.Gender,
-                    Email = request.Email,
-                    Password = request.Password,
-                    PhoneNumber = request.PhoneNumber,
-                    Address = request.Address,
-                    PhotoUrl = request.PhotoUrl,
-                };
+                User user = _mapper.Map<User>(request);
 
                 await _userRepository.AddAsync(user);
-                return new CreateUserResponse()
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Gender = user.Gender,
-                    Email = user.Email,
-                    Password = user.Password,
-                    PhoneNumber = user.PhoneNumber,
-                    Address = user.Address,
-                    PhotoUrl = user.PhotoUrl,
-                };
+                CreateUserResponse response = _mapper.Map<CreateUserResponse>(user);
+                return response;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Application.Features.Users.Commands.Create;
+using Application.Features.Users.Commands.Update;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -15,6 +16,8 @@ namespace Application.Features.Users.Profiles
         {
             CreateMap<User, CreateUserCommand>().ReverseMap();
             CreateMap<User, CreateUserResponse>().ReverseMap();
+            CreateMap<User, UpdateUserCommand>().ReverseMap();
+            CreateMap<User, UpdateUserResponse>().ReverseMap();
         }
     }
 }

@@ -6,11 +6,21 @@ using System.Threading.Tasks;
 
 namespace Core.DataAccess
 {
-    public class Entity
+    public class Entity<TId>
     {
-        public int Id { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public TId Id { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
+
+        public Entity()
+        {
+            Id = default!;
+        }
+
+        public Entity(TId id)
+        {
+            Id = id;
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class SystemStat : Entity
+    public class SystemStat : Entity<int>
     {
         // Testlerden sonra bu alan oluşturulacak...
     }

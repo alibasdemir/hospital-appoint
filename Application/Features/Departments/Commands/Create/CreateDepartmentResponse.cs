@@ -10,7 +10,7 @@ namespace Application.Features.Departments.Commands.Create
 {
     public class CreateDepartmentResponse
     {
-        public string DepartmentName { get; set; }
-        public string DepartmentDescription { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

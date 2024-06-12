@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Domain.Enums
 {
-    public class Admin : User
+    public enum AppointmentStatus
     {
-        public virtual ICollection<AdminAction> AdminActions { get; set; }
+        Booked,
+        Cancelled,
+        Completed
     }
 }

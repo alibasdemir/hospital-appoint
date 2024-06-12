@@ -11,7 +11,7 @@ namespace Core.DataAccess
 {
     public class EfRepositoryBase<TEntity, TContext> : IRepository<TEntity>, IAsyncRepository<TEntity>
         where TContext : DbContext
-        where TEntity : Entity
+        where TEntity : Entity<int>
     {
         private readonly TContext Context;
         public EfRepositoryBase(TContext context)

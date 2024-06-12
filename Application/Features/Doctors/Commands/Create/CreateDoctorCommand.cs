@@ -22,7 +22,6 @@ namespace Application.Features.Doctors.Commands.Create
         public string SpecialistLevel { get; set; }
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }
-        public string Qualifications { get; set; }
         public int DepartmentId { get; set; }
         //public Department DepartmentName { get; set; }
         public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
@@ -49,7 +48,6 @@ namespace Application.Features.Doctors.Commands.Create
                     SpecialistLevel = request.SpecialistLevel,
                     YearsOfExperience = request.YearsOfExperience,
                     Biography = request.Biography,
-                    Qualifications = request.Qualifications,
                     DepartmentId = request.DepartmentId,
                 };
                 await _doctorRepository.AddAsync(doctor);
@@ -66,7 +64,6 @@ namespace Application.Features.Doctors.Commands.Create
                     SpecialistLevel = doctor.SpecialistLevel,
                     YearsOfExperience = doctor.YearsOfExperience,
                     Biography = doctor.Biography,
-                    Qualifications = doctor.Qualifications,
                     DepartmentId = doctor.DepartmentId,
                     //Department = doctor.Department
                 };

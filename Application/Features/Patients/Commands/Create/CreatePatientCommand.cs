@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Application.Features.Patients.Commands.Create
         public string Address { get; set; }
         public string PhotoUrl { get; set; }
         public DateTime BirthDate { get; set; }
-        public string BloodType { get; set; }
+        public BloodType BloodType { get; set; }
         public string SocialSecurityNumber { get; set; }
         public string HealthHistory { get; set; }
         public string Allergies { get; set; }
@@ -28,8 +29,7 @@ namespace Application.Features.Patients.Commands.Create
         public string EmergencyContactName { get; set; }
         public string EmergencyContactPhoneNumber { get; set; }
         public string EmergencyContactRelationship { get; set; }
-        public bool HasInsurance { get; set; }
-        public string InsuranceType { get; set; }
+        public InsuranceType InsuranceType { get; set; }
 
         public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
         {
@@ -61,8 +61,7 @@ namespace Application.Features.Patients.Commands.Create
                     EmergencyContactName = request.EmergencyContactName,
                     EmergencyContactPhoneNumber = request.EmergencyContactPhoneNumber,
                     EmergencyContactRelationship = request.EmergencyContactRelationship,
-                    HasInsurance = request.HasInsurance,
-                    InsuranceType = request.InsuranceType
+                    InsuranceType = request.InsuranceType,
                 };
                 await _patientRepository.AddAsync(patient);
                 return new CreatePatientResponse()
@@ -84,7 +83,6 @@ namespace Application.Features.Patients.Commands.Create
                     EmergencyContactName= patient.EmergencyContactName,
                     EmergencyContactPhoneNumber= patient.EmergencyContactPhoneNumber,
                     EmergencyContactRelationship= patient.EmergencyContactRelationship,
-                    HasInsurance= patient.HasInsurance,
                     InsuranceType= patient.InsuranceType
                 };
             }

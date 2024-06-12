@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Application.Features.AdminActions.Commands.Create
     public class CreateAdminActionCommand : IRequest<CreateAdminActionResponse>
     {
         public int AdminId { get; set; }
-        public string ActionType { get; set; }
+        public ActionType Type { get; set; }
         public string ActionDescription { get; set; }
 
         public class CreateAdminActionCommandHandler : IRequestHandler<CreateAdminActionCommand, CreateAdminActionResponse>
@@ -30,14 +31,14 @@ namespace Application.Features.AdminActions.Commands.Create
                 AdminAction adminAction = new()
                 {
                     AdminId = request.AdminId,
-                    ActionType = request.ActionType,
+                    Type = request.Type,
                     ActionDescription = request.ActionDescription,
                 };
                 await _adminActionRepository.AddAsync(adminAction);
                 return new CreateAdminActionResponse() 
                 { 
                     AdminId = adminAction.AdminId, 
-                    ActionType = adminAction.ActionType, 
+                    Type = adminAction.Type, 
                     ActionDescription = adminAction.ActionDescription};
                 }
         }

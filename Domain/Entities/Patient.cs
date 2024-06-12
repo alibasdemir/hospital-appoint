@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,20 +9,17 @@ namespace Domain.Entities
 {
     public class Patient : User
     {
-        public DateTime BirthDate { get; set; }
-        public string BloodType { get; set; }
+        public BloodType BloodType { get; set; }
+        public InsuranceType InsuranceType { get; set; }
         public string SocialSecurityNumber { get; set; }
         public string HealthHistory { get; set; }
         public string Allergies { get; set; }
         public string CurrentMedications { get; set; }
-        public string EmergencyContactName { get; set; } 
-        public string EmergencyContactPhoneNumber { get; set; } 
+        public string EmergencyContactName { get; set; }
+        public string EmergencyContactPhoneNumber { get; set; }
         public string EmergencyContactRelationship { get; set; }
-        public bool HasInsurance { get; set; }
-        public string InsuranceType { get; set; }
-
-        public ICollection<Appointment> Appointments { get; set; }
-        public ICollection<Feedback> Feedbacks { get; set; }
-        public ICollection<PatientReport> PatientReports { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<PatientReport> PatientReports { get; set; }
     }
 }

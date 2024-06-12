@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class DoctorAvailability : Entity
+    public class DoctorAvailability : Entity<int>
     {
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }
-        public DateTime AvailableDate { get; set; } // Doktorun müsait olduğu tarih
-        public DateTime StartTime { get; set; } // Doktorun müsaitlik başlangıç saati
-        public DateTime EndTime { get; set; } // Doktorun müsaitlik bitiş saati
+        public DateTime AvailableDate { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace Application.Features.Departments.Commands.Create
 {
     public class CreateDepartmentCommand : IRequest<CreateDepartmentResponse>
     {
-        public string DepartmentName { get; set; }
-        public string DepartmentDescription { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         public class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, CreateDepartmentResponse>
         {
@@ -27,14 +27,14 @@ namespace Application.Features.Departments.Commands.Create
             {
                 Department department = new()
                 {
-                    DepartmentName = request.DepartmentName,
-                    DepartmentDescription = request.DepartmentDescription,
+                    Name = request.Name,
+                    Description = request.Description,
                 };
                 await _departmentRepository.AddAsync(department);
                 return new CreateDepartmentResponse()
                 {
-                    DepartmentName = department.DepartmentName,
-                    DepartmentDescription = department.DepartmentDescription,
+                    Name = department.Name,
+                    Description = department.Description,
 
                 };
             }

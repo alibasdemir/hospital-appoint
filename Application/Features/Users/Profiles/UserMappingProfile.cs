@@ -1,5 +1,6 @@
 ﻿using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Update;
+using Application.Features.Users.Queries.GetList;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -18,6 +19,8 @@ namespace Application.Features.Users.Profiles
             CreateMap<User, CreateUserResponse>().ReverseMap();
             CreateMap<User, UpdateUserCommand>().ReverseMap();
             CreateMap<User, UpdateUserResponse>().ReverseMap();
+            CreateMap<User, GetListUserQuery>().ReverseMap();
+            CreateMap<User, GetListUserResponse>().ReverseMap();
         }
     }
 }

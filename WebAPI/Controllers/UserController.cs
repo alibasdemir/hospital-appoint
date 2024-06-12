@@ -1,6 +1,7 @@
 ﻿using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;
+using Application.Features.Users.Queries.GetList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Update([FromBody] UpdateUserCommand command)
         {
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetListUserQuery query)
+        {
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }

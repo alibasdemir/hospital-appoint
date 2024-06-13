@@ -1,13 +1,9 @@
 ﻿using Application.Features.AdminActions.Commands.Create;
 using Application.Features.AdminActions.Commands.Update;
+using Application.Features.AdminActions.Queries.GetById;
 using Application.Features.AdminActions.Queries.GetList;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.AdminActions.Profiles
 {
@@ -21,6 +17,8 @@ namespace Application.Features.AdminActions.Profiles
             CreateMap<AdminAction, UpdateAdminActionResponse>().ReverseMap();
             CreateMap<AdminAction, GetListAdminActionQuery>().ReverseMap();
             CreateMap<AdminAction, GetListAdminActionResponse>().ReverseMap();
+            CreateMap<AdminAction, GetByIdAdminActionQuery>().ReverseMap();
+            CreateMap<AdminAction, GetByIdAdminActionResponse>().ReverseMap();
         }
     }
 }

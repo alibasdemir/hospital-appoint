@@ -1,11 +1,8 @@
 ﻿using Application.Features.AdminActions.Commands.Create;
 using Application.Features.AdminActions.Commands.Delete;
 using Application.Features.AdminActions.Commands.Update;
+using Application.Features.AdminActions.Queries.GetById;
 using Application.Features.AdminActions.Queries.GetList;
-using Application.Features.Users.Commands.Delete;
-using Application.Features.Users.Commands.Update;
-using Application.Features.Users.Queries.GetList;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -39,6 +36,14 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetList([FromQuery] GetListAdminActionQuery query)
         {
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            GetByIdAdminActionQuery query = new() { Id = id };
             var result = await _mediator.Send(query);
             return Ok(result);
         }

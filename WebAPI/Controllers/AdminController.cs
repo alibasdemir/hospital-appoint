@@ -1,5 +1,5 @@
 ﻿using Application.Features.Admins.Commands.Create;
-using Microsoft.AspNetCore.Http;
+using Application.Features.Admins.Commands.Delete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -13,6 +13,14 @@ namespace WebAPI.Controllers
         {
             CreateAdminResponse response = await _mediator.Send(command);
             return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            DeleteAdminCommand command = new() { Id = id };
+            await _mediator.Send(command);
+            return Ok("Deletion successful!");
         }
     }
 }

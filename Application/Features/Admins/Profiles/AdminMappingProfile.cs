@@ -1,11 +1,7 @@
 ﻿using Application.Features.Admins.Commands.Create;
+using Application.Features.Admins.Commands.Update;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Admins.Profiles
 {
@@ -15,6 +11,8 @@ namespace Application.Features.Admins.Profiles
         {
             CreateMap<Admin, CreateAdminCommand>().ReverseMap();
             CreateMap<Admin, CreateAdminResponse>().ReverseMap();
+            CreateMap<Admin, UpdateAdminCommand>().ReverseMap();
+            CreateMap<Admin, UpdateAdminResponse>().ReverseMap();
         }
     }
 }

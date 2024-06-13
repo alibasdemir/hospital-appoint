@@ -1,5 +1,6 @@
 ﻿using Application.Features.Admins.Commands.Create;
 using Application.Features.Admins.Commands.Delete;
+using Application.Features.Admins.Commands.Update;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -21,6 +22,13 @@ namespace WebAPI.Controllers
             DeleteAdminCommand command = new() { Id = id };
             await _mediator.Send(command);
             return Ok("Deletion successful!");
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateAdminCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
     }
 }

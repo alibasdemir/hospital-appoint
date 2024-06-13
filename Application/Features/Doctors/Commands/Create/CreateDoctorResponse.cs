@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace Application.Features.Doctors.Commands.Create
 {
     public class CreateDoctorResponse
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
@@ -21,6 +23,5 @@ namespace Application.Features.Doctors.Commands.Create
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }
         public int DepartmentId { get; set; }
-        //public Department Department { get; set; }
     }
 }

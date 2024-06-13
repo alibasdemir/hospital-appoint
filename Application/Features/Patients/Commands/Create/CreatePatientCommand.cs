@@ -1,4 +1,5 @@
 ﻿using Application.Repositories;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -14,7 +15,7 @@ namespace Application.Features.Patients.Commands.Create
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
@@ -34,57 +35,21 @@ namespace Application.Features.Patients.Commands.Create
         public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
         {
             private readonly IPatientRepository _patientRepository;
+            private readonly IMapper _mapper;
 
-            public CreatePatientCommandHandler(IPatientRepository patientRepository)
+            public CreatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper)
             {
                 _patientRepository = patientRepository;
+                _mapper = mapper;
             }
 
             public async Task<CreatePatientResponse> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
             {
-                Patient patient = new()
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    Gender = request.Gender,
-                    Email = request.Email,
-                    Password = request.Password,
-                    PhoneNumber = request.PhoneNumber,
-                    Address = request.Address,
-                    PhotoUrl = request.PhotoUrl,
-                    BirthDate = request.BirthDate,
-                    BloodType = request.BloodType,
-                    SocialSecurityNumber = request.SocialSecurityNumber,
-                    HealthHistory = request.HealthHistory,
-                    Allergies = request.Allergies,
-                    CurrentMedications = request.CurrentMedications,
-                    EmergencyContactName = request.EmergencyContactName,
-                    EmergencyContactPhoneNumber = request.EmergencyContactPhoneNumber,
-                    EmergencyContactRelationship = request.EmergencyContactRelationship,
-                    InsuranceType = request.InsuranceType,
-                };
+                Patient patient = _mapper.Map<Patient>(request);
+
                 await _patientRepository.AddAsync(patient);
-                return new CreatePatientResponse()
-                {
-                    FirstName = patient.FirstName,
-                    LastName = patient.LastName,
-                    Gender = patient.Gender,
-                    Email = patient.Email,
-                    Password = patient.Password,
-                    PhoneNumber = patient.PhoneNumber,
-                    Address = patient.Address,
-                    PhotoUrl= patient.PhotoUrl,
-                    BirthDate = patient.BirthDate,
-                    BloodType = patient.BloodType,
-                    SocialSecurityNumber= patient.SocialSecurityNumber,
-                    HealthHistory = patient.HealthHistory,
-                    Allergies = patient.Allergies,
-                    CurrentMedications = patient.CurrentMedications,
-                    EmergencyContactName= patient.EmergencyContactName,
-                    EmergencyContactPhoneNumber= patient.EmergencyContactPhoneNumber,
-                    EmergencyContactRelationship= patient.EmergencyContactRelationship,
-                    InsuranceType= patient.InsuranceType
-                };
+                CreatePatientResponse response = _mapper.Map<CreatePatientResponse>(patient);
+                return response;
             }
         }
     }

@@ -9,8 +9,10 @@ namespace Application.Features.AdminActions.Commands.Create
 {
     public class CreateAdminActionResponse
     {
-        public int AdminId { get; set; }
-        public ActionType Type { get; set; }
+        public int Id { get; set; }
+        public ActionType ActionType { get; set; }
         public string ActionDescription { get; set; }
+        public int AdminId { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Repositories;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -17,26 +18,21 @@ namespace Application.Features.Departments.Commands.Create
         public class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, CreateDepartmentResponse>
         {
             private readonly IDepartmentRepository _departmentRepository;
+            private readonly IMapper _mapper;
 
-            public CreateDepartmentCommandHandler(IDepartmentRepository departmentRepository)
+            public CreateDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper)
             {
                 _departmentRepository = departmentRepository;
+                _mapper = mapper;
             }
 
             public async Task<CreateDepartmentResponse> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
             {
-                Department department = new()
-                {
-                    Name = request.Name,
-                    Description = request.Description,
-                };
+                Department department = _mapper.Map<Department>(request);
+                
                 await _departmentRepository.AddAsync(department);
-                return new CreateDepartmentResponse()
-                {
-                    Name = department.Name,
-                    Description = department.Description,
-
-                };
+                CreateDepartmentResponse response = _mapper.Map<CreateDepartmentResponse>(department);
+                return response;
             }
         }
     }

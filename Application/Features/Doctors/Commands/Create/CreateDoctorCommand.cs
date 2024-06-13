@@ -1,5 +1,7 @@
 ﻿using Application.Repositories;
+using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ namespace Application.Features.Doctors.Commands.Create
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
@@ -23,50 +25,23 @@ namespace Application.Features.Doctors.Commands.Create
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }
         public int DepartmentId { get; set; }
-        //public Department DepartmentName { get; set; }
         public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
         {
             private readonly IDoctorRepository _doctorRepository;
+            private readonly IMapper _mapper;
 
-            public CreateDoctorCommandHandler(IDoctorRepository doctorRepository)
+            public CreateDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper)
             {
                 _doctorRepository = doctorRepository;
+                _mapper = mapper;
             }
 
             public async Task<CreateDoctorResponse> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
             {
-                Doctor doctor = new()
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    Gender = request.Gender,
-                    Email = request.Email,
-                    Password = request.Password,
-                    PhoneNumber = request.PhoneNumber,
-                    Address = request.Address,
-                    PhotoUrl = request.PhotoUrl,
-                    SpecialistLevel = request.SpecialistLevel,
-                    YearsOfExperience = request.YearsOfExperience,
-                    Biography = request.Biography,
-                    DepartmentId = request.DepartmentId,
-                };
+                Doctor doctor = _mapper.Map<Doctor>(request);
                 await _doctorRepository.AddAsync(doctor);
-                return new CreateDoctorResponse()
-                {
-                    FirstName = doctor.FirstName,
-                    LastName = doctor.LastName,
-                    Gender = doctor.Gender,
-                    Email = doctor.Email,
-                    Password = doctor.Password,
-                    PhoneNumber = doctor.PhoneNumber,
-                    Address = doctor.Address,
-                    PhotoUrl = doctor.PhotoUrl,
-                    SpecialistLevel = doctor.SpecialistLevel,
-                    YearsOfExperience = doctor.YearsOfExperience,
-                    Biography = doctor.Biography,
-                    DepartmentId = doctor.DepartmentId,
-                    //Department = doctor.Department
-                };
+                CreateDoctorResponse response = _mapper.Map<CreateDoctorResponse>(doctor);
+                return response;
             }
         }
     }

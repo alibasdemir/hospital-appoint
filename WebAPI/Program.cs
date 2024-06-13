@@ -2,6 +2,8 @@ using Persistence;
 using Application;
 using Core;
 using Core.CrossCuttingConcerns.Exceptions.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

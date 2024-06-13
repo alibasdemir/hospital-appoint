@@ -23,7 +23,8 @@ namespace Application.Features.Users.Commands.Create
             RuleFor(i => i.LastName).NotEmpty();
             RuleFor(i => i.LastName).MinimumLength(1);
 
-            RuleFor(i => i.Gender).NotEmpty();
+            RuleFor(i => i.Gender)
+                .IsInEnum().WithMessage("Gender must be a valid enum value.");
         }
     }
 }

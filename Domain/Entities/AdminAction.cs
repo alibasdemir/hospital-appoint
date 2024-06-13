@@ -10,7 +10,7 @@ namespace Domain.Entities
 {
     public class AdminAction : Entity<int>
     {
-        public ActionType Type { get; set; }
+        public ActionType ActionType { get; set; }
         public string ActionDescription { get; set; }
         public int AdminId { get; set; }
         public virtual Admin Admin { get; set; }

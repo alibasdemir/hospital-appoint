@@ -1,6 +1,7 @@
 ﻿using Application.Features.Admins.Commands.Create;
 using Application.Features.Admins.Commands.Delete;
 using Application.Features.Admins.Commands.Update;
+using Application.Features.Admins.Queries.GetList;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -28,6 +29,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Update([FromBody] UpdateAdminCommand command)
         {
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] GetListAdminQuery query)
+        {
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }

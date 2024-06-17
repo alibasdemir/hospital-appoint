@@ -1,18 +1,14 @@
 ﻿using Application.Features.AdminActions.Commands.Create;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Users.Commands.Create
 {
-    public class CreateUserCommand : IRequest<CreateUserResponse>
+    public class CreateUserCommand : IRequest<CreateUserResponse>, ILoggableRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

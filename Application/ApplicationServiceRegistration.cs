@@ -6,6 +6,7 @@ using Core.CrossCuttingConcerns.Logging.Serilog;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Serilog;
 
 
 namespace Application
@@ -24,7 +25,23 @@ namespace Application
             });
             
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddSingleton<LoggerServiceBase, FileLogger>();
+
+            services.AddSingleton<FileLogger>();
+            services.AddSingleton<MsSqlLogger>();
+
+            services.AddSingleton<LoggerServiceBase>(provider =>
+            {
+                var fileLogger = provider.GetRequiredService<FileLogger>();
+                var msSqlLogger = provider.GetRequiredService<MsSqlLogger>();
+
+                return new LoggerServiceBase
+                {
+                    Logger = new LoggerConfiguration()
+                        .WriteTo.Logger(fileLogger.Logger) // parallel logging
+                        .WriteTo.Logger(msSqlLogger.Logger) // parallel logging
+                        .CreateLogger()
+                };
+            });
 
             services.AddHttpContextAccessor();
             return services;

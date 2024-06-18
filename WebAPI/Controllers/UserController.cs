@@ -1,5 +1,6 @@
 ﻿using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
+using Application.Features.Users.Commands.SoftDelete;
 using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
@@ -47,6 +48,14 @@ namespace WebAPI.Controllers
             GetByIdUserQuery query = new() { Id = id };
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        [HttpPatch("soft-delete/{id}")]
+        public async Task<IActionResult> SoftDelete([FromRoute] int id)
+        {
+            SoftDeleteUserCommand command = new() { Id = id };
+            await _mediator.Send(command);
+            return Ok("SoftDeletion successful!");
         }
     }
 }

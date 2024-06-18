@@ -15,5 +15,6 @@ namespace Core.DataAccess
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        Task SoftDeleteAsync(T entity);
     }
 }

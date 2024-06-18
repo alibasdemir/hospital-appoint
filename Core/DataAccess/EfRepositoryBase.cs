@@ -22,6 +22,7 @@ namespace Core.DataAccess
         public void Add(TEntity entity)
         {
             Context.Add(entity);
+            entity.CreatedDate = DateTime.UtcNow;
             Context.SaveChanges();
         }
 
@@ -29,7 +30,14 @@ namespace Core.DataAccess
         {
             Context.Remove(entity);
             Context.SaveChanges();
+        }
 
+        public void SoftDelete(TEntity entity)
+        {
+            entity.IsDeleted = true;
+            entity.DeletedDate = DateTime.UtcNow;
+            Context.Update(entity);
+            Context.SaveChanges();
         }
         public TEntity? Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
@@ -41,27 +49,29 @@ namespace Core.DataAccess
             return data.FirstOrDefault(predicate);
         }
 
-        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include=null)
+        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
             IQueryable<TEntity> data = Context.Set<TEntity>();
 
-            if(predicate != null)
+            if (predicate != null)
                 data = data.Where(predicate);
-            if(include != null)
+            if (include != null)
                 data = include(data);
 
             return data.ToList();
         }
 
         public void Update(TEntity entity)
-        {  
+        {
             Context.Update(entity);
+            entity.UpdatedDate = DateTime.UtcNow;
             Context.SaveChanges();
         }
 
         public async Task AddAsync(TEntity entity)
         {
             await Context.AddAsync(entity);
+            entity.CreatedDate = DateTime.UtcNow;
             await Context.SaveChangesAsync();
         }
 
@@ -70,6 +80,15 @@ namespace Core.DataAccess
             Context.Remove(entity);
             await Context.SaveChangesAsync();
         }
+
+        public async Task SoftDeleteAsync(TEntity entity)
+        {
+            entity.IsDeleted = true;
+            entity.DeletedDate = DateTime.UtcNow;
+            Context.Update(entity);
+            await Context.SaveChangesAsync();
+        }
+
         public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
             IQueryable<TEntity> data = Context.Set<TEntity>();
@@ -94,6 +113,7 @@ namespace Core.DataAccess
         public async Task UpdateAsync(TEntity entity)
         {
             Context.Update(entity);
+            entity.UpdatedDate = DateTime.UtcNow;
             await Context.SaveChangesAsync();
         }
     }

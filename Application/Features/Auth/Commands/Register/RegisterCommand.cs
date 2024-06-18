@@ -1,41 +1,44 @@
-﻿//using Application.Repositories;
-//using AutoMapper;
-//using Domain.Entities;
-//using MediatR;
-//using System.Security.Cryptography;
-//using System.Text;
+﻿using Application.Repositories;
+using AutoMapper;
+using Core.Hashing;
+using Domain.Entities;
+using MediatR;
+using System.Security.Cryptography;
+using System.Text;
 
-//namespace Application.Features.Auth.Commands.Register
-//{
-//    public class RegisterCommand : IRequest
-//    {
-//        public string Email { get; set; }
-//        public string Password { get; set; }
-//        public string FirstName { get; set; }
-//        public string LastName { get; set; }
+namespace Application.Features.Auth.Commands.Register
+{
+    public class RegisterCommand : IRequest
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-//        public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
-//        {
-//            private readonly IMapper _mapper;
-//            private readonly IUserRepository _userRepository;
+        public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
+        {
+            private readonly IMapper _mapper;
+            private readonly IUserRepository _userRepository;
 
-//            public RegisterCommandHandler(IMapper mapper, IUserRepository userRepository)
-//            {
-//                _mapper = mapper;
-//                _userRepository = userRepository;
-//            }
+            public RegisterCommandHandler(IMapper mapper, IUserRepository userRepository)
+            {
+                _mapper = mapper;
+                _userRepository = userRepository;
+            }
 
-//            public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
-//            {
-//                User user = _mapper.Map<User>(request);
+            public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
+            {
+                User user = _mapper.Map<User>(request);
 
-//                using HMACSHA512 hmac = new();
+                byte[] passwordHash, passwordSalt;
+
+                HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
             
-//                user.PasswordSalt = hmac.Key;
-//                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+                user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash; 
                 
-//                await _userRepository.AddAsync(user);
-//            }
-//        }
-//    }
-//}
+                await _userRepository.AddAsync(user);
+            }
+        }
+    }
+}

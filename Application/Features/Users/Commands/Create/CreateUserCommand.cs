@@ -43,6 +43,7 @@ namespace Application.Features.Users.Commands.Create
                 user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
 
                 await _userRepository.AddAsync(user);
+
                 CreateUserResponse response = _mapper.Map<CreateUserResponse>(user);
                 return response;
             }

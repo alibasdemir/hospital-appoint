@@ -1,28 +1,29 @@
 ﻿using Application.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Hashing;
+using Core.JWT;
 using Domain.Entities;
 using MediatR;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public class LoginCommand : IRequest
+    public class LoginCommand : IRequest<AccessToken>
     {
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public class LoginCommandHandler : IRequestHandler<LoginCommand>
+        public class LoginCommandHandler : IRequestHandler<LoginCommand, AccessToken>
         {
             private IUserRepository _userRepository;
+            private ITokenHelper _tokenHelper;
 
-            public LoginCommandHandler(IUserRepository userRepository)
+            public LoginCommandHandler(IUserRepository userRepository, ITokenHelper tokenHelper)
             {
                 _userRepository = userRepository;
+                _tokenHelper = tokenHelper;
             }
 
-            public async Task Handle(LoginCommand request, CancellationToken cancellationToken)
+            public async Task<AccessToken> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
                User? user = await _userRepository.GetAsync(i => i.Email == request.Email);
 
@@ -37,6 +38,8 @@ namespace Application.Features.Auth.Commands.Login
                 {
                     throw new BusinessException("Login Failed");
                 }
+
+               return _tokenHelper.CreateToken(user);
             }
         }
     }

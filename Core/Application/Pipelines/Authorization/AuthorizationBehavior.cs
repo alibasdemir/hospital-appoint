@@ -19,19 +19,16 @@ namespace Core.Application.Pipelines.Authorization
         {
             if(!_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                throw new BusinessException("Giriş yapmadınız");
+                throw new AuthorizationException("You are not logged in!");
             }
 
-            //if(request.RequiredRoles.Any()) 
-            //{ 
-            //ICollection<string> userRoles = _httpContextAccessor.HttpContext.User.Claims.Where(i => i.Type == ClaimTypes.Role).Select(i=> i.Value).ToList();
+            ICollection<string>? userRoles = _httpContextAccessor.HttpContext.User.Claims.Where(i => i.Type == ClaimTypes.Role).Select(i => i.Value).ToList();
 
-            //bool hasNoMatchingRole = userRoles.FirstOrDefault(i => i == "Admin" || request.RequiredRoles.Contains(i)).IsNullOrEmpty();
-            //if(hasNoMatchingRole)
-            //{
-            //    throw new BusinessException("Bunu yapmaya yetkiniz yok");
-            //}
-            //}
+            bool hasNoMatchingRole = userRoles.FirstOrDefault(i => i == "Admin" || request.RequiredRoles.Contains(i)).IsNullOrEmpty();
+            if (hasNoMatchingRole)
+            {
+                throw new AuthorizationException("You are not authorized!");
+            }
 
             TResponse response = await next();
             return response;

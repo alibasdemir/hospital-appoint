@@ -1,9 +1,11 @@
 ﻿using Application.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
+using Core.Entities;
 using Core.Hashing;
 using Core.JWT;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Commands.Login
 {
@@ -16,11 +18,13 @@ namespace Application.Features.Auth.Commands.Login
         {
             private IUserRepository _userRepository;
             private ITokenHelper _tokenHelper;
+            private IUserOperationClaimRepository _userOperationClaimRepository;
 
-            public LoginCommandHandler(IUserRepository userRepository, ITokenHelper tokenHelper)
+            public LoginCommandHandler(IUserRepository userRepository, ITokenHelper tokenHelper, IUserOperationClaimRepository userOperationClaimRepository)
             {
                 _userRepository = userRepository;
                 _tokenHelper = tokenHelper;
+                _userOperationClaimRepository = userOperationClaimRepository;
             }
 
             public async Task<AccessToken> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -39,7 +43,9 @@ namespace Application.Features.Auth.Commands.Login
                     throw new BusinessException("Login Failed");
                 }
 
-               return _tokenHelper.CreateToken(user);
+                List<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository.GetListAsync(i => i.BaseUserId == user.Id, include: i => i.Include(i => i.OperationClaim));
+
+               return _tokenHelper.CreateToken(user, userOperationClaims.Select(i => i.OperationClaim).ToList());
             }
         }
     }

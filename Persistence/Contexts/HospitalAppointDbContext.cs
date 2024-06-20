@@ -7,6 +7,7 @@ namespace Persistence.Contexts
     public class HospitalAppointDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<BaseUser> BaseUsers { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<AdminAction> AdminActions { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
@@ -36,6 +37,7 @@ namespace Persistence.Contexts
             }
 
             // Configure table names for each entity in the database
+            modelBuilder.Entity<User>().ToTable("BaseUsers");
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Doctor>().ToTable("Doctors");
             modelBuilder.Entity<Patient>().ToTable("Patients");

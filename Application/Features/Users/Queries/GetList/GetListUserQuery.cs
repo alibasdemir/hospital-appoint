@@ -15,6 +15,7 @@ namespace Application.Features.Users.Queries.GetList
     {
         //public int Page { get; set; }
         //public int PageSize { get; set; }
+        public string[] RequiredRoles => ["User.GetList"];
 
         public class GetListQueryHandler : IRequestHandler<GetListUserQuery, List<GetListUserResponse>>
         {

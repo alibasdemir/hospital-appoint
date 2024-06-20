@@ -20,7 +20,7 @@ TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Ge
 builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddCoreServices(tokenOptions);
-
+builder.Services.AddHttpContextAccessor();
 
 
 builder.Services

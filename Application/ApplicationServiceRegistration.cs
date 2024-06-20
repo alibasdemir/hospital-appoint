@@ -43,7 +43,6 @@ namespace Application
                 };
             });
 
-            services.AddHttpContextAccessor();
             return services;
         }
     }

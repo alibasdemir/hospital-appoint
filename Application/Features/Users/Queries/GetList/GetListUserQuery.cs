@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Users.Queries.GetList
 {
-    public class GetListUserQuery : IRequest<List<GetListUserResponse>>
+    public class GetListUserQuery : IRequest<List<GetListUserResponse>>, ISecuredRequest
     {
         //public int Page { get; set; }
         //public int PageSize { get; set; }

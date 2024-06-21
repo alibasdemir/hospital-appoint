@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Paging;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -28,7 +29,7 @@ namespace Application.Features.AdminActions.Queries.GetList
 
             public async Task<List<GetListAdminActionResponse>> Handle(GetListAdminActionQuery request, CancellationToken cancellationToken)
             {
-                List<AdminAction> adminActions = await _adminActionRepository.GetListAsync();
+                IPaginate<AdminAction> adminActions = await _adminActionRepository.GetListAsync();
 
                 List<GetListAdminActionResponse> response = _mapper.Map<List<GetListAdminActionResponse>>(adminActions);
                 return response;

@@ -3,6 +3,8 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Entities;
 using Core.Hashing;
 using Core.JWT;
+using Core.Paging;
+using Core.Requests;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -43,9 +45,10 @@ namespace Application.Features.Auth.Commands.Login
                     throw new BusinessException("Login Failed");
                 }
 
-                List<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository.GetListAsync(i => i.BaseUserId == user.Id, include: i => i.Include(i => i.OperationClaim));
+                IPaginate<UserOperationClaim> userOperationClaimsPaginate = await _userOperationClaimRepository.GetListAsync(i => i.BaseUserId == user.Id, include: i => i.Include(i => i.OperationClaim));
+                List<UserOperationClaim> userOperationClaims = userOperationClaimsPaginate.Items.ToList();
 
-               return _tokenHelper.CreateToken(user, userOperationClaims.Select(i => i.OperationClaim).ToList());
+                return _tokenHelper.CreateToken(user, userOperationClaims.Select(i => i.OperationClaim).ToList());
             }
         }
     }

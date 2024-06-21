@@ -8,6 +8,8 @@ using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
 using AutoMapper;
+using Core.Paging;
+using Core.Responses;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,8 @@ namespace Application.Features.Users.Profiles
             CreateMap<User, UpdateUserCommand>().ReverseMap();
             CreateMap<User, UpdateUserResponse>().ReverseMap();
             CreateMap<User, GetListUserQuery>().ReverseMap();
-            CreateMap<User, GetListUserResponse>().ReverseMap();
+            CreateMap<User,GetListUserResponse>().ReverseMap();
+            CreateMap<IPaginate<User>, GetListResponse<GetListUserResponse>>().ReverseMap();
             CreateMap<User, GetByIdUserQuery>().ReverseMap();
             CreateMap<User, GetByIdUserResponse>().ReverseMap();
         }

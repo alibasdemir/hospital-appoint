@@ -3,6 +3,7 @@ using Application.Features.Admins.Commands.Delete;
 using Application.Features.Admins.Commands.Update;
 using Application.Features.Admins.Queries.GetById;
 using Application.Features.Admins.Queries.GetList;
+using Core.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -34,8 +35,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetList([FromQuery] GetListAdminQuery query)
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
+            GetListAdminQuery query = new() { PageRequest = pageRequest };
             var result = await _mediator.Send(query);
             return Ok(result);
         }

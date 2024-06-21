@@ -3,6 +3,8 @@ using Application.Features.Admins.Commands.Update;
 using Application.Features.Admins.Queries.GetById;
 using Application.Features.Admins.Queries.GetList;
 using AutoMapper;
+using Core.Paging;
+using Core.Responses;
 using Domain.Entities;
 
 namespace Application.Features.Admins.Profiles
@@ -18,6 +20,7 @@ namespace Application.Features.Admins.Profiles
             CreateMap<Admin, GetListAdminQuery>().ReverseMap();
             CreateMap<Admin, GetListAdminResponse>().ReverseMap();
             CreateMap<Admin, GetByIdAdminQuery>().ReverseMap();
+            CreateMap<IPaginate<Admin>, GetListResponse<GetListAdminResponse>>().ReverseMap();
             CreateMap<Admin, GetByIdAdminResponse>()
             .ForMember(dest => dest.AdminActions, opt => opt.MapFrom(src => src.AdminActions.Select(aa => new AdminAction { Id = aa.Id }).ToList()));
         }

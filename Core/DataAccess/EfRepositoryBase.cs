@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Paging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Core.DataAccess
@@ -18,6 +22,7 @@ namespace Core.DataAccess
         {
             Context = context;
         }
+        public IQueryable<TEntity> Query() => Context.Set<TEntity>();
 
         public void Add(TEntity entity)
         {
@@ -49,16 +54,19 @@ namespace Core.DataAccess
             return data.FirstOrDefault(predicate);
         }
 
-        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        public IPaginate<TEntity> GetList(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,    int index = 0,
+            int size = 10,
+            bool enableTracking = true
+        )
         {
-            IQueryable<TEntity> data = Context.Set<TEntity>();
+            IQueryable<TEntity> queryable = Query();
 
             if (predicate != null)
-                data = data.Where(predicate);
+                queryable = queryable.Where(predicate);
             if (include != null)
-                data = include(data);
+                queryable = include(queryable);
 
-            return data.ToList();
+            return queryable.ToPaginate(index, size);
         }
 
         public void Update(TEntity entity)
@@ -98,17 +106,22 @@ namespace Core.DataAccess
 
             return await data.FirstOrDefaultAsync(predicate);
         }
-        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        public async Task<IPaginate<TEntity>> GetListAsync(
+           Expression<Func<TEntity, bool>>? predicate = null,
+           Func<IQueryable<TEntity>,
+           IIncludableQueryable<TEntity, object>>? include = null,
+           int index = 0,
+           int size = 10,
+           CancellationToken cancellationToken = default)
         {
-            IQueryable<TEntity> data = Context.Set<TEntity>();
+            IQueryable<TEntity> queryable = Query();
 
             if (predicate != null)
-                data = data.Where(predicate);
-
+                queryable = queryable.Where(predicate);
             if (include != null)
-                data = include(data);
+                queryable = include(queryable);
 
-            return await data.ToListAsync();
+            return await queryable.ToPaginateAsync(index, size, from: 0, cancellationToken);
         }
         public async Task UpdateAsync(TEntity entity)
         {

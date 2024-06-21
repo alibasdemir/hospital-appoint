@@ -1,22 +1,19 @@
-﻿using Application.Features.Users.Queries.GetList;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
+using Core.Paging;
+using Core.Requests;
+using Core.Responses;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Admins.Queries.GetList
 {
-    public class GetListAdminQuery : IRequest<List<GetListAdminResponse>>
+    public class GetListAdminQuery : IRequest<GetListResponse<GetListAdminResponse>>
     {
-        //public int Page { get; set; }
-        //public int PageSize { get; set; }
+        public PageRequest PageRequest { get; set; }
 
-        public class GetListAdminQueryHandler : IRequestHandler<GetListAdminQuery, List<GetListAdminResponse>>
+        public class GetListAdminQueryHandler : IRequestHandler<GetListAdminQuery, GetListResponse<GetListAdminResponse>>
+
         {
             private readonly IAdminRepository _adminRepository;
             private readonly IMapper _mapper;
@@ -27,11 +24,16 @@ namespace Application.Features.Admins.Queries.GetList
                 _mapper = mapper;
             }
 
-            public async Task<List<GetListAdminResponse>> Handle(GetListAdminQuery request, CancellationToken cancellationToken)
-            {
-                List<Admin> admins = await _adminRepository.GetListAsync();
+            public async Task<GetListResponse<GetListAdminResponse>> Handle(GetListAdminQuery request, CancellationToken cancellationToken)
 
-                List<GetListAdminResponse> response = _mapper.Map<List<GetListAdminResponse>>(admins);
+            {
+                IPaginate<Admin> admins = await _adminRepository.GetListAsync(
+                    index: request.PageRequest.Page,
+                    size: request.PageRequest.PageSize
+                    );
+
+                var response = _mapper.Map<GetListResponse<GetListAdminResponse>>(admins);
+
                 return response;
             }
         }

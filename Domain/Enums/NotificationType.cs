@@ -8,7 +8,8 @@ namespace Domain.Enums
 {
     public enum NotificationType
     {
-        SMS,
-        Email
+        None = 0,
+        Email = 1,
+        SMS = 2
     }
 }

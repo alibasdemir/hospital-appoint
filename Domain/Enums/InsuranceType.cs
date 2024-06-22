@@ -8,10 +8,8 @@ namespace Domain.Enums
 {
     public enum InsuranceType
     {
-        None,
-        Insurance1,
-        Insurance2,
-        Insurance3,
-        // ...
+        None = 0,
+        HealthInsurance = 1,
+        PrivateHealthInsurance = 2
     }
 }

@@ -11,8 +11,6 @@ namespace Persistence
         {
             services.AddDbContext<HospitalAppointDbContext>();
 
-            services.AddScoped<IAdminActionRepository, AdminActionRepository>();
-            services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IDoctorAvailabilityRepository, DoctorAvailabilityRepository>();

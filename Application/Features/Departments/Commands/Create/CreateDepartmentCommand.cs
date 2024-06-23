@@ -1,17 +1,17 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Departments.Constants;
+using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Application.Features.Departments.Constants.DepartmentsOperationClaims;
 
 namespace Application.Features.Departments.Commands.Create
 {
-    public class CreateDepartmentCommand : IRequest<CreateDepartmentResponse>
+    public class CreateDepartmentCommand : IRequest<CreateDepartmentResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, Write, Add };
         public string Name { get; set; }
         public string Description { get; set; }
 

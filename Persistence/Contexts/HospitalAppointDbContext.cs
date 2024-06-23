@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Persistence.EntityConfigurations;
 
 namespace Persistence.Contexts
 {
@@ -15,6 +16,7 @@ namespace Persistence.Contexts
         public DbSet<PatientReport> PatientReports { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<SupportRequest> SupportRequests { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<SystemStat> SystemStats { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
@@ -39,6 +41,11 @@ namespace Persistence.Contexts
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Doctor>().ToTable("Doctors");
             modelBuilder.Entity<Patient>().ToTable("Patients");
+
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
+
+
 
             base.OnModelCreating(modelBuilder);
         }

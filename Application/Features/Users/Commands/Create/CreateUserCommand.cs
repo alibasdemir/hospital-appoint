@@ -1,11 +1,10 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Logging;
+using Core.Hashing;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Application.Features.Users.Commands.Create
 {
@@ -37,9 +36,12 @@ namespace Application.Features.Users.Commands.Create
             {
                 User user = _mapper.Map<User>(request);
 
-                using HMACSHA512 hmac = new();
-                user.PasswordSalt = hmac.Key;
-                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+                byte[] passwordHash, passwordSalt;
+
+                HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+
+                user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash;
 
                 await _userRepository.AddAsync(user);
 

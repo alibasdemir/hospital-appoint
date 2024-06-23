@@ -1,12 +1,5 @@
-﻿using Core.DataAccess;
-using Core.Entities;
+﻿using Core.Entities;
 using Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -18,5 +11,39 @@ namespace Domain.Entities
         public City? City { get; set; }
         public string? Address { get; set; }
         public string? PhotoUrl { get; set; }
+
+        public User()
+        {
+        }
+
+        public User(
+            int id, 
+            string firstName,
+            string lastName,
+            string email,
+            byte[] passwordSalt,
+            byte[] passwordHash, 
+            Gender? gender, 
+            DateTime? birthDate, 
+            string? phoneNumber, 
+            City? city, 
+            string? address, 
+            string? photoUrl
+        )
+            : this()     
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            PasswordSalt = passwordSalt;
+            PasswordHash = passwordHash;
+            Gender = gender;
+            BirthDate = birthDate;
+            PhoneNumber = phoneNumber;
+            City = city;
+            Address = address;
+            PhotoUrl = photoUrl;
+        }
     }
 }

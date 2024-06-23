@@ -1,6 +1,7 @@
 ﻿using Application.Features.Users.Commands.Create;
 using Application.Repositories;
 using AutoMapper;
+using Core.Hashing;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -17,10 +18,12 @@ namespace Application.Features.Users.Commands.Update
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Gender Gender { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public Gender Gender { get; set; }
+        public DateTime BirthDate { get; set; }
         public string PhoneNumber { get; set; }
+        public City City { get; set; }
         public string Address { get; set; }
         public string PhotoUrl { get; set; }
 
@@ -45,6 +48,13 @@ namespace Application.Features.Users.Commands.Update
                 }
 
                 _mapper.Map(request, user);
+
+                byte[] passwordHash, passwordSalt;
+
+                HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+
+                user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash;
 
                 await _userRepository.UpdateAsync(user);
 

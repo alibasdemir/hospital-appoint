@@ -2,10 +2,7 @@
 using AutoMapper;
 using Core.Hashing;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Application.Features.Auth.Commands.Register
 {

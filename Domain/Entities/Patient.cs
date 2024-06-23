@@ -1,13 +1,9 @@
-﻿using Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.DataAccess;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
-    public class Patient : User
+    public class Patient : Entity<int>
     {
         public BloodType BloodType { get; set; }
         public InsuranceType InsuranceType { get; set; }
@@ -18,6 +14,8 @@ namespace Domain.Entities
         public string EmergencyContactName { get; set; }
         public string EmergencyContactPhoneNumber { get; set; }
         public string EmergencyContactRelationship { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<PatientReport> PatientReports { get; set; }

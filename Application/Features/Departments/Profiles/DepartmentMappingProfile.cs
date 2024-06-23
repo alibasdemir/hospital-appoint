@@ -1,11 +1,8 @@
 ﻿using Application.Features.Departments.Commands.Create;
+using Application.Features.Departments.Commands.Delete;
+using Application.Features.Departments.Commands.SoftDelete;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Departments.Profiles
 {
@@ -15,6 +12,9 @@ namespace Application.Features.Departments.Profiles
         {
             CreateMap<Department, CreateDepartmentCommand>().ReverseMap();
             CreateMap<Department, CreateDepartmentResponse>().ReverseMap();
+            CreateMap<Department, DeleteDepartmentCommand>().ReverseMap();
+            CreateMap<Department, SoftDeleteDepartmentCommand>().ReverseMap();
+            CreateMap<Department, SoftDeleteDepartmentResponse>().ReverseMap();
         }
     }
 }

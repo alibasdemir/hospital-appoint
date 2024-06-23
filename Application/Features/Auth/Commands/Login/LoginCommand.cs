@@ -4,7 +4,6 @@ using Core.Entities;
 using Core.Hashing;
 using Core.JWT;
 using Core.Paging;
-using Core.Requests;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

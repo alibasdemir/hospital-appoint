@@ -1,4 +1,5 @@
 ﻿using Application.Features.Doctors.Commands.Create;
+using Application.Features.Doctors.Commands.Delete;
 using Application.Features.Doctors.Commands.Update;
 using AutoMapper;
 using Domain.Entities;
@@ -16,9 +17,10 @@ namespace Application.Features.Doctors.Profiles
         {
             CreateMap<Doctor, CreateDoctorCommand>().ReverseMap();
             CreateMap<Doctor, CreateDoctorResponse>().ReverseMap();
-            
             CreateMap<Doctor, UpdateDoctorCommand>().ReverseMap();
             CreateMap<Doctor, UpdateDoctorResponse>().ReverseMap();
+            CreateMap<Doctor, DeleteDoctorCommand>().ReverseMap();
+            CreateMap<Doctor, DeleteDoctorResponse>().ReverseMap();
         }
     }
 }

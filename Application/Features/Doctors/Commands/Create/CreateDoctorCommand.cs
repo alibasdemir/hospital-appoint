@@ -1,24 +1,23 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
 
 namespace Application.Features.Doctors.Commands.Create
 {
-    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>
+    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ISecuredRequest, ILoggableRequest
     {
         public string SpecialistLevel { get; set; }
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }
         public int UserId { get; set; }
         public int DepartmentId { get; set; }
+
+        public string[] RequiredRoles => new[] { Admin, Write, Add };
+
         public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
         {
             private readonly IDoctorRepository _doctorRepository;

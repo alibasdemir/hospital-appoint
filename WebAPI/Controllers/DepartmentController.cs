@@ -1,6 +1,7 @@
 ﻿using Application.Features.Departments.Commands.Create;
 using Application.Features.Departments.Commands.Delete;
 using Application.Features.Departments.Commands.SoftDelete;
+using Application.Features.Departments.Commands.Update;
 using Application.Features.Departments.Queries.GetById;
 using Application.Features.Departments.Queries.GetList;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,13 @@ namespace WebAPI.Controllers
         {
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateDepartmentCommand command)
+        {
+            UpdateDepartmentResponse response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

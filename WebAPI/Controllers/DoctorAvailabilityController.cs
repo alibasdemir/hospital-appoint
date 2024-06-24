@@ -1,6 +1,7 @@
 ﻿using Application.Features.DoctorAvailabilities.Commands.Create;
 using Application.Features.DoctorAvailabilities.Commands.Delete;
 using Application.Features.DoctorAvailabilities.Commands.SoftDelete;
+using Application.Features.DoctorAvailabilities.Commands.Update;
 using Application.Features.DoctorAvailabilities.Queries.GetById;
 using Application.Features.DoctorAvailabilities.Queries.GetList;
 using Core.Responses;
@@ -47,6 +48,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAll([FromQuery] GetListDoctorAvailabilityQuery query)
         {
             GetListResponse<GetListDoctorAvailabilityResponse> response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateDoctorAvailabilityCommand command)
+        {
+            UpdateDoctorAvailabilityResponse response = await _mediator.Send(command);
             return Ok(response);
         }
     }

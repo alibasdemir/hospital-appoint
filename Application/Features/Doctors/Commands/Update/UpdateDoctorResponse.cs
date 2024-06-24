@@ -1,9 +1,8 @@
-﻿using Domain.Enums;
-
-namespace Application.Features.Doctors.Commands.Update
+﻿namespace Application.Features.Doctors.Commands.Update
 {
 	public class UpdateDoctorResponse
 	{
+		public int Id { get; set; }
 		public string SpecialistLevel { get; set; }
 		public int YearsOfExperience { get; set; }
 		public string Biography { get; set; }

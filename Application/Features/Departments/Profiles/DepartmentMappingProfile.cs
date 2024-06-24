@@ -1,6 +1,7 @@
 ﻿using Application.Features.Departments.Commands.Create;
 using Application.Features.Departments.Commands.Delete;
 using Application.Features.Departments.Commands.SoftDelete;
+using Application.Features.Departments.Commands.Update;
 using AutoMapper;
 using Domain.Entities;
 
@@ -15,6 +16,8 @@ namespace Application.Features.Departments.Profiles
             CreateMap<Department, DeleteDepartmentCommand>().ReverseMap();
             CreateMap<Department, SoftDeleteDepartmentCommand>().ReverseMap();
             CreateMap<Department, SoftDeleteDepartmentResponse>().ReverseMap();
+            CreateMap<Department, UpdateDepartmentCommand>().ReverseMap();
+            CreateMap<Department, UpdateDepartmentResponse>().ReverseMap();
         }
     }
 }

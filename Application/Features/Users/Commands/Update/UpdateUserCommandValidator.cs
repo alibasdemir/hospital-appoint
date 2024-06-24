@@ -1,11 +1,11 @@
 ﻿using Domain.Enums;
 using FluentValidation;
 
-namespace Application.Features.Users.Commands.Create
+namespace Application.Features.Users.Commands.Update
 {
-    public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+    public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {
-		public CreateUserCommandValidator()
+		public UpdateUserCommandValidator()
 		{
 			RuleFor(i => i.PhoneNumber)
 			.Matches(@"^\+90\d{10}$").NotEmpty()

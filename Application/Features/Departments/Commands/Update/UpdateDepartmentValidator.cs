@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using Application.Features.Departments.Commands.Update;
+using FluentValidation;
 
 namespace Application.Features.Departments.Commands.Create
 {
-    public class CreateDepartmentValidator : AbstractValidator<CreateDepartmentCommand>
+    public class UpdateDepartmentValidator : AbstractValidator<UpdateDepartmentCommand>
     {
-        public CreateDepartmentValidator()
+        public UpdateDepartmentValidator()
         {
 			RuleFor(i => i.Name).NotEmpty().WithMessage("Name can not be empty.");
 			RuleFor(i => i.Description).NotEmpty().WithMessage("LastName can not be empty.");

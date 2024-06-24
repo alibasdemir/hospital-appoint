@@ -19,9 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Departments\Queries\" />
     <Folder Include="Features\Departments\Rules\" />
-    <Folder Include="Features\DoctorAvailability\Queries\" />
+    <Folder Include="Features\DoctorAvailabilities\Queries\" />
     <Folder Include="Features\Feedbacks\Queries\" />
     <Folder Include="Features\Notifications\Queries\" />
   </ItemGroup>

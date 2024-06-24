@@ -17,7 +17,7 @@ namespace Application.Features.Departments.Commands.Delete
 
         public class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand, DeleteDepartmentResponse>
         {
-            public readonly IDepartmentRepository _departmentRepository;
+            private readonly IDepartmentRepository _departmentRepository;
             private readonly IMapper _mapper;
             public DeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper)
             {

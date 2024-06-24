@@ -3,8 +3,8 @@ using FluentValidation;
 
 namespace Application.Features.Users.Commands.Create
 {
-    public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
-    {
+	public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+	{
 		public CreateUserCommandValidator()
 		{
 			RuleFor(i => i.PhoneNumber)

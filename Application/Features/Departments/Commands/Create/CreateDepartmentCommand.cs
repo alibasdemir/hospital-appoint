@@ -1,5 +1,4 @@
-﻿using Application.Features.Departments.Constants;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;

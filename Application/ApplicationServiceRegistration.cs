@@ -7,6 +7,10 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Serilog;
+using Application.Services.DoctorService;
+using Application.Services.AuthService;
+using Application.Services.PatientService;
+using Application.Services.UserService;
 
 
 namespace Application
@@ -42,6 +46,11 @@ namespace Application
                         .CreateLogger()
                 };
             });
+
+            services.AddScoped<IDoctorService, DoctorManager>();
+            services.AddScoped<IAuthService, AuthManager>();
+            services.AddScoped<IPatientService, PatientManager>();
+            services.AddScoped<IUserService, UserManager>();
 
             return services;
         }

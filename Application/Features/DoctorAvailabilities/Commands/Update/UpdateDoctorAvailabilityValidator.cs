@@ -1,11 +1,6 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Features.DoctorSchedules.Commands.Update
+namespace Application.Features.DoctorAvailabilities.Commands.Update
 {
 	public class UpdateDoctorAvailabilityValidator : AbstractValidator<UpdateDoctorAvailabilityCommand>
 	{

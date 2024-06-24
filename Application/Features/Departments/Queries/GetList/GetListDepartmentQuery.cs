@@ -1,6 +1,5 @@
 ﻿using Application.Repositories;
 using AutoMapper;
-using Core.Application.Pipelines.Authorization;
 using Core.Paging;
 using Core.Requests;
 using Core.Responses;

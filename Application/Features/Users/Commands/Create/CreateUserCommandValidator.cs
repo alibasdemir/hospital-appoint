@@ -16,7 +16,7 @@ namespace Application.Features.Users.Commands.Create
 			RuleFor(i => i.FirstName).NotEmpty().WithMessage("FirstName can not be empty.");
 			RuleFor(i => i.LastName).NotEmpty().WithMessage("LastName can not be empty.");
 			RuleFor(i => i.Password).NotEmpty().WithMessage("Password can not be empty.");
-			RuleFor(i => i.City).NotEqual(City.None).WithMessage("City must be selected.");
+			//RuleFor(i => i.City).NotEqual(City.None).WithMessage("City must be selected.");
 			RuleFor(i => i.BirthDate).Must(CheckBirthDate).WithMessage("BirthDate must be greater than 18 years.");
 		}
 

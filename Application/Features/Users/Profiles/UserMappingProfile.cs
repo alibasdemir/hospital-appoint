@@ -6,6 +6,7 @@ using AutoMapper;
 using Core.Paging;
 using Core.Responses;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Features.Users.Profiles
 {
@@ -13,8 +14,16 @@ namespace Application.Features.Users.Profiles
     {
         public UserMappingProfile()
         {
-            CreateMap<User, CreateUserCommand>().ReverseMap();
-            CreateMap<User, CreateUserResponse>().ReverseMap();
+            CreateMap<User, CreateUserCommand>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
+                .ReverseMap()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => Enum.Parse<Gender>(src.Gender, true)))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => Enum.Parse<City>(src.City, true)));
+            CreateMap<User, CreateUserResponse>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
+                .ReverseMap();
             CreateMap<User, UpdateUserCommand>().ReverseMap();
             CreateMap<User, UpdateUserResponse>().ReverseMap();
             CreateMap<User, GetListUserQuery>().ReverseMap();

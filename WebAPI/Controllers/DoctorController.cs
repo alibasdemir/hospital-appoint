@@ -1,5 +1,6 @@
 ﻿using Application.Features.Doctors.Commands.Create;
 using Application.Features.Doctors.Commands.Delete;
+using Application.Features.Doctors.Commands.SoftDelete;
 using Application.Features.Doctors.Commands.Update;
 using Application.Features.Doctors.Queries.GetById;
 using Application.Features.Doctors.Queries.GetList;
@@ -24,6 +25,14 @@ namespace WebAPI.Controllers
         {
             DeleteDoctorCommand command = new() { Id = id };
             DeleteDoctorResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("soft-delete/{id}")]
+        public async Task<IActionResult> SoftDelete([FromRoute] int id)
+        {
+            SoftDeleteDoctorCommand command = new() { Id = id };
+            SoftDeleteDoctorResponse response = await _mediator.Send(command);
             return Ok(response);
         }
 

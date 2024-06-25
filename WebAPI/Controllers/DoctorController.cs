@@ -2,6 +2,8 @@
 using Application.Features.Doctors.Commands.Delete;
 using Application.Features.Doctors.Commands.Update;
 using Application.Features.Doctors.Queries.GetById;
+using Application.Features.Doctors.Queries.GetList;
+using Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -37,6 +39,13 @@ namespace WebAPI.Controllers
         {
             GetByIdDoctorQuery query = new() { Id = id };
             GetByIdDoctorResponse response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetListDoctorQuery query)
+        {
+            GetListResponse<GetListDoctorResponse> response = await _mediator.Send(query);
             return Ok(response);
         }
     }

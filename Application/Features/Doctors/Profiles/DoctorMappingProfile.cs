@@ -2,7 +2,10 @@
 using Application.Features.Doctors.Commands.Delete;
 using Application.Features.Doctors.Commands.Update;
 using Application.Features.Doctors.Queries.GetById;
+using Application.Features.Doctors.Queries.GetList;
 using AutoMapper;
+using Core.Paging;
+using Core.Responses;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -24,6 +27,9 @@ namespace Application.Features.Doctors.Profiles
             CreateMap<Doctor, DeleteDoctorResponse>().ReverseMap();
             CreateMap<Doctor, GetByIdDoctorQuery>().ReverseMap();
             CreateMap<Doctor, GetByIdDoctorResponse>().ReverseMap();
+            CreateMap<Doctor, GetListDoctorQuery>().ReverseMap();
+            CreateMap<Doctor, GetListDoctorResponse>().ReverseMap();
+            CreateMap<IPaginate<Doctor>, GetListResponse<GetListDoctorResponse>>().ReverseMap();
         }
     }
 }

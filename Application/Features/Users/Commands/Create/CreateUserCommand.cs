@@ -4,7 +4,6 @@ using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Core.Hashing;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
 using static Application.Features.Users.Constants.UsersOperationClaims;
 

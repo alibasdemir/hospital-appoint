@@ -24,13 +24,27 @@ namespace Application.Features.Users.Profiles
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
                 .ReverseMap();
-            CreateMap<User, UpdateUserCommand>().ReverseMap();
-            CreateMap<User, UpdateUserResponse>().ReverseMap();
+            CreateMap<User, UpdateUserCommand>()
+               .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
+               .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
+               .ReverseMap()
+               .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => Enum.Parse<Gender>(src.Gender, true)))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => Enum.Parse<City>(src.City, true)));
+            CreateMap<User, UpdateUserResponse>()
+               .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
+               .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
+               .ReverseMap();
             CreateMap<User, GetListUserQuery>().ReverseMap();
-            CreateMap<User,GetListUserResponse>().ReverseMap();
+            CreateMap<User, GetListUserResponse>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
+                .ReverseMap();
             CreateMap<IPaginate<User>, GetListResponse<GetListUserResponse>>().ReverseMap();
             CreateMap<User, GetByIdUserQuery>().ReverseMap();
-            CreateMap<User, GetByIdUserResponse>().ReverseMap();
+            CreateMap<User, GetByIdUserResponse>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
+                .ReverseMap();
         }
     }
 }

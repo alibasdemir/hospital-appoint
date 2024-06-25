@@ -28,16 +28,19 @@ namespace Application.Features.Users.Commands.Create
         {
             private readonly IUserRepository _userRepository;
             private readonly IMapper _mapper;
+            private readonly IPatientRepository _petientRepository; // todo refactor
 
-            public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+            public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IPatientRepository petientRepository)
             {
                 _userRepository = userRepository;
                 _mapper = mapper;
+                _petientRepository = petientRepository;
             }
 
             public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
                 User user = _mapper.Map<User>(request);
+                Patient patient = _mapper.Map<Patient>(request);
 
                 byte[] passwordHash, passwordSalt;
 
@@ -45,8 +48,12 @@ namespace Application.Features.Users.Commands.Create
 
                 user.PasswordSalt = passwordSalt;
                 user.PasswordHash = passwordHash;
+                user.UserType = "patient"; // todo refactor
 
                 await _userRepository.AddAsync(user);
+
+                patient.UserId = user.Id;
+                await _petientRepository.AddAsync(patient);
 
                 CreateUserResponse response = _mapper.Map<CreateUserResponse>(user);
                 return response;

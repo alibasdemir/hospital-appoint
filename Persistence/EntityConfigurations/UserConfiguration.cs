@@ -29,7 +29,8 @@ namespace Persistence.EntityConfigurations
                     PhoneNumber = "1111111",
                     City = City.Izmir,
                     Address = "address",
-                    PhotoUrl = "photoUrl"
+                    PhotoUrl = "photoUrl",
+                    UserType = "admin",
                 },
                 new User
                 {
@@ -44,7 +45,8 @@ namespace Persistence.EntityConfigurations
                     PhoneNumber = "1111111",
                     City = City.Izmir,
                     Address = "address",
-                    PhotoUrl = "photoUrl"
+                    PhotoUrl = "photoUrl",
+                    UserType = "doctor",
                 },
                 new User
                 {
@@ -59,7 +61,8 @@ namespace Persistence.EntityConfigurations
                     PhoneNumber = "1111111",
                     City = City.Izmir,
                     Address = "address",
-                    PhotoUrl = "photoUrl"
+                    PhotoUrl = "photoUrl",
+                    UserType = "doctor",
                 },
                 new User
                 {
@@ -74,7 +77,8 @@ namespace Persistence.EntityConfigurations
                     PhoneNumber = "1111111",
                     City = City.Izmir,
                     Address = "address",
-                    PhotoUrl = "photoUrl"
+                    PhotoUrl = "photoUrl",
+                    UserType = "doctor",
                 },
             };
             builder.HasData(userSeeds);

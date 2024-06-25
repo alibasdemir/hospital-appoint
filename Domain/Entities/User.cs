@@ -11,6 +11,7 @@ namespace Domain.Entities
         public City? City { get; set; }
         public string? Address { get; set; }
         public string? PhotoUrl { get; set; }
+        public string UserType { get; set; }
 
         public User()
         {
@@ -28,7 +29,8 @@ namespace Domain.Entities
             string? phoneNumber, 
             City? city, 
             string? address, 
-            string? photoUrl
+            string? photoUrl,
+            string userType
         )
             : this()     
         {
@@ -44,6 +46,7 @@ namespace Domain.Entities
             City = city;
             Address = address;
             PhotoUrl = photoUrl;
+            UserType = userType;
         }
     }
 }

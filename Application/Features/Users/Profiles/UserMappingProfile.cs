@@ -45,6 +45,8 @@ namespace Application.Features.Users.Profiles
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.ToString()))
                 .ReverseMap();
+
+            CreateMap<Patient, CreateUserCommand>().ReverseMap();
         }
     }
 }

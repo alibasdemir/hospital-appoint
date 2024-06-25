@@ -12,5 +12,6 @@
         public string City { get; set; }
         public string Address { get; set; }
         public string PhotoUrl { get; set; }
+        public string UserType { get; set; }
     }
 }

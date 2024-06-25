@@ -9,7 +9,7 @@ using static Application.Features.Users.Constants.UsersOperationClaims;
 
 namespace Application.Features.Users.Commands.Create
 {
-    public class CreateUserCommand : IRequest<CreateUserResponse>, ILoggableRequest, ISecuredRequest
+    public class CreateUserCommand : IRequest<CreateUserResponse>, ILoggableRequest
     {
         public string[] RequiredRoles => new[] { Admin, Write, Add };
 

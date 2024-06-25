@@ -27,7 +27,7 @@ namespace Persistence.EntityConfigurations
                     Gender = Gender.Male,
                     BirthDate = new DateTime(1900, 06, 22),
                     PhoneNumber = "1111111",
-                    City = City.İzmir,
+                    City = City.Izmir,
                     Address = "address",
                     PhotoUrl = "photoUrl"
                 },
@@ -42,7 +42,7 @@ namespace Persistence.EntityConfigurations
                     Gender = Gender.Male,
                     BirthDate = new DateTime(1900, 06, 22),
                     PhoneNumber = "1111111",
-                    City = City.İzmir,
+                    City = City.Izmir,
                     Address = "address",
                     PhotoUrl = "photoUrl"
                 },
@@ -57,7 +57,7 @@ namespace Persistence.EntityConfigurations
                     Gender = Gender.Male,
                     BirthDate = new DateTime(1900, 06, 22),
                     PhoneNumber = "1111111",
-                    City = City.İzmir,
+                    City = City.Izmir,
                     Address = "address",
                     PhotoUrl = "photoUrl"
                 },
@@ -72,7 +72,7 @@ namespace Persistence.EntityConfigurations
                     Gender = Gender.Male,
                     BirthDate = new DateTime(1900, 06, 22),
                     PhoneNumber = "1111111",
-                    City = City.İzmir,
+                    City = City.Izmir,
                     Address = "address",
                     PhotoUrl = "photoUrl"
                 },

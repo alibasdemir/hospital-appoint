@@ -1,6 +1,7 @@
 ﻿using Application.Features.Doctors.Commands.Create;
 using Application.Features.Doctors.Commands.Delete;
 using Application.Features.Doctors.Commands.Update;
+using Application.Features.Doctors.Queries.GetById;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -21,6 +22,8 @@ namespace Application.Features.Doctors.Profiles
             CreateMap<Doctor, UpdateDoctorResponse>().ReverseMap();
             CreateMap<Doctor, DeleteDoctorCommand>().ReverseMap();
             CreateMap<Doctor, DeleteDoctorResponse>().ReverseMap();
+            CreateMap<Doctor, GetByIdDoctorQuery>().ReverseMap();
+            CreateMap<Doctor, GetByIdDoctorResponse>().ReverseMap();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.Features.UserOperationClaims.Commands.Create;
 using Application.Features.UserOperationClaims.Commands.Delete;
 using Application.Features.UserOperationClaims.Commands.SoftDelete;
+using Application.Features.UserOperationClaims.Commands.Update;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -29,6 +30,13 @@ namespace WebAPI.Controllers
         {
             SoftDeleteUserOperationClaimCommand command = new() { Id = id };
             SoftDeleteUserOperationClaimResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateUserOperationClaimCommand command)
+        {
+            UpdateUserOperationClaimResponse response = await _mediator.Send(command);
             return Ok(response);
         }
     }

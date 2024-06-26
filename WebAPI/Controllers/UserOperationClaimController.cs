@@ -2,6 +2,7 @@
 using Application.Features.UserOperationClaims.Commands.Delete;
 using Application.Features.UserOperationClaims.Commands.SoftDelete;
 using Application.Features.UserOperationClaims.Commands.Update;
+using Application.Features.UserOperationClaims.Queries.GetById;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -37,6 +38,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Update([FromBody] UpdateUserOperationClaimCommand command)
         {
             UpdateUserOperationClaimResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            GetByIdUserOperationClaimQuery query = new() { Id = id };
+            GetByIdUserOperationClaimResponse response = await _mediator.Send(query);
             return Ok(response);
         }
     }

@@ -2,6 +2,7 @@
 using Application.Features.OperationClaims.Commands.Delete;
 using Application.Features.OperationClaims.Commands.SoftDelete;
 using Application.Features.OperationClaims.Commands.Update;
+using Application.Features.OperationClaims.Queries.GetById;
 using AutoMapper;
 using Core.Entities;
 
@@ -19,6 +20,8 @@ namespace Application.Features.OperationClaims.Profiles
             CreateMap<OperationClaim, SoftDeleteOperationClaimResponse>().ReverseMap();
             CreateMap<OperationClaim, UpdateOperationClaimCommand>().ReverseMap();
             CreateMap<OperationClaim, UpdateOperationClaimResponse>().ReverseMap();
+            CreateMap<OperationClaim, GetByIdOperationClaimQuery>().ReverseMap();
+            CreateMap<OperationClaim, GetByIdOperationClaimResponse>().ReverseMap();
         }
     }
 }

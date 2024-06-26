@@ -3,8 +3,11 @@ using Application.Features.UserOperationClaims.Commands.Delete;
 using Application.Features.UserOperationClaims.Commands.SoftDelete;
 using Application.Features.UserOperationClaims.Commands.Update;
 using Application.Features.UserOperationClaims.Queries.GetById;
+using Application.Features.UserOperationClaims.Queries.GetList;
 using AutoMapper;
 using Core.Entities;
+using Core.Paging;
+using Core.Responses;
 
 namespace Application.Features.UserOperationClaims.Profiles
 {
@@ -22,6 +25,9 @@ namespace Application.Features.UserOperationClaims.Profiles
             CreateMap<UserOperationClaim, UpdateUserOperationClaimResponse>().ReverseMap();
             CreateMap<UserOperationClaim, GetByIdUserOperationClaimQuery>().ReverseMap();
             CreateMap<UserOperationClaim, GetByIdUserOperationClaimResponse>().ReverseMap();
+            CreateMap<UserOperationClaim, GetListUserOperationClaimQuery>().ReverseMap();
+            CreateMap<UserOperationClaim, GetListUserOperationClaimResponse>().ReverseMap();
+            CreateMap<IPaginate<UserOperationClaim>, GetListResponse<GetListUserOperationClaimResponse>>().ReverseMap();
         }
     }
 }

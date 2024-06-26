@@ -3,6 +3,8 @@ using Application.Features.OperationClaims.Commands.Delete;
 using Application.Features.OperationClaims.Commands.SoftDelete;
 using Application.Features.OperationClaims.Commands.Update;
 using Application.Features.OperationClaims.Queries.GetById;
+using Application.Features.OperationClaims.Queries.GetList;
+using Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -47,6 +49,13 @@ namespace WebAPI.Controllers
         {
             GetByIdOperationClaimQuery query = new() { Id = id };
             GetByIdOperationClaimResponse response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetListOperationClaimQuery query)
+        {
+            GetListResponse<GetListOperationClaimResponse> response = await _mediator.Send(query);
             return Ok(response);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Application.Features.OperationClaims.Commands.Create;
+using Application.Features.OperationClaims.Commands.Delete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,6 +12,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Add([FromBody] CreateOperationClaimCommand command)
         {
             CreateOperationClaimResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            DeleteOperationClaimCommand command = new() { Id = id };
+            DeleteOperationClaimResponse response = await _mediator.Send(command);
             return Ok(response);
         }
     }

@@ -22,7 +22,6 @@
     <Folder Include="Features\Departments\Rules\" />
     <Folder Include="Features\Feedbacks\Queries\" />
     <Folder Include="Features\Notifications\Queries\" />
-    <Folder Include="Features\OperationClaims\Constants\" />
   </ItemGroup>
 
 </Project>

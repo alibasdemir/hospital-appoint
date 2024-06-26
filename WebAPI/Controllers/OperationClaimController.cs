@@ -1,5 +1,6 @@
 ﻿using Application.Features.OperationClaims.Commands.Create;
 using Application.Features.OperationClaims.Commands.Delete;
+using Application.Features.OperationClaims.Commands.SoftDelete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -20,6 +21,14 @@ namespace WebAPI.Controllers
         {
             DeleteOperationClaimCommand command = new() { Id = id };
             DeleteOperationClaimResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete("soft-delete/{id}")]
+        public async Task<IActionResult> SoftDelete([FromRoute] int id)
+        {
+            SoftDeleteOperationClaimCommand command = new() { Id = id };
+            SoftDeleteOperationClaimResponse response = await _mediator.Send(command);
             return Ok(response);
         }
     }

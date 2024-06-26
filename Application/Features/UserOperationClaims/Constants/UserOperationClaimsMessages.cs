@@ -3,5 +3,6 @@
     public static class UserOperationClaimsMessages
     {
         public const string UserOperationClaimNotExists = "UserOperationClaim not exists.";
+        public const string UserOperationClaimDeleteMsg = "Deletion Successful!";
     }
 }

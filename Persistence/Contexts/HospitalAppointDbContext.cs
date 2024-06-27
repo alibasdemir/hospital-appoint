@@ -49,7 +49,7 @@ namespace Persistence.Contexts
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
             modelBuilder.ApplyConfiguration(new DoctorConfiguration());
-
+            modelBuilder.ApplyConfiguration(new OperationClaimConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

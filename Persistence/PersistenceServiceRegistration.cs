@@ -19,7 +19,6 @@ namespace Persistence
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IPatientReportRepository, PatientReportRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
-            services.AddScoped<ISystemStatRepository, SystemStatRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
             services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();

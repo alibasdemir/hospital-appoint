@@ -26,7 +26,6 @@ namespace Persistence.Contexts
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<SupportRequest> SupportRequests { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<SystemStat> SystemStats { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 

@@ -9,5 +9,21 @@ namespace Core.Entities
 
         public virtual BaseUser BaseUser { get; set; }
         public virtual OperationClaim OperationClaim { get; set; }
+
+        public UserOperationClaim()
+        {
+        }
+
+        public UserOperationClaim(
+            int id,
+            int baseUserId, 
+            int operationClaimId
+        )
+            : this()
+        {
+            Id = id;
+            BaseUserId = baseUserId;
+            OperationClaimId = operationClaimId;
+        }
     }
 }

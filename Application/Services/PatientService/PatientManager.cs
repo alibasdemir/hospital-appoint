@@ -1,10 +1,5 @@
 ﻿using Application.Repositories;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.PatientService
 {
@@ -16,10 +11,14 @@ namespace Application.Services.PatientService
 			_patientRepository = patientRepository;
 		}
 
-		public async Task<Patient> GetByIdAsync(int id)
+		public async Task<bool> PatientValidationById(int id)
 		{
-			Patient? patient = await _patientRepository.GetAsync(i => i.Id == id);
-			return patient;
+			Patient? patient = await _patientRepository.GetAsync(x => x.Id == id);
+			if (patient == null)
+			{
+				return false;
+			}
+			return true;
 		}
 	}
 }

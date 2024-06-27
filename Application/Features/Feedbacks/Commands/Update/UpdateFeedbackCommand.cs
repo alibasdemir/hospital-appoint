@@ -1,5 +1,9 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Feedbacks.Commands.Create;
+using Application.Features.Users.Constants;
+using Application.Repositories;
+using Application.Services.UserService;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -17,27 +21,35 @@ namespace Application.Features.Feedbacks.Commands.Update
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public int Rating { get; set; }
-        public int PatientId { get; set; }
-        public int DoctorId { get; set; }
-        public class UpdateFeedbackCommandHandler : IRequestHandler<UpdateFeedbackCommand, UpdateFeedbackResponse>
+		public int UserId { get; set; }
+		public class UpdateFeedbackCommandHandler : IRequestHandler<UpdateFeedbackCommand, UpdateFeedbackResponse>
         {
             private readonly IFeedbackRepository _feedbackRepository;
             private readonly IMapper _mapper;
+			private readonly IUserService _userService;
 
-            public UpdateFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper)
+			public UpdateFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper, IUserService userService)
+			{
+				_feedbackRepository = feedbackRepository;
+				_mapper = mapper;
+				_userService = userService;
+			}
+
+			public async Task<UpdateFeedbackResponse> Handle(UpdateFeedbackCommand request, CancellationToken cancellationToken)
             {
-                _feedbackRepository = feedbackRepository;
-                _mapper = mapper;
-            }
+				bool isUserExist = await _userService.UserValidationById(request.UserId);
 
-            public async Task<UpdateFeedbackResponse> Handle(UpdateFeedbackCommand request, CancellationToken cancellationToken)
-            {
-                Feedback feedback = _mapper.Map<Feedback>(request);
+				if (!isUserExist)
+				{
+					throw new NotFoundException(UsersMessages.UserNotExists);
+				}
 
-                await _feedbackRepository.UpdateAsync(feedback);
-                UpdateFeedbackResponse response = _mapper.Map<UpdateFeedbackResponse>(feedback);
-                return response;
-            }
+				Feedback feedback = _mapper.Map<Feedback>(request);
+				await _feedbackRepository.AddAsync(feedback);
+
+				UpdateFeedbackResponse response = _mapper.Map<UpdateFeedbackResponse>(feedback);
+				return response;
+			}
         }
     }
 }

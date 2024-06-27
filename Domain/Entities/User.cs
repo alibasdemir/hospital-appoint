@@ -12,8 +12,9 @@ namespace Domain.Entities
         public string? Address { get; set; }
         public string? PhotoUrl { get; set; }
         public string UserType { get; set; }
+		public virtual ICollection<Feedback> Feedbacks { get; set; }
 
-        public User()
+		public User()
         {
         }
 

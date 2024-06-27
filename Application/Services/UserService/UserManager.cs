@@ -17,9 +17,15 @@ namespace Application.Services.UserService
 			_userRepository = userRepository;
 		}
 
-		public Task<User> Login(string email, string password)
+		public async Task<bool> UserValidationById(int id)
 		{
-			throw new NotImplementedException();
+			User? user = await _userRepository.GetAsync(x => x.Id == id);
+
+			if (user == null)
+			{
+				return false;
+			}
+			return true;
 		}
 	}
 }

@@ -11,6 +11,8 @@ using Application.Services.DoctorService;
 using Application.Services.AuthService;
 using Application.Services.PatientService;
 using Application.Services.UserService;
+using Application.Services.AppointmentService;
+using Application.Services.DoctorAvailabilityService;
 
 
 namespace Application
@@ -51,8 +53,10 @@ namespace Application
             services.AddScoped<IAuthService, AuthManager>();
             services.AddScoped<IPatientService, PatientManager>();
             services.AddScoped<IUserService, UserManager>();
+			services.AddScoped<IAppointmentService, AppointmentManager>();
+			services.AddScoped<IDoctorAvailabilityService, DoctorAvailabilityManager>();
 
-            return services;
+			return services;
         }
     }
 }

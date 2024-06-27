@@ -8,18 +8,17 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.DoctorAvailabilities.Constants.DoctorAvailabilityOperationClaims;
+using Application.Features.Doctors.Constants;
 
 namespace Application.Features.DoctorAvailabilities.Commands.Create
 {
-	public class CreateDoctorAvailabilityCommand : IRequest<CreateDoctorAvailabilityResponse> , ILoggableRequest, ISecuredRequest
-    {
-        public int DoctorId { get; set; }
-        public DateTime StartTime { get; set; }
+	public class CreateDoctorAvailabilityCommand : IRequest<CreateDoctorAvailabilityResponse>
+	{
+		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
+		public int DoctorId { get; set; }
 
-		public string[] RequiredRoles => new[] { Admin, Write, Add }; 
-
-        public class CreateDoctorScheduleCommandHandler : IRequestHandler<CreateDoctorAvailabilityCommand, CreateDoctorAvailabilityResponse>
+		public class CreateDoctorScheduleCommandHandler : IRequestHandler<CreateDoctorAvailabilityCommand, CreateDoctorAvailabilityResponse>
 		{
 			private readonly IDoctorAvailabilityRepository _doctorAvailabilityRepository;
 			private readonly IMapper _mapper;
@@ -35,19 +34,21 @@ namespace Application.Features.DoctorAvailabilities.Commands.Create
 			public async Task<CreateDoctorAvailabilityResponse> Handle(CreateDoctorAvailabilityCommand request, CancellationToken cancellationToken)
 			{
 				bool isDoctorExist = await _doctorService.DoctorValidationById(request.DoctorId);
+				DoctorAvailability? doctorAvailability = _doctorAvailabilityRepository.Get(i => i.StartTime == request.StartTime);
 
+				if (!isDoctorExist)
+				{
+					throw new NotFoundException(DoctorsMessages.DoctorNotExists);
+				}
 
-                if (!isDoctorExist)
-                {
-                    throw new NotFoundException(DoctorAvailabilityMessages.DoctorAvailabilityNotExists);
-                }
-
-                DoctorAvailability doctorAvailability = _mapper.Map<DoctorAvailability>(request);
-                await _doctorAvailabilityRepository.AddAsync(doctorAvailability);
-
-                CreateDoctorAvailabilityResponse response = _mapper.Map<CreateDoctorAvailabilityResponse>(doctorAvailability);
-                return response;
-            }
+				if (doctorAvailability is null)
+				{
+					doctorAvailability = _mapper.Map<DoctorAvailability>(request);
+					await _doctorAvailabilityRepository.AddAsync(doctorAvailability);
+				}
+					CreateDoctorAvailabilityResponse response = _mapper.Map<CreateDoctorAvailabilityResponse>(doctorAvailability);
+					return response;
+			}
 		}
 	}
 }

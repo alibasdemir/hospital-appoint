@@ -10,10 +10,9 @@ using static Application.Features.Departments.Constants.DepartmentsOperationClai
 
 namespace Application.Features.Departments.Commands.Delete
 {
-    public class DeleteDepartmentCommand : IRequest<DeleteDepartmentResponse>, ISecuredRequest, ILoggableRequest
+    public class DeleteDepartmentCommand : IRequest<DeleteDepartmentResponse>
     {
         public int Id { get; set; }
-        public string[] RequiredRoles => new[] { Admin, Write, DepartmentsOperationClaims.Delete };
 
         public class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand, DeleteDepartmentResponse>
         {

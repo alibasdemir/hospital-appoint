@@ -9,10 +9,10 @@ namespace Domain.Entities
 {
     public class DoctorAvailability : Entity<int>
     {
-        public int DoctorId { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public Doctor Doctor { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
-    }
+		public int? DoctorId { get; set; }
+		public DateTime StartTime { get; set; }
+		public DateTime EndTime { get; set; }
+		public Doctor Doctor { get; set; }
+		public ICollection<Appointment> Appointments { get; set; }
+	}
 }

@@ -1,5 +1,9 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Patients.Commands.Create;
+using Application.Features.Users.Constants;
+using Application.Repositories;
+using Application.Services.UserService;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -19,25 +23,34 @@ namespace Application.Features.Patients.Commands.Create
         public string EmergencyContactPhoneNumber { get; set; }
         public string EmergencyContactRelationship { get; set; }
 
-        public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
-        {
-            private readonly IPatientRepository _patientRepository;
-            private readonly IMapper _mapper;
+		public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, CreatePatientResponse>
+		{
+			private readonly IPatientRepository _patientRepository;
+			private readonly IMapper _mapper;
+			private readonly IUserService _userService;
 
-            public CreatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper)
-            {
-                _patientRepository = patientRepository;
-                _mapper = mapper;
-            }
+			public CreatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, IUserService userService)
+			{
+				_patientRepository = patientRepository;
+				_mapper = mapper;
+				_userService = userService;
+			}
 
-            public async Task<CreatePatientResponse> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
-            {
-                Patient patient = _mapper.Map<Patient>(request);
+			public async Task<CreatePatientResponse> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
+			{
+				bool isUserExist = await _userService.UserValidationById(request.UserId);
 
-                await _patientRepository.AddAsync(patient);
-                CreatePatientResponse response = _mapper.Map<CreatePatientResponse>(patient);
-                return response;
-            }
-        }
-    }
+				if (!isUserExist)
+				{
+					throw new NotFoundException(UsersMessages.UserNotExists);
+				}
+
+				Patient patient = _mapper.Map<Patient>(request);
+				await _patientRepository.AddAsync(patient);
+
+				CreatePatientResponse response = _mapper.Map<CreatePatientResponse>(patient);
+				return response;
+			}
+		}
+	}
 }

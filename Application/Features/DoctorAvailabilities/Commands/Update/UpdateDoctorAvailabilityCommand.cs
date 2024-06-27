@@ -8,17 +8,18 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.DoctorAvailabilities.Constants.DoctorAvailabilityOperationClaims;
+using Application.Features.Doctors.Constants;
+using Application.Features.DoctorAvailabilities.Commands.Create;
 
 namespace Application.Features.DoctorAvailabilities.Commands.Update
 {
-	public class UpdateDoctorAvailabilityCommand : IRequest<UpdateDoctorAvailabilityResponse>, ILoggableRequest, ISecuredRequest
+	public class UpdateDoctorAvailabilityCommand : IRequest<UpdateDoctorAvailabilityResponse>
     {
-		public DateTime AvailableDate { get; set; }
-		public DateTime StartTime { get; set; }
+        public int Id { get; set; }
+        public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public int DoctorId { get; set; }
 
-		public string[] RequiredRoles => new[] { Admin, Write, DoctorAvailabilityOperationClaims.Update };
 
         public class UpdateDoctorAvailabilityCommandHandler : IRequestHandler<UpdateDoctorAvailabilityCommand, UpdateDoctorAvailabilityResponse>
 		{
@@ -36,19 +37,21 @@ namespace Application.Features.DoctorAvailabilities.Commands.Update
 			public async Task<UpdateDoctorAvailabilityResponse> Handle(UpdateDoctorAvailabilityCommand request, CancellationToken cancellationToken)
 			{
 				bool isDoctorExist = await _doctorService.DoctorValidationById(request.DoctorId);
+				DoctorAvailability? doctorAvailability = _doctorAvailabilityRepository.Get(i => i.Id == request.Id);
 
 				if (!isDoctorExist)
 				{
-                    throw new NotFoundException("Böyle bir doktor yok");
-                }
-				
+					throw new NotFoundException(DoctorsMessages.DoctorNotExists);
+				}
 
-                DoctorAvailability doctorAvailability = _mapper.Map<DoctorAvailability>(request);
-                await _doctorAvailabilityRepository.UpdateAsync(doctorAvailability);
-
-                UpdateDoctorAvailabilityResponse response = _mapper.Map<UpdateDoctorAvailabilityResponse>(doctorAvailability);
-                return response;
-            }
+				if (doctorAvailability is null)
+				{
+					doctorAvailability = _mapper.Map<DoctorAvailability>(request);
+					await _doctorAvailabilityRepository.UpdateAsync(doctorAvailability);
+				}
+				UpdateDoctorAvailabilityResponse response = _mapper.Map<UpdateDoctorAvailabilityResponse>(doctorAvailability);
+				return response;
+			}
 		}
 	}
 }

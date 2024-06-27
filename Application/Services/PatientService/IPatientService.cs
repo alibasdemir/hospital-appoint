@@ -9,6 +9,6 @@ namespace Application.Services.PatientService
 {
 	public interface IPatientService
 	{
-		Task<Patient> GetByIdAsync(int id);
+		Task<bool> PatientValidationById(int id);
 	}
 }

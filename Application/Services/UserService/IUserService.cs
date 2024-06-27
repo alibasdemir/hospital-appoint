@@ -9,6 +9,6 @@ namespace Application.Services.UserService
 {
 	public interface IUserService
 	{
-		Task<User> Login(string email, string password);
+		Task<bool> UserValidationById(int id);
 	}
 }

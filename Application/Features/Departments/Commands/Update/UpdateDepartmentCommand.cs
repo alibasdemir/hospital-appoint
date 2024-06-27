@@ -8,9 +8,8 @@ using static Application.Features.Departments.Constants.DepartmentsOperationClai
 
 namespace Application.Features.Departments.Commands.Update
 {
-    public class UpdateDepartmentCommand : IRequest<UpdateDepartmentResponse>, ISecuredRequest, ILoggableRequest
+    public class UpdateDepartmentCommand : IRequest<UpdateDepartmentResponse>
     {
-        public string[] RequiredRoles => new[] { Admin, Write, Add };
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

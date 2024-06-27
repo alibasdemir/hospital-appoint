@@ -7,8 +7,8 @@ namespace Application.Features.Departments.Commands.Create
         public CreateDepartmentValidator()
         {
 			RuleFor(i => i.Name).NotEmpty().WithMessage("Name can not be empty.");
-			RuleFor(i => i.Description).NotEmpty().WithMessage("LastName can not be empty.");
-			RuleFor(i => i.RequiredRoles).NotEmpty().WithMessage("Roles should be selected.");
+			RuleFor(i => i.Description).NotEmpty().WithMessage("Description can not be empty.");
+			//RuleFor(i => i.RequiredRoles).NotEmpty().WithMessage("Roles should be selected.");
 		}
     }
 }

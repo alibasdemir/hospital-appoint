@@ -10,10 +10,8 @@ using static Application.Features.Departments.Constants.DepartmentsOperationClai
 
 namespace Application.Features.Departments.Commands.SoftDelete
 {
-    public class SoftDeleteDepartmentCommand : IRequest<SoftDeleteDepartmentResponse>, ISecuredRequest, ILoggableRequest
+    public class SoftDeleteDepartmentCommand : IRequest<SoftDeleteDepartmentResponse>
     {
-        public string[] RequiredRoles => new[] { Admin, Write, DepartmentsOperationClaims.Delete };
-
         public int Id { get; set; }
 
 

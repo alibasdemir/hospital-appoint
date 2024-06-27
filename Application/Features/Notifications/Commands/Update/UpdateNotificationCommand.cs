@@ -11,7 +11,6 @@ namespace Application.Features.Notifications.Commands.Update
 		public NotificationType Type { get; set; }
 		public string Title { get; set; }
 		public string Message { get; set; }
-		public int UserId { get; set; }
 		public class UpdateNotificationCommandHandler : IRequestHandler<UpdateNotificationCommand, UpdateNotificationResponse>
         {
             private readonly INotificationRepository _notificationRepository;

@@ -1,5 +1,4 @@
-﻿using Application.Features.OperationClaims.Queries.GetById;
-using Application.Features.UserOperationClaims.Constants;
+﻿using Application.Features.UserOperationClaims.Constants;
 using Application.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;

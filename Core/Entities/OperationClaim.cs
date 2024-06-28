@@ -10,13 +10,9 @@ namespace Core.Entities
         {
         }
 
-        public OperationClaim(
-            int id,
-            string name
-        )
-            : this()
+        public OperationClaim(int id, string name)
+            :base(id)
         {
-            Id = id;
             Name = name;
         }
     }

@@ -1,9 +1,4 @@
 ﻿using Core.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -12,7 +7,22 @@ namespace Domain.Entities
 		public int? DoctorId { get; set; }
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
-		public Doctor Doctor { get; set; }
+		public Doctor? Doctor { get; set; }
 		public ICollection<Appointment> Appointments { get; set; }
-	}
+
+        public DoctorAvailability()
+        {
+            Appointments = new HashSet<Appointment>();
+        }
+
+        public DoctorAvailability(int id, int? doctorId, DateTime startTime, DateTime endTime, Doctor? doctor)
+            : this()
+        {
+            Id = id;
+            DoctorId = doctorId;
+            StartTime = startTime;
+            EndTime = endTime;
+            Doctor = doctor;
+        }
+    }
 }

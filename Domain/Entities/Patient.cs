@@ -15,8 +15,30 @@ namespace Domain.Entities
 		public string? EmergencyContactPhoneNumber { get; set; }
 		public string? EmergencyContactRelationship { get; set; }
 		public int? UserId { get; set; }
-		public virtual User User { get; set; }
+		public virtual User? User { get; set; }
 		public virtual ICollection<Appointment> Appointments { get; set; }
 		public virtual ICollection<PatientReport> PatientReports { get; set; }
-	}
+
+        public Patient()
+        {
+            Appointments = new HashSet<Appointment>();
+			PatientReports = new HashSet<PatientReport>();
+        }
+
+        public Patient(int id, BloodType bloodType, InsuranceType ınsuranceType, string socialSecurityNumber, string? healthHistory, string? allergies, string? currentMedications, string? emergencyContactName, string? emergencyContactPhoneNumber, string? emergencyContactRelationship, int? userId)
+            : this()
+        {
+            Id = id;
+            BloodType = bloodType;
+            InsuranceType = ınsuranceType;
+            SocialSecurityNumber = socialSecurityNumber;
+            HealthHistory = healthHistory;
+            Allergies = allergies;
+            CurrentMedications = currentMedications;
+            EmergencyContactName = emergencyContactName;
+            EmergencyContactPhoneNumber = emergencyContactPhoneNumber;
+            EmergencyContactRelationship = emergencyContactRelationship;
+            UserId = userId;
+        }
+    }
 }

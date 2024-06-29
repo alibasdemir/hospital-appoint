@@ -9,6 +9,7 @@ namespace Application.Features.Auth.Profiles
         public AuthMappingProfile()
         {
             CreateMap<User, RegisterCommand>().ReverseMap();
+            CreateMap<Patient, RegisterCommand>().ReverseMap();
         }
     }
 }

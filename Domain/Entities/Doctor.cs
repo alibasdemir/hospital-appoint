@@ -4,8 +4,8 @@ namespace Domain.Entities
 {
     public class Doctor : Entity<int>
     {
-		public string SpecialistLevel { get; set; }     // test null and nullable
-		public int YearsOfExperience { get; set; }
+		public string? SpecialistLevel { get; set; }
+		public int? YearsOfExperience { get; set; }
 		public string? Biography { get; set; }
 		public int? UserId { get; set; }
 		public int? DepartmentId { get; set; }

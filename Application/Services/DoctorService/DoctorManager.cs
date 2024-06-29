@@ -12,7 +12,7 @@ namespace Application.Services.DoctorService
 			_doctorRepository = doctorRepository;
 		}
 
-		public async Task<bool> DoctorValidationById(int id)
+        public async Task<bool> DoctorValidationById(int id)
 		{
 			Doctor? doctor = await _doctorRepository.GetAsync(x => x.Id == id);
 			if (doctor == null)
@@ -31,5 +31,9 @@ namespace Application.Services.DoctorService
 			}
 			return true;
 		}
-	}
+        public async Task AddDoctorAsync(Doctor doctor)
+        {
+            await _doctorRepository.AddAsync(doctor);
+        }
+    }
 }

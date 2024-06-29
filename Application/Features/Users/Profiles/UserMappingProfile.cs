@@ -47,6 +47,7 @@ namespace Application.Features.Users.Profiles
                 .ReverseMap();
 
             CreateMap<Patient, CreateUserCommand>().ReverseMap();
+            CreateMap<Doctor, CreateUserCommand>().ReverseMap();
         }
     }
 }

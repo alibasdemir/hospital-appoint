@@ -11,7 +11,6 @@ namespace Domain.Entities
         public City City { get; set; }
         public string Address { get; set; }
         public string? PhotoUrl { get; set; }
-        public string? UserType { get; set; }
 		public virtual ICollection<Feedback> Feedbacks { get; set; }
 
 		public User()

@@ -3,6 +3,7 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Hashing;
 using Domain.Entities;
 using MediatR;
@@ -39,10 +40,10 @@ namespace Application.Features.Users.Commands.Update
             public async Task<UpdateUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
                 User? user = await _userRepository.GetAsync(i => i.Id == request.Id);
-                
-                if (user is null)
+
+                if (user == null || user.IsDeleted == true)
                 {
-                    throw new ArgumentException("No such user found");
+                    throw new NotFoundException(UsersMessages.UserNotExists);
                 }
 
                 _mapper.Map(request, user);

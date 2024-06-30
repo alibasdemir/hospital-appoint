@@ -1,6 +1,6 @@
-﻿namespace Application.Features.Feedbacks.Commands.SoftDelete
+﻿namespace Application.Features.Users.Commands.SoftDelete
 {
-    public class SoftDeleteFeedbackResponse
+    public class SoftDeleteUserResponse
     {
         public int Id { get; set; }
         public string Detail { get; set; } = "Deletion Successful!";

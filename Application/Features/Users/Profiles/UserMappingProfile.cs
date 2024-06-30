@@ -1,4 +1,6 @@
 ﻿using Application.Features.Users.Commands.Create;
+using Application.Features.Users.Commands.Delete;
+using Application.Features.Users.Commands.SoftDelete;
 using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
@@ -48,6 +50,10 @@ namespace Application.Features.Users.Profiles
 
             CreateMap<Patient, CreateUserCommand>().ReverseMap();
             CreateMap<Doctor, CreateUserCommand>().ReverseMap();
+            CreateMap<User, DeleteUserCommand>().ReverseMap();
+            CreateMap<User, DeleteUserReponse>().ReverseMap();
+            CreateMap<User, SoftDeleteUserCommand>().ReverseMap();
+            CreateMap<User,SoftDeleteUserResponse>().ReverseMap();
         }
     }
 }

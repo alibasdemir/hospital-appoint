@@ -1,4 +1,5 @@
-﻿using Application.Features.Patients.Constants;
+﻿using Application.Features.PatientReports.Constants;
+using Application.Features.Patients.Constants;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -10,10 +11,10 @@ using static Application.Features.Patients.Constants.PatientsOperationClaims;
 
 namespace Application.Features.Patients.Commands.SoftDelete
 {
-    public class SoftDeletePatientCommand : IRequest<SoftDeletePatientResponse>
+    public class SoftDeletePatientCommand : IRequest<SoftDeletePatientResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, PatientReportsOperationClaims.Delete };
         public int Id { get; set; }
-
 
         public class SoftDeletePatientCommandHandler : IRequestHandler<SoftDeletePatientCommand, SoftDeletePatientResponse>
         {

@@ -2,15 +2,20 @@
 using Application.Repositories;
 using Application.Services.AppointmentService;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.PatientReports.Constants.PatientReportsOperationClaims;
 
 namespace Application.Features.PatientReports.Commands.Create
 {
-	public class CreatePatientReportCommand : IRequest<CreatePatientReportResponse>
-	{
-		public int AppointmentId { get; set; }
+	public class CreatePatientReportCommand : IRequest<CreatePatientReportResponse>, ISecuredRequest, ILoggableRequest
+    {
+		public string[] RequiredRoles => new[] { Admin, Write, Add };
+
+        public int AppointmentId { get; set; }
 		public string Title { get; set; }
 		public string Details { get; set; }
 

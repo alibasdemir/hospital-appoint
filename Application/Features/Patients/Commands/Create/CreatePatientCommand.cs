@@ -1,5 +1,4 @@
-﻿using Application.Features.Patients.Commands.Create;
-using Application.Features.Users.Constants;
+﻿using Application.Features.Users.Constants;
 using Application.Repositories;
 using Application.Services.UserService;
 using AutoMapper;

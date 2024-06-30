@@ -1,19 +1,14 @@
 ﻿using Application.Repositories;
-using Application.Services.DoctorAvailabilityService;
 using Application.Services.PatientService;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
-
-using Application.Features.Patients.Constants;
-using Application.Features.DoctorAvailabilities.Constants;
+using Core.Application.Pipelines.Logging;
 
 namespace Application.Features.SupportRequests.Commands.Create
 {
-	public class CreateSupportRequestCommand : IRequest<CreateSupportRequestResponse>
-	{
+	public class CreateSupportRequestCommand : IRequest<CreateSupportRequestResponse>, ILoggableRequest
+    {
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }

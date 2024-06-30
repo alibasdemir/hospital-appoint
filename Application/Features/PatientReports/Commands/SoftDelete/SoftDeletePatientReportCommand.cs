@@ -10,10 +10,10 @@ using static Application.Features.PatientReports.Constants.PatientReportsOperati
 
 namespace Application.Features.PatientReports.Commands.SoftDelete
 {
-    public class SoftDeletePatientReportCommand : IRequest<SoftDeletePatientReportResponse>
+    public class SoftDeletePatientReportCommand : IRequest<SoftDeletePatientReportResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, PatientReportsOperationClaims.Delete };
         public int Id { get; set; }
-
 
         public class SoftDeletePatientReportCommandHandler : IRequestHandler<SoftDeletePatientReportCommand, SoftDeletePatientReportResponse>
         {

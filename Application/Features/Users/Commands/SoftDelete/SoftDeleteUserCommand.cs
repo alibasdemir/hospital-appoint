@@ -1,11 +1,16 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Users.Constants;
+using Application.Repositories;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Users.Constants.UsersOperationClaims;
 
 namespace Application.Features.Users.Commands.SoftDelete
 {
-    public class SoftDeleteUserCommand : IRequest
+    public class SoftDeleteUserCommand : IRequest, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, UsersOperationClaims.Delete };
         public int Id { get; set; }
 
         public class SoftDeleteUserCommandHandler : IRequestHandler<SoftDeleteUserCommand>

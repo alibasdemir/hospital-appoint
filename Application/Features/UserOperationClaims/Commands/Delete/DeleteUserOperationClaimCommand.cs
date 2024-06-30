@@ -1,14 +1,18 @@
 ﻿using Application.Features.UserOperationClaims.Constants;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Entities;
 using MediatR;
+using static Application.Features.UserOperationClaims.Constants.UserOperationClaimsOperationClaims;
 
 namespace Application.Features.UserOperationClaims.Commands.Delete
 {
-    public class DeleteUserOperationClaimCommand : IRequest<DeleteUserOperationClaimResponse>
+    public class DeleteUserOperationClaimCommand : IRequest<DeleteUserOperationClaimResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, UserOperationClaimsOperationClaims.Delete };
         public int Id { get; set; }
 
         public class DeleteUserOperationClaimCommandHandler : IRequestHandler<DeleteUserOperationClaimCommand, DeleteUserOperationClaimResponse>

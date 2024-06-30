@@ -6,14 +6,14 @@ using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.SupportRequests.Constants.SupportRequestsOperationClaims;
 
 namespace Application.Features.SupportRequests.Commands.SoftDelete
 {
-    public class SoftDeleteSupportRequestCommand : IRequest<SoftDeleteSupportRequestResponse>
+    public class SoftDeleteSupportRequestCommand : IRequest<SoftDeleteSupportRequestResponse>, ISecuredRequest, ILoggableRequest
     {
-
+        public string[] RequiredRoles => new[] { Admin, SupportRequestsOperationClaims.Delete };
         public int Id { get; set; }
-
 
         public class SoftDeleteSupportRequestCommandHandler : IRequestHandler<SoftDeleteSupportRequestCommand, SoftDeleteSupportRequestResponse>
         {

@@ -1,4 +1,5 @@
-﻿using Application.Features.Patients.Constants;
+﻿using Application.Features.PatientReports.Constants;
+using Application.Features.Patients.Constants;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -10,8 +11,9 @@ using static Application.Features.Patients.Constants.PatientsOperationClaims;
 
 namespace Application.Features.Patients.Commands.Delete
 {
-    public class DeletePatientCommand : IRequest<DeletePatientResponse>
+    public class DeletePatientCommand : IRequest<DeletePatientResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, PatientReportsOperationClaims.Delete };
         public int Id { get; set; }
 
         public class DeletePatientCommandHandler : IRequestHandler<DeletePatientCommand, DeletePatientResponse>

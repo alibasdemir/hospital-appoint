@@ -1,17 +1,22 @@
-﻿using Application.Features.Users.Constants;
+﻿using Application.Features.PatientReports.Constants;
+using Application.Features.Users.Constants;
 using Application.Repositories;
 using Application.Services.UserService;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using static Application.Features.Patients.Constants.PatientsOperationClaims;
 
 namespace Application.Features.Patients.Commands.Update
 {
-	public class UpdatePatientCommand : IRequest<UpdatePatientResponse>
-	{
-		public int UserId { get; set; }
+	public class UpdatePatientCommand : IRequest<UpdatePatientResponse>, ISecuredRequest, ILoggableRequest
+    {
+        public string[] RequiredRoles => new[] { Admin, PatientReportsOperationClaims.Update };
+        public int UserId { get; set; }
 		public BloodType BloodType { get; set; }
 		public InsuranceType InsuranceType { get; set; }
 		public string SocialSecurityNumber { get; set; }

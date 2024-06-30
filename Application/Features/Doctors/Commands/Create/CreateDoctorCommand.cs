@@ -1,16 +1,13 @@
 ﻿using Application.Repositories;
 using AutoMapper;
-using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
-using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
 
 namespace Application.Features.Doctors.Commands.Create
 {
-    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ISecuredRequest, ILoggableRequest
+    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ILoggableRequest
     {
-        public string[] RequiredRoles => new[] { Admin, Write, Add };
         public string SpecialistLevel { get; set; }
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }

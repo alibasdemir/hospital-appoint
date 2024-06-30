@@ -1,11 +1,17 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Users.Constants;
+using Application.Repositories;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Users.Constants.UsersOperationClaims;
+
 
 namespace Application.Features.Users.Commands.Delete
 {
-    public class DeleteUserCommand : IRequest
+    public class DeleteUserCommand : IRequest, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, UsersOperationClaims.Delete };
         public int Id { get; set; }
 
         public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>

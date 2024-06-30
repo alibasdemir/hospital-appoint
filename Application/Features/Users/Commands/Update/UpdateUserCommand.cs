@@ -1,13 +1,18 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Users.Constants;
+using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.Hashing;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Users.Constants.UsersOperationClaims;
 
 namespace Application.Features.Users.Commands.Update
 {
-    public class UpdateUserCommand : IRequest<UpdateUserResponse>
+    public class UpdateUserCommand : IRequest<UpdateUserResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, UsersOperationClaims.Update };
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

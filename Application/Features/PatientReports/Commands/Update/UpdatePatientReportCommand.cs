@@ -1,17 +1,22 @@
 ﻿using Application.Features.Appointments.Constants;
 using Application.Features.PatientReports.Commands.Update;
+using Application.Features.PatientReports.Constants;
 using Application.Repositories;
 using Application.Services.DoctorService;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.PatientReports.Constants.PatientReportsOperationClaims;
 
 namespace Application.Features.PatientReports.Commands.Update
 {
-	public class UpdatePatientReportCommand : IRequest<UpdatePatientReportResponse>
-	{
-		public DateTime AvailableDate { get; set; }
+	public class UpdatePatientReportCommand : IRequest<UpdatePatientReportResponse>, ISecuredRequest, ILoggableRequest
+    {
+        public string[] RequiredRoles => new[] { Admin, PatientReportsOperationClaims.Update };
+        public DateTime AvailableDate { get; set; }
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public int DoctorId { get; set; }

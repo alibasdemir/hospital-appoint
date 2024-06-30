@@ -1,12 +1,16 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.Entities;
 using MediatR;
+using static Application.Features.UserOperationClaims.Constants.UserOperationClaimsOperationClaims;
 
 namespace Application.Features.UserOperationClaims.Commands.Create
 {
-    public class CreateUserOperationClaimCommand : IRequest<CreateUserOperationClaimResponse>
+    public class CreateUserOperationClaimCommand : IRequest<CreateUserOperationClaimResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, Write, Add };
         public int BaseUserId { get; set; }
         public int OperationClaimId { get; set; }
 

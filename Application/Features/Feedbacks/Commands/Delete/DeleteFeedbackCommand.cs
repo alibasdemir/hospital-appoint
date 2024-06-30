@@ -10,8 +10,9 @@ using static Application.Features.Feedbacks.Constants.FeedbacksOperationClaims;
 
 namespace Application.Features.Feedbacks.Commands.Delete
 {
-    public class DeleteFeedbackCommand : IRequest<DeleteFeedbackResponse>
+    public class DeleteFeedbackCommand : IRequest<DeleteFeedbackResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, FeedbacksOperationClaims.Delete };
         public int Id { get; set; }
 
         public class DeleteFeedbackCommandHandler : IRequestHandler<DeleteFeedbackCommand, DeleteFeedbackResponse>

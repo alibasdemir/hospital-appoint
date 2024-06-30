@@ -1,14 +1,18 @@
 ﻿using Application.Features.Appointments.Constants;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Appointments.Constants.AppointmentsOperationClaims;
 
 namespace Application.Features.Appointments.Commands.Delete
 {
-    public class DeleteAppointmentCommand : IRequest<DeleteAppointmentResponse>
+    public class DeleteAppointmentCommand : IRequest<DeleteAppointmentResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => [Admin, AppointmentsOperationClaims.Delete];
         public int Id { get; set; }
 
         public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointmentCommand, DeleteAppointmentResponse>

@@ -10,8 +10,9 @@ using static Application.Features.DoctorAvailabilities.Constants.DoctorAvailabil
 
 namespace Application.Features.DoctorAvailabilities.Commands.SoftDelete
 {
-    public class SoftDeleteDoctorAvailabilityCommand : IRequest<SoftDeleteDoctorAvailabilityResponse>
+    public class SoftDeleteDoctorAvailabilityCommand : IRequest<SoftDeleteDoctorAvailabilityResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => [Admin, DoctorAvailabilityOperationClaims.Delete];
         public int Id { get; set; }
 
         public class SoftDeleteDoctorAvailabilityCommandHandler : IRequestHandler<SoftDeleteDoctorAvailabilityCommand, SoftDeleteDoctorAvailabilityResponse>

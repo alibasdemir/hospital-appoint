@@ -1,14 +1,18 @@
 ﻿using Application.Features.OperationClaims.Constants;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Entities;
 using MediatR;
+using static Application.Features.OperationClaims.Constants.OperationClaimsOperationClaims;
 
 namespace Application.Features.OperationClaims.Commands.Update
 {
-    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimResponse>
+    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, OperationClaimsOperationClaims.Update };
         public int Id { get; set; }
         public string Name { get; set; }
 

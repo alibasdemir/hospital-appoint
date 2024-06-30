@@ -55,16 +55,16 @@ namespace Application.Features.Users.Commands.Create
                 user.PasswordSalt = passwordSalt;
                 user.PasswordHash = passwordHash;
 
-                await _userRepository.AddAsync(user);
-
                 if (request.UserType == "doctor")
                 {
+                    await _userRepository.AddAsync(user);
                     Doctor doctor = _mapper.Map<Doctor>(request);
                     doctor.UserId = user.Id;
                     await _doctorService.AddDoctorAsync(doctor);
                 }
                 else if (request.UserType == "patient")
                 {
+                    await _userRepository.AddAsync(user);
                     Patient patient = _mapper.Map<Patient>(request);
                     patient.UserId = user.Id;
                     await _patientService.AddPatientAsync(patient);

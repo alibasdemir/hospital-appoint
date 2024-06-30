@@ -1,14 +1,19 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Notifications.Constants;
+using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using static Application.Features.Notifications.Constants.NotificationsOperationClaims;
 
 namespace Application.Features.Notifications.Commands.Update
 {
-    public class UpdateNotificationCommand : IRequest<UpdateNotificationResponse>
+    public class UpdateNotificationCommand : IRequest<UpdateNotificationResponse>, ISecuredRequest, ILoggableRequest
     {
-		public NotificationType Type { get; set; }
+        public string[] RequiredRoles => new[] { Admin, NotificationsOperationClaims.Update };
+        public NotificationType Type { get; set; }
 		public string Title { get; set; }
 		public string Message { get; set; }
 		public class UpdateNotificationCommandHandler : IRequestHandler<UpdateNotificationCommand, UpdateNotificationResponse>

@@ -1,24 +1,21 @@
-﻿using Application.Features.Feedbacks.Commands.Create;
+﻿using Application.Features.Feedbacks.Constants;
 using Application.Features.Users.Constants;
 using Application.Repositories;
 using Application.Services.UserService;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using static Application.Features.Feedbacks.Constants.FeedbacksOperationClaims;
 
 namespace Application.Features.Feedbacks.Commands.Update
 {
-    public class UpdateFeedbackCommand : IRequest<UpdateFeedbackResponse>
+    public class UpdateFeedbackCommand : IRequest<UpdateFeedbackResponse>, ISecuredRequest, ILoggableRequest
     {
-		public string Title { get; set; }
+        public string[] RequiredRoles => new[] { Admin, FeedbacksOperationClaims.Update };
+        public string Title { get; set; }
 		public string Description { get; set; }
 		public int Rating { get; set; }
 		public int UserId { get; set; }

@@ -10,8 +10,9 @@ using static Application.Features.Notifications.Constants.NotificationsOperation
 
 namespace Application.Features.Notifications.Commands.Delete
 {
-    public class DeleteNotificationCommand : IRequest<DeleteNotificationResponse>
+    public class DeleteNotificationCommand : IRequest<DeleteNotificationResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, NotificationsOperationClaims.Delete };
         public int Id { get; set; }
 
         public class DeleteNotificationCommandHandler : IRequestHandler<DeleteNotificationCommand, DeleteNotificationResponse>

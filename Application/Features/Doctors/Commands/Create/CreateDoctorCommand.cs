@@ -10,13 +10,12 @@ namespace Application.Features.Doctors.Commands.Create
 {
     public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, Write, Add };
         public string SpecialistLevel { get; set; }
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }
         public int UserId { get; set; }
         public int DepartmentId { get; set; }
-
-        public string[] RequiredRoles => new[] { Admin, Write, Add };
 
         public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
         {

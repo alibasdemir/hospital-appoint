@@ -9,17 +9,16 @@ using Domain.Entities;
 using MediatR;
 using static Application.Features.DoctorAvailabilities.Constants.DoctorAvailabilityOperationClaims;
 using Application.Features.Doctors.Constants;
-using Application.Features.DoctorAvailabilities.Commands.Create;
 
 namespace Application.Features.DoctorAvailabilities.Commands.Update
 {
-	public class UpdateDoctorAvailabilityCommand : IRequest<UpdateDoctorAvailabilityResponse>
+	public class UpdateDoctorAvailabilityCommand : IRequest<UpdateDoctorAvailabilityResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => [Admin, DoctorAvailabilityOperationClaims.Update];
         public int Id { get; set; }
         public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public int DoctorId { get; set; }
-
 
         public class UpdateDoctorAvailabilityCommandHandler : IRequestHandler<UpdateDoctorAvailabilityCommand, UpdateDoctorAvailabilityResponse>
 		{

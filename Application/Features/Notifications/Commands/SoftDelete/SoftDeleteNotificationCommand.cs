@@ -10,10 +10,10 @@ using static Application.Features.Notifications.Constants.NotificationsOperation
 
 namespace Application.Features.Notifications.Commands.SoftDelete
 {
-    public class SoftDeleteNotificationCommand : IRequest<SoftDeleteNotificationResponse>
+    public class SoftDeleteNotificationCommand : IRequest<SoftDeleteNotificationResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, NotificationsOperationClaims.Delete };
         public int Id { get; set; }
-
 
         public class SoftDeleteNotificationCommandHandler : IRequestHandler<SoftDeleteNotificationCommand, SoftDeleteNotificationResponse>
         {

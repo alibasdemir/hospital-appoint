@@ -1,15 +1,18 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Paging;
 using Core.Requests;
 using Core.Responses;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Notifications.Constants.NotificationsOperationClaims;
 
 namespace Application.Features.Notifications.Queries.GetList
 {
-    public class GetListNotificationQuery : IRequest<GetListResponse<GetListNotificationResponse>>
+    public class GetListNotificationQuery : IRequest<GetListResponse<GetListNotificationResponse>>, ISecuredRequest
     {
+        public string[] RequiredRoles => new[] { Admin, Read };
         public PageRequest PageRequest { get; set; }
 
         public class GetListNotificationQueryHandler : IRequestHandler<GetListNotificationQuery, GetListResponse<GetListNotificationResponse>>

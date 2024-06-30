@@ -1,14 +1,18 @@
 ﻿using Application.Features.Doctors.Constants;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
 
 namespace Application.Features.Doctors.Commands.Delete
 {
-    public class DeleteDoctorCommand : IRequest<DeleteDoctorResponse>
+    public class DeleteDoctorCommand : IRequest<DeleteDoctorResponse>, ISecuredRequest, ILoggableRequest
     {
+        public string[] RequiredRoles => new[] { Admin, DoctorsOperationClaims.Delete };
         public int Id { get; set; }
 
         public class DeleteDoctorCommandHandler : IRequestHandler<DeleteDoctorCommand, DeleteDoctorResponse>

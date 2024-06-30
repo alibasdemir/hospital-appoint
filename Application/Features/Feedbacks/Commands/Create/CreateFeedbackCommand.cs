@@ -5,12 +5,16 @@ using Domain.Entities;
 using MediatR;
 using Application.Features.Users.Constants;
 using Core.CrossCuttingConcerns.Exceptions.Types;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
+using static Application.Features.Feedbacks.Constants.FeedbacksOperationClaims;
 
 namespace Application.Features.Feedbacks.Commands.Create
 {
-    public class CreateFeedbackCommand : IRequest<CreateFeedbackResponse>
+    public class CreateFeedbackCommand : IRequest<CreateFeedbackResponse>, ISecuredRequest, ILoggableRequest
     {
-		public string Title { get; set; }
+        public string[] RequiredRoles => new[] { Admin, Write, Add };
+        public string Title { get; set; }
 		public string Description { get; set; }
 		public int Rating { get; set; }
         public int UserId { get; set; }

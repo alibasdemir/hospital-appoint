@@ -9,10 +9,9 @@ using MediatR;
 
 namespace Application.Features.Users.Queries.GetList
 {
-    public class GetListUserQuery : IRequest<GetListResponse<GetListUserResponse>>, ISecuredRequest
+    public class GetListUserQuery : IRequest<GetListResponse<GetListUserResponse>>
     {
         public PageRequest PageRequest { get; set; }
-        public string[] RequiredRoles => ["User.GetList"];
 
         public class GetListQueryHandler : IRequestHandler<GetListUserQuery, GetListResponse<GetListUserResponse>>
         {

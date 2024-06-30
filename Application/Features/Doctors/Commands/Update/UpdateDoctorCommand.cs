@@ -12,14 +12,13 @@ namespace Application.Features.Doctors.Commands.Update
 {
 	public class UpdateDoctorCommand : IRequest<UpdateDoctorResponse>, ISecuredRequest, ILoggableRequest
     {
-		public int Id { get; set; }
+        public string[] RequiredRoles => new[] { Admin, DoctorsOperationClaims.Update };
+        public int Id { get; set; }
 		public string SpecialistLevel { get; set; }
 		public int YearsOfExperience { get; set; }
 		public string Biography { get; set; }
 		public int UserId { get; set; }
 		public int DepartmentId { get; set; }
-
-        public string[] RequiredRoles => new[] { Admin, Write, DoctorsOperationClaims.Update };
 
         public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand, UpdateDoctorResponse>
 		{

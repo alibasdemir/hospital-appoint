@@ -6,16 +6,19 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-
 using Application.Features.Patients.Constants;
 using Application.Features.DoctorAvailabilities.Constants;
 using Application.Features.Appointments.Constants;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Logging;
+using static Application.Features.Appointments.Constants.AppointmentsOperationClaims;
 
 namespace Application.Features.Appointments.Commands.Create
 {
-	public class CreateAppointmentCommand : IRequest<CreateAppointmentResponse>
-	{
-		public int PatientId { get; set; }
+	public class CreateAppointmentCommand : IRequest<CreateAppointmentResponse>, ISecuredRequest, ILoggableRequest
+    {
+        public string[] RequiredRoles => [Admin, Write, Add];
+        public int PatientId { get; set; }
 		public int DoctorAvailabilityId { get; set; }
 		public AppointmentStatus Status { get; set; }
 		public DateTime StartTime { get; set; }

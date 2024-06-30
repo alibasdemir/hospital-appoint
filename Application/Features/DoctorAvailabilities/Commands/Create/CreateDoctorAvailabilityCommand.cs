@@ -12,9 +12,10 @@ using Application.Features.Doctors.Constants;
 
 namespace Application.Features.DoctorAvailabilities.Commands.Create
 {
-	public class CreateDoctorAvailabilityCommand : IRequest<CreateDoctorAvailabilityResponse>
+	public class CreateDoctorAvailabilityCommand : IRequest<CreateDoctorAvailabilityResponse>, ISecuredRequest, ILoggableRequest
 	{
-		public DateTime StartTime { get; set; }
+		public string[] RequiredRoles => [Admin, Write, Add];
+        public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public int DoctorId { get; set; }
 

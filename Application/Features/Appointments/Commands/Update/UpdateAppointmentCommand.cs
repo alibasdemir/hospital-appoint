@@ -1,16 +1,19 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Appointments.Constants;
+using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using static Application.Features.Appointments.Constants.AppointmentsOperationClaims;
 
 namespace Application.Features.Appointments.Commands.Update
 {
-    public class UpdateAppointmentCommand : IRequest<UpdateAppointmentResponse>
+    public class UpdateAppointmentCommand : IRequest<UpdateAppointmentResponse>, ISecuredRequest, ILoggableRequest
     {
-		public int PatientId { get; set; }
+        public string[] RequiredRoles => [Admin, AppointmentsOperationClaims.Update];
+        public int PatientId { get; set; }
 		public int DoctorAvailabilityId { get; set; }
 		public AppointmentStatus Status { get; set; }
 		public DateTime StartTime { get; set; }

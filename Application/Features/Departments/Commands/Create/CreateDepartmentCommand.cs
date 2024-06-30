@@ -10,9 +10,10 @@ using static Application.Features.Departments.Constants.DepartmentsOperationClai
 
 namespace Application.Features.Departments.Commands.Create
 {
-	public class CreateDepartmentCommand : IRequest<CreateDepartmentResponse>
+	public class CreateDepartmentCommand : IRequest<CreateDepartmentResponse>, ISecuredRequest, ILoggableRequest
 	{
-		public string Name { get; set; }
+		public string[] RequiredRoles => [Admin, Write, Add];
+        public string Name { get; set; }
 		public string Description { get; set; }
 
 		public class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, CreateDepartmentResponse>

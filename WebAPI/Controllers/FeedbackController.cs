@@ -25,7 +25,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             DeleteFeedbackCommand command = new() { Id = id };
-            await _mediator.Send(command);
             DeleteFeedbackResponse response = await _mediator.Send(command);
             return Ok(response);
         }

@@ -15,6 +15,7 @@ namespace Application.Features.Feedbacks.Commands.Update
     public class UpdateFeedbackCommand : IRequest<UpdateFeedbackResponse>, ISecuredRequest, ILoggableRequest
     {
         public string[] RequiredRoles => new[] { Admin, FeedbacksOperationClaims.Update };
+		public int Id { get; set; }
         public string Title { get; set; }
 		public string Description { get; set; }
 		public int Rating { get; set; }
@@ -42,7 +43,7 @@ namespace Application.Features.Feedbacks.Commands.Update
 				}
 
 				Feedback feedback = _mapper.Map<Feedback>(request);
-				await _feedbackRepository.AddAsync(feedback);
+				await _feedbackRepository.UpdateAsync(feedback);
 
 				UpdateFeedbackResponse response = _mapper.Map<UpdateFeedbackResponse>(feedback);
 				return response;

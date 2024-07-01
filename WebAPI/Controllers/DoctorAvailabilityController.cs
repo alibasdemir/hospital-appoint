@@ -4,6 +4,7 @@ using Application.Features.DoctorAvailabilities.Commands.SoftDelete;
 using Application.Features.DoctorAvailabilities.Commands.Update;
 using Application.Features.DoctorAvailabilities.Queries.GetById;
 using Application.Features.DoctorAvailabilities.Queries.GetList;
+using Core.Requests;
 using Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,8 +46,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetListDoctorAvailabilityQuery query)
+        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
+            GetListDoctorAvailabilityQuery query = new() { PageRequest = pageRequest };
             GetListResponse<GetListDoctorAvailabilityResponse> response = await _mediator.Send(query);
             return Ok(response);
         }

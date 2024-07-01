@@ -12,5 +12,9 @@
         public string City { get; set; }
         public string Address { get; set; }
         public string PhotoUrl { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime DeletedDate { get; set; }
     }
 }

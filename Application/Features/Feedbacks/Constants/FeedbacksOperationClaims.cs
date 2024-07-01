@@ -2,7 +2,7 @@
 {
     public static class FeedbacksOperationClaims
     {
-        public const string Admin = "feedbacks.admin";
+        public const string Admin = "admin";
 
         public const string Read = "feedbacks.read";
         public const string Write = "feedbacks.write";

@@ -13,6 +13,7 @@ namespace Application.Features.Appointments.Commands.Update
     public class UpdateAppointmentCommand : IRequest<UpdateAppointmentResponse>, ISecuredRequest, ILoggableRequest
     {
         public string[] RequiredRoles => [Admin, AppointmentsOperationClaims.Update];
+        public int Id { get; set; }
         public int PatientId { get; set; }
 		public int DoctorAvailabilityId { get; set; }
 		public AppointmentStatus Status { get; set; }

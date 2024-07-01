@@ -16,5 +16,6 @@ namespace Application.Features.Patients.Commands.Update
 		public string EmergencyContactPhoneNumber { get; set; }
 		public string EmergencyContactRelationship { get; set; }
 		public int UserId { get; set; }
-	}
+        public DateTime UpdatedDate { get; set; }
+    }
 }

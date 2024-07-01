@@ -30,7 +30,7 @@ namespace Application.Features.SupportRequests.Commands.SoftDelete
             {
                 SupportRequest? supportRequest = await _supportRequestRepository.GetAsync(i => i.Id == request.Id);
 
-                if (supportRequest == null)
+                if (supportRequest == null || supportRequest.IsDeleted == true)
                 {
                     throw new NotFoundException(SupportRequestsMessages.SupportRequestNotExists);
                 }

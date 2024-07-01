@@ -15,5 +15,6 @@ namespace Application.Features.Patients.Commands.Create
         public string EmergencyContactPhoneNumber { get; set; }
         public string EmergencyContactRelationship { get; set; }
         public int UserId { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

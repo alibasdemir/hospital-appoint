@@ -4,6 +4,7 @@ using Application.Features.OperationClaims.Commands.SoftDelete;
 using Application.Features.OperationClaims.Commands.Update;
 using Application.Features.OperationClaims.Queries.GetById;
 using Application.Features.OperationClaims.Queries.GetList;
+using Core.Requests;
 using Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,8 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetListOperationClaimQuery query)
+        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
+            GetListOperationClaimQuery query = new() { PageRequest = pageRequest };
             GetListResponse<GetListOperationClaimResponse> response = await _mediator.Send(query);
             return Ok(response);
         }

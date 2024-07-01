@@ -31,7 +31,7 @@ namespace Application.Features.Patients.Commands.SoftDelete
             {
                 Patient? patient = await _patientRepository.GetAsync(i => i.Id == request.Id);
 
-                if (patient == null)
+                if (patient == null || patient.IsDeleted == true)
                 {
                     throw new NotFoundException(PatientsMessages.PatientNotExists);
                 }

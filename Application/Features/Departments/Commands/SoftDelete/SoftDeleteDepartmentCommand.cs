@@ -30,7 +30,7 @@ namespace Application.Features.Departments.Commands.SoftDelete
             {
                 Department? department = await _departmentRepository.GetAsync(i => i.Id == request.Id);
 
-                if (department == null)
+                if (department == null || department.IsDeleted == true)
                 {
                     throw new NotFoundException(DepartmentsMessages.DepartmentNotExists);
                 }

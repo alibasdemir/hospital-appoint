@@ -16,6 +16,7 @@ namespace Application.Features.Patients.Commands.Update
 	public class UpdatePatientCommand : IRequest<UpdatePatientResponse>, ISecuredRequest, ILoggableRequest
     {
         public string[] RequiredRoles => new[] { Admin, PatientReportsOperationClaims.Update };
+		public int Id { get; set; }
         public int UserId { get; set; }
 		public BloodType BloodType { get; set; }
 		public InsuranceType InsuranceType { get; set; }

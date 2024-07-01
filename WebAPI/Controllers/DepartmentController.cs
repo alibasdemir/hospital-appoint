@@ -4,6 +4,7 @@ using Application.Features.Departments.Commands.SoftDelete;
 using Application.Features.Departments.Commands.Update;
 using Application.Features.Departments.Queries.GetById;
 using Application.Features.Departments.Queries.GetList;
+using Core.Requests;
 using Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,8 +46,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetListDepartmentQuery query)
+        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
+            GetListDepartmentQuery query = new() { PageRequest = pageRequest };
             GetListResponse<GetListDepartmentResponse> response = await _mediator.Send(query);
             return Ok(response);
         }

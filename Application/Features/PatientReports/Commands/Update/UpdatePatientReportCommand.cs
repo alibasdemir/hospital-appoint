@@ -1,8 +1,6 @@
 ﻿using Application.Features.Appointments.Constants;
-using Application.Features.PatientReports.Commands.Update;
 using Application.Features.PatientReports.Constants;
 using Application.Repositories;
-using Application.Services.DoctorService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
@@ -16,37 +14,35 @@ namespace Application.Features.PatientReports.Commands.Update
 	public class UpdatePatientReportCommand : IRequest<UpdatePatientReportResponse>, ISecuredRequest, ILoggableRequest
     {
         public string[] RequiredRoles => new[] { Admin, PatientReportsOperationClaims.Update };
-        public DateTime AvailableDate { get; set; }
-		public DateTime StartTime { get; set; }
-		public DateTime EndTime { get; set; }
-		public int DoctorId { get; set; }
+		public int Id { get; set; }
+		public int AppointmentId { get; set; }
+        public string Title { get; set; }
+        public string Details { get; set; }
 
 		public class UpdatePatientReportCommandHandler : IRequestHandler<UpdatePatientReportCommand, UpdatePatientReportResponse>
 		{
 			private readonly IPatientReportRepository _patientReportRepository;
 			private readonly IMapper _mapper;
-			private readonly IDoctorService _doctorService;
 
-			public UpdatePatientReportCommandHandler(IPatientReportRepository patientReportRepository, IMapper mapper, IDoctorService doctorService)
+			public UpdatePatientReportCommandHandler(IPatientReportRepository patientReportRepository, IMapper mapper)
 			{
 				_patientReportRepository = patientReportRepository;
 				_mapper = mapper;
-				_doctorService = doctorService;
 			}
 
 			public async Task<UpdatePatientReportResponse> Handle(UpdatePatientReportCommand request, CancellationToken cancellationToken)
 			{
-				bool isDoctorExist = await _doctorService.DoctorValidationById(request.DoctorId);
+				PatientReport? patientReport = await _patientReportRepository.GetAsync(i => i.Id == request.Id);
 
-				if (isDoctorExist)
+				if (patientReport == null|| patientReport.IsDeleted == true)
 				{
-					PatientReport patientReport = _mapper.Map<PatientReport>(request);
-					await _patientReportRepository.UpdateAsync(patientReport);
-
-					UpdatePatientReportResponse response = _mapper.Map<UpdatePatientReportResponse>(patientReport);
-					return response;
+					throw new NotFoundException(PatientReportsMessages.PatientReportNotExists);
 				}
-				throw new NotFoundException(AppointmentsMessages.AppointmentNotExists);
+
+				await _patientReportRepository.UpdateAsync(patientReport);
+
+				UpdatePatientReportResponse response = _mapper.Map<UpdatePatientReportResponse>(patientReport);
+				return response;
 			}
 		}
 	}

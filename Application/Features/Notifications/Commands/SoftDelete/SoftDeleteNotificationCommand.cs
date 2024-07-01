@@ -30,7 +30,7 @@ namespace Application.Features.Notifications.Commands.SoftDelete
             {
                 Notification? notification = await _notificationRepository.GetAsync(i => i.Id == request.Id);
 
-                if (notification == null)
+                if (notification == null || notification.IsDeleted == true)
                 {
                     throw new NotFoundException(NotificationsMessages.NotificationNotExists);
                 }

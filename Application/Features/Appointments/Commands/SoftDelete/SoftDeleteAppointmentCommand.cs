@@ -30,7 +30,7 @@ namespace Application.Features.Appointments.Commands.SoftDelete
             {
                 Appointment? appointment = await _appointmentRepository.GetAsync(i => i.Id == request.Id);
 
-                if (appointment == null)
+                if (appointment == null || appointment.IsDeleted == true)
                 {
                     throw new NotFoundException(AppointmentsMessages.AppointmentNotExists);
                 }

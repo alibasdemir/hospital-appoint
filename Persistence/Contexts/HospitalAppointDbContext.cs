@@ -56,6 +56,7 @@ namespace Persistence.Contexts
             modelBuilder.ApplyConfiguration(new PatientReportConfiguration());
             modelBuilder.ApplyConfiguration(new FeedbackConfiguration());
             modelBuilder.ApplyConfiguration(new SupportRequestConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -30,7 +30,7 @@ namespace Application.Features.DoctorAvailabilities.Commands.SoftDelete
             {
                 DoctorAvailability? doctorAvailability = await _doctorAvailabilityRepository.GetAsync(i => i.Id == request.Id);
 
-                if (doctorAvailability == null)
+                if (doctorAvailability == null || doctorAvailability.IsDeleted == true)
                 {
                     throw new NotFoundException(DoctorAvailabilityMessages.DoctorAvailabilityNotExists);
                 }

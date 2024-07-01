@@ -30,7 +30,7 @@ namespace Application.Features.PatientReports.Commands.SoftDelete
             {
                 PatientReport? patientReport = await _patientReportRepository.GetAsync(i => i.Id == request.Id);
 
-                if (patientReport == null)
+                if (patientReport == null || patientReport.IsDeleted == true)
                 {
                     throw new NotFoundException(PatientReportsMessages.PatientReportNotExists);
                 }

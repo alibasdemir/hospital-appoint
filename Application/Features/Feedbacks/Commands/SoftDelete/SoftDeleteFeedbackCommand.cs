@@ -30,7 +30,7 @@ namespace Application.Features.Feedbacks.Commands.SoftDelete
             {
                 Feedback? feedback = await _feedbackRepository.GetAsync(i => i.Id == request.Id);
 
-                if (feedback == null)
+                if (feedback == null || feedback.IsDeleted == true)
                 {
                     throw new NotFoundException(FeedbacksMessages.FeedbackNotExists);
                 }

@@ -25,7 +25,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             DeleteNotificationCommand command = new() { Id = id };
-            await _mediator.Send(command);
             DeleteNotificationResponse response = await _mediator.Send(command);
             return Ok(response);
         }

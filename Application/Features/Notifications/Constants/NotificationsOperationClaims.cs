@@ -2,7 +2,7 @@
 {
     public static class NotificationsOperationClaims
     {
-        public const string Admin = "notifications.admin";
+        public const string Admin = "admin";
 
         public const string Read = "notifications.read";
         public const string Write = "notifications.write";

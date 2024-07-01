@@ -4,6 +4,7 @@ using Application.Features.Users.Commands.SoftDelete;
 using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
+using Core.Requests;
 using Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,8 +45,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetListUserQuery query)
+        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
+            GetListUserQuery query = new() { PageRequest = pageRequest };
             GetListResponse<GetListUserResponse> response = await _mediator.Send(query);
             return Ok(response);
         }

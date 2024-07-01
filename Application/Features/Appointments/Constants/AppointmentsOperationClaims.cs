@@ -2,7 +2,7 @@
 {
     public static class AppointmentsOperationClaims
     {
-        public const string Admin = "appointments.admin";
+        public const string Admin = "admin";
 
         public const string Read = "appointments.read";
         public const string Write = "appointments.write";

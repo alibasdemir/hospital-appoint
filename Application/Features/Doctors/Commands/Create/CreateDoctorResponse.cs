@@ -8,5 +8,6 @@
         public string Biography { get; set; }
         public int UserId { get; set; }
         public int DepartmentId { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

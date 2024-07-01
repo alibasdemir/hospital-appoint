@@ -13,7 +13,7 @@ namespace Persistence.EntityConfigurations
                 new OperationClaim
                 {
                     Id = 1,
-                    Name = "users.admin"
+                    Name = "admin"
                 },
                 new OperationClaim
                 {
@@ -42,11 +42,6 @@ namespace Persistence.EntityConfigurations
                 },
                 new OperationClaim
                 {
-                    Id = 7,
-                    Name = "doctors.admin"
-                },
-                new OperationClaim
-                {
                     Id = 8,
                     Name = "doctors.read"
                 },
@@ -69,11 +64,6 @@ namespace Persistence.EntityConfigurations
                 {
                     Id = 12,
                     Name = "doctors.delete"
-                },
-                new OperationClaim
-                {
-                    Id = 13,
-                    Name = "patients.admin"
                 },
                 new OperationClaim
                 {
@@ -102,11 +92,6 @@ namespace Persistence.EntityConfigurations
                 },
                 new OperationClaim
                 {
-                    Id = 19,
-                    Name = "doctorAvailabilities.admin"
-                },
-                new OperationClaim
-                {
                     Id = 20,
                     Name = "doctorAvailabilities.read"
                 },
@@ -129,11 +114,6 @@ namespace Persistence.EntityConfigurations
                 {
                     Id = 24,
                     Name = "doctorAvailabilities.delete"
-                },
-                new OperationClaim
-                {
-                    Id = 25,
-                    Name = "patientReports.admin"
                 },
                 new OperationClaim
                 {
@@ -162,11 +142,6 @@ namespace Persistence.EntityConfigurations
                 },
                 new OperationClaim
                 {
-                    Id = 31,
-                    Name = "appointments.admin"
-                },
-                new OperationClaim
-                {
                     Id = 32,
                     Name = "appointments.read"
                 },
@@ -189,11 +164,6 @@ namespace Persistence.EntityConfigurations
                 {
                     Id = 36,
                     Name = "appointments.delete"
-                },
-                new OperationClaim
-                {
-                    Id = 37,
-                    Name = "departments.admin"
                 },
                 new OperationClaim
                 {
@@ -222,11 +192,6 @@ namespace Persistence.EntityConfigurations
                 },
                 new OperationClaim
                 {
-                    Id = 43,
-                    Name = "operationClaims.admin"
-                },
-                new OperationClaim
-                {
                     Id = 44,
                     Name = "operationClaims.read"
                 },
@@ -249,11 +214,6 @@ namespace Persistence.EntityConfigurations
                 {
                     Id = 48,
                     Name = "operationClaims.delete"
-                },
-                new OperationClaim
-                {
-                    Id = 49,
-                    Name = "userOperationClaims.admin"
                 },
                 new OperationClaim
                 {
@@ -282,11 +242,6 @@ namespace Persistence.EntityConfigurations
                 },
                 new OperationClaim
                 {
-                    Id = 55,
-                    Name = "feedbacks.admin"
-                },
-                new OperationClaim
-                {
                     Id = 56,
                     Name = "feedbacks.read"
                 },
@@ -312,11 +267,6 @@ namespace Persistence.EntityConfigurations
                 },
                 new OperationClaim
                 {
-                    Id = 61,
-                    Name = "notifications.admin"
-                },
-                new OperationClaim
-                {
                     Id = 62,
                     Name = "notifications.read"
                 },
@@ -339,11 +289,6 @@ namespace Persistence.EntityConfigurations
                 {
                     Id = 66,
                     Name = "notifications.delete"
-                },
-                new OperationClaim
-                {
-                    Id = 67,
-                    Name = "supportRequests.admin"
                 },
                 new OperationClaim
                 {

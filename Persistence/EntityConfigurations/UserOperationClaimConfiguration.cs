@@ -14,73 +14,7 @@ namespace Persistence.EntityConfigurations
                 {
                     Id = 1,
                     BaseUserId = 1,
-                    OperationClaimId = 1, // users.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 2,
-                    BaseUserId = 1,
-                    OperationClaimId = 7, // doctors.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 3,
-                    BaseUserId = 1,
-                    OperationClaimId = 13, // patients.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 4,
-                    BaseUserId = 1,
-                    OperationClaimId = 19, // doctorAvailabilities.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 5,
-                    BaseUserId = 1,
-                    OperationClaimId = 25, // patientReports.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 6,
-                    BaseUserId = 1,
-                    OperationClaimId = 31, // appointments.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 7,
-                    BaseUserId = 1,
-                    OperationClaimId = 37, // departments.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 8,
-                    BaseUserId = 1,
-                    OperationClaimId = 43, // operationClaims.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 9,
-                    BaseUserId = 1,
-                    OperationClaimId = 49, // userOperationClaims.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 10,
-                    BaseUserId = 1,
-                    OperationClaimId = 55, // feedbacks.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 11,
-                    BaseUserId = 1,
-                    OperationClaimId = 61, // notifications.admin
-                },
-                new UserOperationClaim
-                {
-                    Id = 12,
-                    BaseUserId = 1,
-                    OperationClaimId = 67, // supportRequests.admin
+                    OperationClaimId = 1, // admin
                 },
                 new UserOperationClaim
                 {

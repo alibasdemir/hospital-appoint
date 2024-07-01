@@ -7,8 +7,8 @@ namespace Domain.Entities
 		public int? DoctorId { get; set; }
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
-		public Doctor? Doctor { get; set; }
-		public ICollection<Appointment> Appointments { get; set; }
+		public virtual Doctor? Doctor { get; set; }
+		public virtual ICollection<Appointment> Appointments { get; set; }
 
         public DoctorAvailability()
         {

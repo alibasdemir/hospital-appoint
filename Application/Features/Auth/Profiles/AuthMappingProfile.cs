@@ -10,6 +10,7 @@ namespace Application.Features.Auth.Profiles
         {
             CreateMap<User, RegisterCommand>().ReverseMap();
             CreateMap<Patient, RegisterCommand>().ReverseMap();
+            CreateMap<RegisterCommand, RegisterResponse>().ReverseMap();
         }
     }
 }

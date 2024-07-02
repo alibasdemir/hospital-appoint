@@ -7,14 +7,14 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.Register
 {
-    public class RegisterCommand : IRequest
+    public class RegisterCommand : IRequest<RegisterResponse>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
+        public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
         {
             private readonly IMapper _mapper;
             private readonly IUserRepository _userRepository;
@@ -27,7 +27,7 @@ namespace Application.Features.Auth.Commands.Register
                 _petientService = petientService;
             }
 
-            public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
+            public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
                 User user = _mapper.Map<User>(request);
 
@@ -44,6 +44,9 @@ namespace Application.Features.Auth.Commands.Register
                 Patient patient = _mapper.Map<Patient>(request);
                 patient.UserId = user.Id;
                 await _petientService.AddPatientAsync(patient);
+
+                RegisterResponse response = _mapper.Map<RegisterResponse>(request);
+                return response;
             }
         }
     }

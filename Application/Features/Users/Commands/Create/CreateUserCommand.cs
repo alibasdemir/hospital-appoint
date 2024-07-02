@@ -3,16 +3,19 @@ using Application.Repositories;
 using Application.Services.DoctorService;
 using Application.Services.PatientService;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Hashing;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Users.Constants.UsersOperationClaims;
 
 namespace Application.Features.Users.Commands.Create
 {
-    public class CreateUserCommand : IRequest<CreateUserResponse>, ILoggableRequest
+    public class CreateUserCommand : IRequest<CreateUserResponse>, ILoggableRequest, ISecuredRequest
     {
+        public string[] RequiredRoles => new[] { Admin, Write, Add };
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

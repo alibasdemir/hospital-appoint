@@ -32,7 +32,7 @@ namespace Application.Features.Users.Commands.Delete
                 
                 User? user = await _userRepository.GetAsync(i => i.Id == request.Id);
 
-                if (user == null || user.IsDeleted == true)
+                if (user == null)
                 {
                     throw new NotFoundException(UsersMessages.UserNotExists);
                 }

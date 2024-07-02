@@ -9,7 +9,7 @@ namespace Application.Features.Notifications.Commands.Update
 		{
 			RuleFor(i => i.Title).NotEmpty().WithMessage("Title can not be empty.");
 			RuleFor(i => i.Message).NotEmpty().WithMessage("Description can not be empty.");
-			RuleFor(i => i.Type).NotEmpty().WithMessage("Type should be selected.");
+			RuleFor(i => i.NotificationType).NotEmpty().WithMessage("Type should be selected.");
 		}
     }
 }

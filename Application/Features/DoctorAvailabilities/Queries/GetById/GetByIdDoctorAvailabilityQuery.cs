@@ -26,7 +26,7 @@ namespace Application.Features.DoctorAvailabilities.Queries.GetById
             {
                 DoctorAvailability? doctorAvailability = await _doctorAvailabilityRepository.GetAsync(i => i.Id == request.Id);
 
-                if (doctorAvailability == null)
+                if (doctorAvailability == null || doctorAvailability.IsDeleted == true)
                 {
                     throw new NotFoundException(DoctorAvailabilityMessages.DoctorAvailabilityNotExists);
                 }

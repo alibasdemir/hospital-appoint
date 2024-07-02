@@ -35,6 +35,7 @@ namespace Application.Features.UserOperationClaims.Commands.SoftDelete
                     throw new NotFoundException(UserOperationClaimsMessages.UserOperationClaimNotExists);
                 }
 
+                userOperationClaim.BaseUserId = null;
                 await _userOperationClaimRepository.SoftDeleteAsync(userOperationClaim);
 
                 SoftDeleteUserOperationClaimResponse response = _mapper.Map<SoftDeleteUserOperationClaimResponse>(userOperationClaim);

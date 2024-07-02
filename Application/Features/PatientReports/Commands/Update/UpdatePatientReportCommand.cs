@@ -39,6 +39,8 @@ namespace Application.Features.PatientReports.Commands.Update
 					throw new NotFoundException(PatientReportsMessages.PatientReportNotExists);
 				}
 
+				_mapper.Map(request, patientReport);
+
 				await _patientReportRepository.UpdateAsync(patientReport);
 
 				UpdatePatientReportResponse response = _mapper.Map<UpdatePatientReportResponse>(patientReport);

@@ -48,6 +48,8 @@ namespace Application.Features.Patients.Commands.Update
 					throw new NotFoundException(PatientsMessages.PatientNotExists);
 				}
 
+				_mapper.Map(request, patient);
+
 				await _patientRepository.UpdateAsync(patient);
 
 				UpdatePatientResponse response = _mapper.Map<UpdatePatientResponse>(patient);

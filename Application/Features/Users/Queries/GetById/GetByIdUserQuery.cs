@@ -1,5 +1,7 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Users.Constants;
+using Application.Repositories;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 
@@ -23,9 +25,9 @@ namespace Application.Features.Users.Queries.GetById
             public async Task<GetByIdUserResponse> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
             {
                 User? user = await _userRepository.GetAsync(i  => i.Id == request.Id);
-                if (user == null)
+                if (user == null || user.IsDeleted == true)
                 {
-                    throw new ArgumentException("No such user found");
+                    throw new NotFoundException(UsersMessages.UserNotExists);
                 }
 
                 GetByIdUserResponse response = _mapper.Map<GetByIdUserResponse>(user);

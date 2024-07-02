@@ -1,4 +1,5 @@
 ﻿using Application.Features.PatientReports.Constants;
+using Application.Features.Patients.Constants;
 using Application.Features.Users.Constants;
 using Application.Repositories;
 using Application.Services.UserService;
@@ -32,26 +33,22 @@ namespace Application.Features.Patients.Commands.Update
 		{
 			private readonly IPatientRepository _patientRepository;
 			private readonly IMapper _mapper;
-			private readonly IUserService _userService;
-
-			public UpdatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, IUserService userService)
+			public UpdatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper)
 			{
 				_patientRepository = patientRepository;
 				_mapper = mapper;
-				_userService = userService;
 			}
 
 			public async Task<UpdatePatientResponse> Handle(UpdatePatientCommand request, CancellationToken cancellationToken)
 			{
-				bool isUserExist = await _userService.UserValidationById(request.UserId);
+				Patient? patient = await _patientRepository.GetAsync(i => i.Id == request.Id);
 
-				if (!isUserExist)
+				if (patient == null || patient.IsDeleted) 
 				{
-					throw new NotFoundException(UsersMessages.UserNotExists);
+					throw new NotFoundException(PatientsMessages.PatientNotExists);
 				}
 
-				Patient patient = _mapper.Map<Patient>(request);
-				await _patientRepository.AddAsync(patient);
+				await _patientRepository.UpdateAsync(patient);
 
 				UpdatePatientResponse response = _mapper.Map<UpdatePatientResponse>(patient);
 				return response;

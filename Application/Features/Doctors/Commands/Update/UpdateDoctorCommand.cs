@@ -3,6 +3,7 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
@@ -33,7 +34,14 @@ namespace Application.Features.Doctors.Commands.Update
 
 			public async Task<UpdateDoctorResponse> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
 			{
-				Doctor? doctor = _mapper.Map<Doctor>(request);
+				Doctor? doctor = await _doctorRepository.GetAsync(i => i.Id == request.Id);
+
+				if (doctor == null || doctor.IsDeleted == true) 
+				{
+					throw new NotFoundException(DoctorsMessages.DoctorNotExists);
+                }
+
+				_mapper.Map(request, doctor);
 
                 await _doctorRepository.UpdateAsync(doctor);
 

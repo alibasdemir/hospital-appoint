@@ -12,6 +12,8 @@ namespace Domain.Entities
         public string Address { get; set; }
         public string? PhotoUrl { get; set; }
 		public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual Doctor Doctor { get; set; }
+        public virtual Patient Patient { get; set; }
 
 		public User()
         {

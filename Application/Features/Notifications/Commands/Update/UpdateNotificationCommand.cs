@@ -3,6 +3,7 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -30,7 +31,14 @@ namespace Application.Features.Notifications.Commands.Update
 
             public async Task<UpdateNotificationResponse> Handle(UpdateNotificationCommand request, CancellationToken cancellationToken)
             {
-                Notification notification = _mapper.Map<Notification>(request);
+                Notification? notification = await _notificationRepository.GetAsync(i => i.Id == request.Id);
+
+                if (notification == null || notification.IsDeleted == true)
+                {
+                    throw new NotFoundException(NotificationsMessages.NotificationNotExists);
+                }
+
+                _mapper.Map(request, notification);
 
                 await _notificationRepository.UpdateAsync(notification);
                 UpdateNotificationResponse response = _mapper.Map<UpdateNotificationResponse>(notification);

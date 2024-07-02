@@ -10,5 +10,9 @@ namespace Application.Services.UserService
 	public interface IUserService
 	{
 		Task<bool> UserValidationById(int id);
+
+		Task UpdateUserAsync(User user);
+
+		Task<User> GetUserByIdAsync(int id);
 	}
 }

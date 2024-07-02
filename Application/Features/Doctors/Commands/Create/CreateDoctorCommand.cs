@@ -1,13 +1,19 @@
-﻿using Application.Repositories;
+﻿using Application.Features.PatientReports.Constants;
+using Application.Repositories;
+using Application.Services.UserService;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
 
 namespace Application.Features.Doctors.Commands.Create
 {
-    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ILoggableRequest
+    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ILoggableRequest, ISecuredRequest
     {
+        public string[] RequiredRoles => new[] { Admin, Write, Add };
         public string SpecialistLevel { get; set; }
         public int YearsOfExperience { get; set; }
         public string Biography { get; set; }
@@ -18,18 +24,30 @@ namespace Application.Features.Doctors.Commands.Create
         {
             private readonly IDoctorRepository _doctorRepository;
             private readonly IMapper _mapper;
+            private readonly IUserService _userService;
 
-            public CreateDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper)
+            public CreateDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper, IUserService userService)
             {
                 _doctorRepository = doctorRepository;
                 _mapper = mapper;
+                _userService = userService;
             }
 
             public async Task<CreateDoctorResponse> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
             {
-                Doctor doctor = _mapper.Map<Doctor>(request);
+                User user = await _userService.GetUserByIdAsync(request.UserId);
+                if (user == null)
+                {
+                    throw new NotFoundException("User not found.");
+                }
 
+                user.UserType = "doctor";
+                await _userService.UpdateUserAsync(user);
+
+                Doctor doctor = _mapper.Map<Doctor>(request);
+                doctor.UserId = user.Id;
                 await _doctorRepository.AddAsync(doctor);
+
                 CreateDoctorResponse response = _mapper.Map<CreateDoctorResponse>(doctor);
                 return response;
             }

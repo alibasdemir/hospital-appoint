@@ -25,7 +25,7 @@ namespace Application.Features.Departments.Queries.GetById
             public async Task<GetByIdDepartmentResponse> Handle(GetByIdDepartmentQuery request, CancellationToken cancellationToken)
             {
                 Department? department = await _departmentRepository.GetAsync(i => i.Id == request.Id);
-                if (department == null)
+                if (department == null || department.IsDeleted == true)
                 {
                     throw new NotFoundException(DepartmentsMessages.DepartmentNotExists);
                 }

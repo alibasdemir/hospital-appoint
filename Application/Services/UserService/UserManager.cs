@@ -17,7 +17,7 @@ namespace Application.Services.UserService
 			_userRepository = userRepository;
 		}
 
-		public async Task<bool> UserValidationById(int id)
+        public async Task<bool> UserValidationById(int id)
 		{
 			User? user = await _userRepository.GetAsync(x => x.Id == id);
 
@@ -27,5 +27,16 @@ namespace Application.Services.UserService
 			}
 			return true;
 		}
-	}
+
+        public async Task UpdateUserAsync(User user)
+        {
+            await _userRepository.UpdateAsync(user);
+        }
+
+		public async Task<User> GetUserByIdAsync(int id)
+		{
+			User? user = await _userRepository.GetAsync(i => i.Id == id);
+			return user;
+		}
+    }
 }

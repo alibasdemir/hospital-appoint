@@ -1,6 +1,7 @@
 ﻿using Application.Features.PatientReports.Constants;
 using Application.Features.Patients.Constants;
 using Application.Repositories;
+using Application.Services.UserService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
@@ -20,11 +21,13 @@ namespace Application.Features.Patients.Commands.SoftDelete
         {
             private readonly IPatientRepository _patientRepository;
             private readonly IMapper _mapper;
+            private readonly IUserService _userService;
 
-            public SoftDeletePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper)
+            public SoftDeletePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, IUserService userService)
             {
                 _patientRepository = patientRepository;
                 _mapper = mapper;
+                _userService = userService;
             }
 
             public async Task<SoftDeletePatientResponse> Handle(SoftDeletePatientCommand request, CancellationToken cancellationToken)
@@ -35,8 +38,18 @@ namespace Application.Features.Patients.Commands.SoftDelete
                 {
                     throw new NotFoundException(PatientsMessages.PatientNotExists);
                 }
-                
+
                 await _patientRepository.SoftDeleteAsync(patient);
+
+                if (patient.UserId.HasValue)
+                {
+                    User? user = await _userService.GetUserByIdAsync(patient.UserId.Value);
+                    if (user != null)
+                    {
+                        user.IsDeleted = true;
+                        await _userService.UpdateUserAsync(user);
+                    }
+                }
 
                 SoftDeletePatientResponse response = _mapper.Map<SoftDeletePatientResponse>(patient);
                 return response;

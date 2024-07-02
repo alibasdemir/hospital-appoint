@@ -3,6 +3,7 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.SupportRequests.Constants.SupportRequestsOperationClaims;
@@ -33,8 +34,15 @@ namespace Application.Features.SupportRequests.Commands.Update
 
             public async Task<UpdateSupportRequestResponse> Handle(UpdateSupportRequestCommand request, CancellationToken cancellationToken)
             {
-                SupportRequest supportRequest = _mapper.Map<SupportRequest>(request);
+                SupportRequest? supportRequest = await _supportRequestRepository.GetAsync(i => i.Id == request.Id);
                 
+                if (supportRequest == null || supportRequest.IsDeleted == true)
+                {
+                    throw new NotFoundException(SupportRequestsMessages.SupportRequestNotExists);
+                }
+
+                _mapper.Map(request, supportRequest);
+
                 await _supportRequestRepository.UpdateAsync(supportRequest);
                 UpdateSupportRequestResponse response = _mapper.Map<UpdateSupportRequestResponse>(supportRequest);
                 return response;

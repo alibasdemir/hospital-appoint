@@ -35,14 +35,15 @@ namespace Application.Features.Feedbacks.Commands.Update
 
 			public async Task<UpdateFeedbackResponse> Handle(UpdateFeedbackCommand request, CancellationToken cancellationToken)
             {
-				bool isUserExist = await _userService.UserValidationById(request.UserId);
+				Feedback? feedback = await _feedbackRepository.GetAsync(i => i.Id == request.Id);
 
-				if (!isUserExist)
+				if (feedback == null || feedback.IsDeleted == true)
 				{
-					throw new NotFoundException(UsersMessages.UserNotExists);
+					throw new NotFoundException(FeedbacksMessages.FeedbackNotExists);
 				}
 
-				Feedback feedback = _mapper.Map<Feedback>(request);
+				_mapper.Map(request, feedback);
+
 				await _feedbackRepository.UpdateAsync(feedback);
 
 				UpdateFeedbackResponse response = _mapper.Map<UpdateFeedbackResponse>(feedback);

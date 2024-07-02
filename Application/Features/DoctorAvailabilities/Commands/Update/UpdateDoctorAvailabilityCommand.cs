@@ -12,45 +12,48 @@ using Application.Features.Doctors.Constants;
 
 namespace Application.Features.DoctorAvailabilities.Commands.Update
 {
-	public class UpdateDoctorAvailabilityCommand : IRequest<UpdateDoctorAvailabilityResponse>, ISecuredRequest, ILoggableRequest
+    public class UpdateDoctorAvailabilityCommand : IRequest<UpdateDoctorAvailabilityResponse>, ISecuredRequest, ILoggableRequest
     {
         public string[] RequiredRoles => [Admin, DoctorAvailabilityOperationClaims.Update];
         public int Id { get; set; }
         public DateTime StartTime { get; set; }
-		public DateTime EndTime { get; set; }
-		public int DoctorId { get; set; }
+        public DateTime EndTime { get; set; }
+        public int DoctorId { get; set; }
 
         public class UpdateDoctorAvailabilityCommandHandler : IRequestHandler<UpdateDoctorAvailabilityCommand, UpdateDoctorAvailabilityResponse>
-		{
-			private readonly IDoctorAvailabilityRepository _doctorAvailabilityRepository;
-			private readonly IMapper _mapper;
-			private readonly IDoctorService _doctorService;
+        {
+            private readonly IDoctorAvailabilityRepository _doctorAvailabilityRepository;
+            private readonly IMapper _mapper;
+            private readonly IDoctorService _doctorService;
 
-			public UpdateDoctorAvailabilityCommandHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper, IDoctorService doctorService)
-			{
-				_doctorAvailabilityRepository = doctorAvailabilityRepository;
-				_mapper = mapper;
-				_doctorService = doctorService;
-			}
+            public UpdateDoctorAvailabilityCommandHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper, IDoctorService doctorService)
+            {
+                _doctorAvailabilityRepository = doctorAvailabilityRepository;
+                _mapper = mapper;
+                _doctorService = doctorService;
+            }
 
-			public async Task<UpdateDoctorAvailabilityResponse> Handle(UpdateDoctorAvailabilityCommand request, CancellationToken cancellationToken)
-			{
-				bool isDoctorExist = await _doctorService.DoctorValidationById(request.DoctorId);
-				DoctorAvailability? doctorAvailability = _doctorAvailabilityRepository.Get(i => i.Id == request.Id);
+            public async Task<UpdateDoctorAvailabilityResponse> Handle(UpdateDoctorAvailabilityCommand request, CancellationToken cancellationToken)
+            {
+                bool isDoctorExist = await _doctorService.DoctorValidationById(request.DoctorId);
+                DoctorAvailability? doctorAvailability = _doctorAvailabilityRepository.Get(i => i.Id == request.Id);
 
-				if (!isDoctorExist)
-				{
-					throw new NotFoundException(DoctorsMessages.DoctorNotExists);
-				}
+                if (doctorAvailability == null || doctorAvailability.IsDeleted == true)
+                {
+                    throw new NotFoundException(DoctorAvailabilityMessages.DoctorAvailabilityNotExists);
+                }
+                if (!isDoctorExist)
+                {
+                    throw new NotFoundException(DoctorsMessages.DoctorNotExists);
+                }
 
-				if (doctorAvailability is null)
-				{
-					doctorAvailability = _mapper.Map<DoctorAvailability>(request);
-					await _doctorAvailabilityRepository.UpdateAsync(doctorAvailability);
-				}
-				UpdateDoctorAvailabilityResponse response = _mapper.Map<UpdateDoctorAvailabilityResponse>(doctorAvailability);
-				return response;
-			}
-		}
-	}
+                _mapper.Map(request, doctorAvailability);
+
+                await _doctorAvailabilityRepository.UpdateAsync(doctorAvailability);
+
+                UpdateDoctorAvailabilityResponse response = _mapper.Map<UpdateDoctorAvailabilityResponse>(doctorAvailability);
+                return response;
+            }
+        }
+    }
 }

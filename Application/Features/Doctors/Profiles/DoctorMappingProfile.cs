@@ -8,11 +8,6 @@ using AutoMapper;
 using Core.Paging;
 using Core.Responses;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Profiles
 {
@@ -33,6 +28,7 @@ namespace Application.Features.Doctors.Profiles
             CreateMap<Doctor, GetListDoctorQuery>().ReverseMap();
             CreateMap<Doctor, GetListDoctorResponse>().ReverseMap();
             CreateMap<IPaginate<Doctor>, GetListResponse<GetListDoctorResponse>>().ReverseMap();
+            CreateMap<User, CreateDoctorCommand>().ReverseMap();
         }
     }
 }

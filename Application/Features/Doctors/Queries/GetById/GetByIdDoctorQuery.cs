@@ -26,7 +26,7 @@ namespace Application.Features.Doctors.Queries.GetById
             {
                 Doctor? doctor = await _doctorRepository.GetAsync(i => i.Id == request.Id);
 
-                if (doctor == null)
+                if (doctor == null || doctor.IsDeleted == true)
                 {
                     throw new NotFoundException(DoctorsMessages.DoctorNotExists);
                 }

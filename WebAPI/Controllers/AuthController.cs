@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.Login;
+﻿using Application.Features.Auth.Commands.ChangePassword;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginCommand loginCommand)
         {
             var response = await _mediator.Send(loginCommand);
+            return Ok(response);
+        }
+
+        [HttpPut("ChangePassword")]
+        public async Task<IActionResult> Update([FromBody] ChangePasswordCommand command)
+        {
+            ChangePasswordResponse response = await _mediator.Send(command);
             return Ok(response);
         }
     }

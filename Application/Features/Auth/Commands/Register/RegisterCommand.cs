@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using Application.Services.PatientService;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Hashing;
 using Domain.Entities;
 using MediatR;
@@ -29,6 +30,13 @@ namespace Application.Features.Auth.Commands.Register
 
             public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
+
+                User? existingUser = await _userRepository.GetAsync(u => u.Email == request.Email);
+                if (existingUser != null)
+                {
+                    throw new BusinessException("The email address is already in use.");
+                }
+
                 User user = _mapper.Map<User>(request);
 
                 byte[] passwordHash, passwordSalt;

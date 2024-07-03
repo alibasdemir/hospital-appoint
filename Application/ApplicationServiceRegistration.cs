@@ -13,6 +13,8 @@ using Application.Services.PatientService;
 using Application.Services.UserService;
 using Application.Services.AppointmentService;
 using Application.Services.DoctorAvailabilityService;
+using Application.Services.UserOperationClaimService;
+using Application.Services.OperationClaimService;
 
 
 namespace Application
@@ -55,6 +57,8 @@ namespace Application
             services.AddScoped<IUserService, UserManager>();
 			services.AddScoped<IAppointmentService, AppointmentManager>();
 			services.AddScoped<IDoctorAvailabilityService, DoctorAvailabilityManager>();
+            services.AddScoped<IUserOperationClaimService, UserOperationClaimManager>();
+            services.AddScoped<IOperationClaimService, OperationClaimManager>();
 
 			return services;
         }

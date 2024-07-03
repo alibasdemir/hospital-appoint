@@ -15,7 +15,6 @@ namespace Application.Features.Users.Commands.Update
 			.EmailAddress().WithMessage("Enter a valid e-mail address..");
 			RuleFor(i => i.FirstName).NotEmpty().WithMessage("FirstName can not be empty.");
 			RuleFor(i => i.LastName).NotEmpty().WithMessage("LastName can not be empty.");
-			RuleFor(i => i.Password).NotEmpty().WithMessage("Password can not be empty.");
             RuleFor(i => i.BirthDate).Must(CheckBirthDate).WithMessage("BirthDate must be greater than 18 years.");
 		}
 

@@ -45,6 +45,12 @@ namespace Application.Features.Users.Commands.Create
 
             public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
+                User? existingUser = await _userRepository.GetAsync(u => u.Email == request.Email);
+                if (existingUser != null)
+                {
+                    throw new BusinessException("The email address is already in use.");
+                }
+
                 User user = _mapper.Map<User>(request);
 
                 byte[] passwordHash, passwordSalt;

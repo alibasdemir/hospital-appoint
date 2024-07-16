@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using Core.DataAccess;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,13 @@ namespace Persistence.Repositories
         public PatientRepository(HospitalAppointDbContext context) : base(context)
         {
         }
-    }
+		public async Task<User> GetUserAsync(int patientId)
+		{
+			return await Context.Patients
+				.Include(p => p.User)
+				.Where(p => p.Id == patientId)
+				.Select(p => p.User)
+				.FirstOrDefaultAsync();
+		}
+	}
 }

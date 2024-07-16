@@ -25,5 +25,9 @@ namespace Application.Services.PatientService
         {
             await _patientRepository.AddAsync(patient);
         }
-    }
+		public async Task<User> GetUserAsync(int patientId)
+		{
+			return await _patientRepository.GetUserAsync(patientId);
+		}
+	}
 }

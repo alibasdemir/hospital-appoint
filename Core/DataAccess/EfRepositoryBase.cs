@@ -17,7 +17,7 @@ namespace Core.DataAccess
         where TContext : DbContext
         where TEntity : Entity<int>
     {
-        private readonly TContext Context;
+		protected readonly TContext Context;
         public EfRepositoryBase(TContext context)
         {
             Context = context;

@@ -12,6 +12,7 @@ namespace Application.Services.PatientService
 		Task<bool> PatientValidationById(int id);
 
         Task AddPatientAsync(Patient patient);
+		Task<User> GetUserAsync(int patientId);
 
-    }
+	}
 }

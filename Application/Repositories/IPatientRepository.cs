@@ -10,5 +10,6 @@ namespace Application.Repositories
 {
     public interface IPatientRepository : IAsyncRepository<Patient>, IRepository<Patient>
     {
-    }
+		Task<User> GetUserAsync(int patientId);
+	}
 }

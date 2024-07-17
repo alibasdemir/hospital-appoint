@@ -2,6 +2,7 @@
 using Application.Features.Doctors.Commands.Delete;
 using Application.Features.Doctors.Commands.SoftDelete;
 using Application.Features.Doctors.Commands.Update;
+using Application.Features.Doctors.Queries.GetByDepartment;
 using Application.Features.Doctors.Queries.GetById;
 using Application.Features.Doctors.Queries.GetList;
 using Core.Requests;
@@ -57,6 +58,18 @@ namespace WebAPI.Controllers
         {
             GetListDoctorQuery query = new() { PageRequest = pageRequest };
             GetListResponse<GetListDoctorResponse> response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("by-department")]
+        public async Task<IActionResult> GetByDepartment([FromQuery] PageRequest pageRequest, [FromQuery] int departmentId)
+        {
+            GetDoctorsByDepartmentQuery query = new()
+            {
+                PageRequest = pageRequest,
+                DepartmentId = departmentId
+            };
+            GetListResponse<GetDoctorsByDepartmentResponse> response = await _mediator.Send(query);
             return Ok(response);
         }
     }

@@ -8,8 +8,10 @@ namespace Domain.Enums
 {
     public enum AppointmentStatus
     {
-        Booked = 0,
+        None = 0,
         Cancelled = 1,
-        Completed = 2
+        Completed = 2,
+        Available = 3,
+        Booked = 4
     }
 }

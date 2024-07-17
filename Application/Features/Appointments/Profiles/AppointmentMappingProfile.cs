@@ -2,6 +2,7 @@
 using Application.Features.Appointments.Commands.Delete;
 using Application.Features.Appointments.Commands.SoftDelete;
 using Application.Features.Appointments.Commands.Update;
+using Application.Features.Appointments.Queries.GetByDoctorAndWeek;
 using Application.Features.Appointments.Queries.GetById;
 using Application.Features.Appointments.Queries.GetList;
 using AutoMapper;
@@ -27,7 +28,10 @@ namespace Application.Features.Appointments.Profiles
             CreateMap<Appointment, GetByIdAppointmentResponse>().ReverseMap();
             CreateMap<Appointment, GetListAppointmentQuery>().ReverseMap();
             CreateMap<Appointment, GetListAppointmentResponse>().ReverseMap();
+            CreateMap<Appointment, GetListAppointmentResponse>().ReverseMap();
+            CreateMap<Appointment, GetAppointmentsByDoctorAndWeekResponse>().ReverseMap();
             CreateMap<IPaginate<Appointment>, GetListResponse<GetListAppointmentResponse>>().ReverseMap();
+            CreateMap<IPaginate<Appointment>, GetListResponse<GetAppointmentsByDoctorAndWeekResponse>>().ReverseMap();
         }
     }
 }

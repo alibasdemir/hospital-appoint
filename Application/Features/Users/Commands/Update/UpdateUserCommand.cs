@@ -4,7 +4,6 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Core.CrossCuttingConcerns.Exceptions.Types;
-using Core.Hashing;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Users.Constants.UsersOperationClaims;

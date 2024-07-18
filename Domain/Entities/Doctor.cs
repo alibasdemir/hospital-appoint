@@ -22,7 +22,7 @@ namespace Domain.Entities
             PatientReports = new HashSet<PatientReport>();   
         }
 
-        public Doctor(int id, string specialistLevel, int yearsOfExperience, string biography, int? userId, int? departmentId, User? user, Department? department) 
+        public Doctor(int id, string specialistLevel, int yearsOfExperience, string biography, int? userId, int? departmentId, Department? department)
             :this() 
         {
             Id = id;
@@ -31,7 +31,6 @@ namespace Domain.Entities
             Biography = biography;
             UserId = userId;
             DepartmentId = departmentId;
-            User = user;
             Department = department;
         }
     }

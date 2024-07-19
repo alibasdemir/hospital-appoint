@@ -1,4 +1,5 @@
 ﻿using Application.Features.Departments.Constants;
+using Application.Features.Departments.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -19,20 +20,19 @@ namespace Application.Features.Departments.Commands.Delete
         {
             private readonly IDepartmentRepository _departmentRepository;
             private readonly IMapper _mapper;
-            public DeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper)
+            private readonly DepartmentBusinessRules _departmentBusinessRules;
+            public DeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper, DepartmentBusinessRules departmentBusinessRules)
             {
                 _departmentRepository = departmentRepository;
                 _mapper = mapper;
+                _departmentBusinessRules = departmentBusinessRules;
             }
 
             public async Task<DeleteDepartmentResponse> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
             {
                 Department? department = await _departmentRepository.GetAsync(i => i.Id == request.Id);
 
-                if (department == null)
-                {
-                    throw new NotFoundException(DepartmentsMessages.DepartmentNotExists);
-                }
+                await _departmentBusinessRules.DepartmentShouldBeExist(request.Id);
 
                 await _departmentRepository.DeleteAsync(department);
                 DeleteDepartmentResponse response = _mapper.Map<DeleteDepartmentResponse>(department);

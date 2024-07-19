@@ -63,7 +63,7 @@ namespace Application.Features.Auth.Rules
             }
             else
             {
-                throw new BusinessException("You did not enter a valid usertype");
+                throw new BusinessException(AuthMessages.ValidUserType);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Application.Features.Auth.Rules
             }
             else
             {
-                throw new BusinessException("You did not enter a valid usertype");
+                throw new BusinessException(AuthMessages.ValidUserType);
             }
         }
     }

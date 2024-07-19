@@ -35,5 +35,15 @@ namespace Application.Services.DoctorService
         {
             await _doctorRepository.AddAsync(doctor);
         }
+
+        public async Task<Doctor> DoctorGetByUserId(int userId)
+        {
+            return await _doctorRepository.GetAsync(i => i.UserId == userId);
+        }
+
+        public async Task UpdateDoctorAsync(Doctor doctor)
+        {
+            await _doctorRepository.UpdateAsync(doctor);
+        }
     }
 }

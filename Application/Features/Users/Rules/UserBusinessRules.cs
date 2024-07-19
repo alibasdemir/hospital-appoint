@@ -46,6 +46,32 @@ namespace Application.Features.Users.Rules
             }
         }
 
+        public async Task UserDeleteControl(int id)
+        {
+            User? user = await _userRepisotory.GetAsync(i => i.Id == id);
+            if (user == null || user.IsDeleted == true)
+            {
+                throw new BusinessException(UsersMessages.UserNotExists);
+            }
+        }
+
+        public async Task DoctorOrPatientDelete(int id)
+        {
+            User? user = await _userRepisotory.GetAsync(i => i.Id == id);
+            Doctor? doctor = await _doctorService.DoctorGetByUserId(id);
+            Patient? patient = await _patientService.PatientGetByUserId(id);
+            if (user.UserType == "doctor")
+            {
+                doctor.IsDeleted = true;
+                _doctorService.UpdateDoctorAsync(doctor);
+            }
+            if (user.UserType == "patient")
+            {
+                patient.IsDeleted = true;
+                _patientService.UpdatePatientAsync(patient);
+            }
+        }
+
         public async Task AddUserWithUserType(User user, string userType)
         {
             if (user.UserType.ToLower() == "doctor")
@@ -73,7 +99,7 @@ namespace Application.Features.Users.Rules
             }
             else
             {
-                throw new BusinessException("You did not enter a valid usertype");
+                throw new BusinessException(UsersMessages.ValidUserType);
             }
         }
 
@@ -107,7 +133,7 @@ namespace Application.Features.Users.Rules
             }
             else
             {
-                throw new BusinessException("You did not enter a valid usertype");
+                throw new BusinessException(UsersMessages.ValidUserType);
             }
         }
     }

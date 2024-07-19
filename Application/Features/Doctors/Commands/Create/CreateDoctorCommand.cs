@@ -1,10 +1,10 @@
-﻿using Application.Features.PatientReports.Constants;
+﻿using Application.Features.Doctors.Rules;
+using Application.Features.PatientReports.Constants;
 using Application.Repositories;
 using Application.Services.UserService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
@@ -25,21 +25,21 @@ namespace Application.Features.Doctors.Commands.Create
             private readonly IDoctorRepository _doctorRepository;
             private readonly IMapper _mapper;
             private readonly IUserService _userService;
+            private readonly DoctorBusinessRules _doctorBusinessRules;
 
-            public CreateDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper, IUserService userService)
+            public CreateDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper, IUserService userService, DoctorBusinessRules doctorBusinessRules)
             {
                 _doctorRepository = doctorRepository;
                 _mapper = mapper;
                 _userService = userService;
+                _doctorBusinessRules = doctorBusinessRules;
             }
 
             public async Task<CreateDoctorResponse> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
             {
                 User user = await _userService.GetUserByIdAsync(request.UserId);
-                if (user == null)
-                {
-                    throw new NotFoundException("User not found.");
-                }
+
+                await _doctorBusinessRules.UserShouldBeExist(request.UserId);
 
                 user.UserType = "doctor";
                 await _userService.UpdateUserAsync(user);

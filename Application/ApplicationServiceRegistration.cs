@@ -17,6 +17,8 @@ using Application.Services.UserOperationClaimService;
 using Application.Services.OperationClaimService;
 using Application.Features.Auth.Rules;
 using Application.Features.Users.Rules;
+using Application.Features.Departments.Rules;
+using Application.Features.Doctors.Rules;
 
 
 namespace Application
@@ -64,6 +66,8 @@ namespace Application
 
             services.AddScoped<AuthBusinessRules>();
             services.AddScoped<UserBusinessRules>();
+            services.AddScoped<DepartmentBusinessRules>();
+            services.AddScoped<DoctorBusinessRules>();
 
             return services;
         }

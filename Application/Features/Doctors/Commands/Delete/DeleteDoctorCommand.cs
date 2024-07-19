@@ -1,4 +1,5 @@
 ﻿using Application.Features.Doctors.Constants;
+using Application.Features.Doctors.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -19,21 +20,20 @@ namespace Application.Features.Doctors.Commands.Delete
         {
             private readonly IDoctorRepository _doctorRepository;
             private readonly IMapper _mapper;
+            private readonly DoctorBusinessRules _doctorBusinessRules;
 
-            public DeleteDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper)
+            public DeleteDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper, DoctorBusinessRules doctorBusinessRules)
             {
                 _doctorRepository = doctorRepository;
                 _mapper = mapper;
+                _doctorBusinessRules = doctorBusinessRules;
             }
 
             public async Task<DeleteDoctorResponse> Handle(DeleteDoctorCommand request, CancellationToken cancellationToken)
             {
                 Doctor? doctor = await _doctorRepository.GetAsync(i => i.Id == request.Id);
 
-                if (doctor == null)
-                {
-                    throw new NotFoundException(DoctorsMessages.DoctorNotExists);
-                }
+                await _doctorBusinessRules.DoctorShouldBeExist(request.Id);
 
                 await _doctorRepository.DeleteAsync(doctor);
 

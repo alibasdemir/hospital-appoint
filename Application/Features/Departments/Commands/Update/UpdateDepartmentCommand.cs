@@ -1,4 +1,5 @@
 ﻿using Application.Features.Departments.Constants;
+using Application.Features.Departments.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -21,22 +22,21 @@ namespace Application.Features.Departments.Commands.Update
         {
             private readonly IDepartmentRepository _departmentRepository;
             private readonly IMapper _mapper;
+            private readonly DepartmentBusinessRules _departmentBusinessRules;
 
-            public UpdateDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper)
+            public UpdateDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper, DepartmentBusinessRules departmentBusinessRules)
             {
                 _departmentRepository = departmentRepository;
                 _mapper = mapper;
+                _departmentBusinessRules = departmentBusinessRules;
             }
 
             public async Task<UpdateDepartmentResponse> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
             {
                 Department? department = await _departmentRepository.GetAsync(i => i.Id == request.Id);
 
-                if (department == null || department.IsDeleted == true)
-                {
-                    throw new NotFoundException(DepartmentsMessages.DepartmentNotExists);
-                }
-                
+                await _departmentBusinessRules.DepartmentDeleteControl(request.Id);
+
                 _mapper.Map(request, department);
 
                 await _departmentRepository.UpdateAsync(department);

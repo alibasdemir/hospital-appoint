@@ -1,4 +1,5 @@
 ﻿using Application.Features.Departments.Constants;
+using Application.Features.Departments.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -19,21 +20,20 @@ namespace Application.Features.Departments.Commands.SoftDelete
         {
             private readonly IDepartmentRepository _departmentRepository;
             private readonly IMapper _mapper;
+            private readonly DepartmentBusinessRules _departmentBusinessRules;
 
-            public SoftDeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper)
+            public SoftDeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IMapper mapper, DepartmentBusinessRules departmentBusinessRules)
             {
                 _departmentRepository = departmentRepository;
                 _mapper = mapper;
+                _departmentBusinessRules = departmentBusinessRules;
             }
 
             public async Task<SoftDeleteDepartmentResponse> Handle(SoftDeleteDepartmentCommand request, CancellationToken cancellationToken)
             {
                 Department? department = await _departmentRepository.GetAsync(i => i.Id == request.Id);
 
-                if (department == null || department.IsDeleted == true)
-                {
-                    throw new NotFoundException(DepartmentsMessages.DepartmentNotExists);
-                }
+                await _departmentBusinessRules.DepartmentDeleteControl(request.Id);
                 
                 await _departmentRepository.SoftDeleteAsync(department);
 

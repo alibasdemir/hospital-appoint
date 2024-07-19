@@ -1,4 +1,5 @@
 ﻿using Application.Features.Doctors.Constants;
+using Application.Features.Doctors.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
@@ -15,21 +16,20 @@ namespace Application.Features.Doctors.Queries.GetById
         {
             private readonly IDoctorRepository _doctorRepository;
             private readonly IMapper _mapper;
+            private readonly DoctorBusinessRules _doctorBusinessRules;
 
-            public GetByIdDoctorQueryHandler(IDoctorRepository doctorRepository, IMapper mapper)
+            public GetByIdDoctorQueryHandler(IDoctorRepository doctorRepository, IMapper mapper, DoctorBusinessRules doctorBusinessRules)
             {
                 _doctorRepository = doctorRepository;
                 _mapper = mapper;
+                _doctorBusinessRules = doctorBusinessRules;
             }
 
             public async Task<GetByIdDoctorResponse> Handle(GetByIdDoctorQuery request, CancellationToken cancellationToken)
             {
                 Doctor? doctor = await _doctorRepository.GetAsync(i => i.Id == request.Id);
 
-                if (doctor == null || doctor.IsDeleted == true)
-                {
-                    throw new NotFoundException(DoctorsMessages.DoctorNotExists);
-                }
+                await _doctorBusinessRules.DoctorDeleteControl(request.Id);
 
                 GetByIdDoctorResponse response = _mapper.Map<GetByIdDoctorResponse>(doctor);
                 return response;

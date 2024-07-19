@@ -1,4 +1,5 @@
 ﻿using Application.Features.Users.Constants;
+using Application.Features.Users.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -20,11 +21,13 @@ namespace Application.Features.Users.Commands.Delete
         {
             private readonly IUserRepository _userRepository;
             private readonly IMapper _mapper;
+            private readonly UserBusinessRules _userBusinessRules;
 
-            public DeleteUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+            public DeleteUserCommandHandler(IUserRepository userRepository, IMapper mapper, UserBusinessRules userBusinessRules)
             {
                 _userRepository = userRepository;
                 _mapper = mapper;
+                _userBusinessRules = userBusinessRules;
             }
 
             public async Task<DeleteUserReponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
@@ -32,10 +35,7 @@ namespace Application.Features.Users.Commands.Delete
                 
                 User? user = await _userRepository.GetAsync(i => i.Id == request.Id);
 
-                if (user == null)
-                {
-                    throw new NotFoundException(UsersMessages.UserNotExists);
-                }
+                await _userBusinessRules.UserShouldBeExist(request.Id);
 
                 await _userRepository.DeleteAsync(user);
                 DeleteUserReponse response = _mapper.Map<DeleteUserReponse>(user);

@@ -1,9 +1,9 @@
 ﻿using Application.Features.Users.Constants;
+using Application.Features.Users.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Users.Constants.UsersOperationClaims;
@@ -28,27 +28,22 @@ namespace Application.Features.Users.Commands.Update
         {
             private readonly IUserRepository _userRepository;
             private readonly IMapper _mapper;
+            private readonly UserBusinessRules _userBusinessRules;
 
-            public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+            public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, UserBusinessRules userBusinessRules)
             {
                 _userRepository = userRepository;
                 _mapper = mapper;
+                _userBusinessRules = userBusinessRules;
             }
 
             public async Task<UpdateUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
                 User? user = await _userRepository.GetAsync(i => i.Id == request.Id);
 
-                if (user == null || user.IsDeleted == true)
-                {
-                    throw new NotFoundException(UsersMessages.UserNotExists);
-                }
+                await _userBusinessRules.UserShouldBeExist(request.Id);
 
-                User? existingUser = await _userRepository.GetAsync(u => u.Email == request.Email);
-                if (existingUser != null)
-                {
-                    throw new BusinessException("The email address is already in use.");
-                }
+                await _userBusinessRules.UserEmailAlreadyUsed(request.Email);
 
                 _mapper.Map(request, user);
 

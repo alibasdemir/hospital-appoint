@@ -1,4 +1,5 @@
 ﻿using Application.Features.Auth.Constants;
+using Application.Features.Users.Constants;
 using Application.Repositories;
 using Application.Services.DoctorService;
 using Application.Services.OperationClaimService;
@@ -32,7 +33,16 @@ namespace Application.Features.Users.Rules
             User? user = await _userRepisotory.GetAsync(i => i.Email == email);
             if (user != null)
             {
-                throw new Exception(AuthMessages.EmailAlreadyUsed);
+                throw new BusinessException(AuthMessages.EmailAlreadyUsed);
+            }
+        }
+
+        public async Task UserShouldBeExist(int id)
+        {
+            User? user = await _userRepisotory.GetAsync(i => i.Id == id);
+            if (user == null)
+            {
+                throw new BusinessException(UsersMessages.UserNotExists);
             }
         }
 

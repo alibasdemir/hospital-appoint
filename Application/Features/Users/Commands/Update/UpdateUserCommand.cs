@@ -43,7 +43,7 @@ namespace Application.Features.Users.Commands.Update
 
                 await _userBusinessRules.UserShouldBeExist(request.Id);
 
-                await _userBusinessRules.UserEmailAlreadyUsed(request.Email);
+                await _userBusinessRules.UserEmailCanBeUpdated(request.Id, request.Email);
 
                 _mapper.Map(request, user);
 

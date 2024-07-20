@@ -10,7 +10,7 @@ namespace Domain.Entities
         public AppointmentStatus Status { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public Patient? Patient { get; set; }
+        public virtual Patient? Patient { get; set; }
         public virtual DoctorAvailability? DoctorAvailability { get; set; }
         public virtual ICollection<PatientReport>? PatientReports { get; set; }
 

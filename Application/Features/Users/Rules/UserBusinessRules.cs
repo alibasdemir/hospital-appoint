@@ -1,5 +1,4 @@
-﻿using Application.Features.Auth.Constants;
-using Application.Features.Users.Constants;
+﻿using Application.Features.Users.Constants;
 using Application.Repositories;
 using Application.Services.DoctorService;
 using Application.Services.OperationClaimService;
@@ -33,7 +32,7 @@ namespace Application.Features.Users.Rules
             User? user = await _userRepisotory.GetAsync(i => i.Email == email);
             if (user != null)
             {
-                throw new BusinessException(AuthMessages.EmailAlreadyUsed);
+                throw new BusinessException(UsersMessages.EmailAlreadyUsed);
             }
         }
 
@@ -134,6 +133,20 @@ namespace Application.Features.Users.Rules
             else
             {
                 throw new BusinessException(UsersMessages.ValidUserType);
+            }
+        }
+
+        public async Task UserEmailCanBeUpdated(int userId, string newEmail)
+        {
+            User? user = await _userRepisotory.GetAsync(u => u.Id == userId);
+            if (user.Email == newEmail)
+            {
+                return;
+            }
+            User? existingUser = await _userRepisotory.GetAsync(u => u.Email == newEmail && u.Id != userId);
+            if (existingUser != null)
+            {
+                throw new BusinessException(UsersMessages.EmailAlreadyUsed);
             }
         }
     }

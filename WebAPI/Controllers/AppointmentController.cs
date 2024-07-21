@@ -2,7 +2,10 @@
 using Application.Features.Appointments.Commands.Delete;
 using Application.Features.Appointments.Commands.SoftDelete;
 using Application.Features.Appointments.Commands.Update;
+using Application.Features.Appointments.Queries.GetByDoctorAndDate;
+using Application.Features.Appointments.Queries.GetByDoctorAndWeek;
 using Application.Features.Appointments.Queries.GetById;
+using Application.Features.Appointments.Queries.GetByPatient;
 using Application.Features.Appointments.Queries.GetList;
 using Core.Requests;
 using Core.Responses;
@@ -57,6 +60,46 @@ namespace WebAPI.Controllers
         {
             GetListAppointmentQuery query = new() { PageRequest = pageRequest };
             GetListResponse<GetListAppointmentResponse> response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("by-doctor-and-week")]
+        public async Task<IActionResult> GetByDoctorAndWeek([FromQuery] PageRequest pageRequest, [FromQuery] int doctorId, [FromQuery] DateTime date)
+        {
+            var query = new GetAppointmentsByDoctorAndWeekQuery
+            {
+                PageRequest = pageRequest,
+                DoctorId = doctorId,
+                Date = date
+            };
+            GetListResponse<GetAppointmentsByDoctorAndWeekResponse> response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("by-patient")]
+        public async Task<IActionResult> GetByPatient([FromQuery] PageRequest pageRequest, [FromQuery] int patientId)
+        {
+            GetAppointmentsByPatientQuery query = new()
+            {
+                PageRequest = pageRequest,
+                PatientId = patientId
+            };
+
+            GetListResponse<GetAppointmentsByPatientResponse> response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("by-doctor-and-date")]
+        public async Task<IActionResult> GetByDoctorAndDate([FromQuery] PageRequest pageRequest, [FromQuery] int doctorId, [FromQuery] DateTime date)
+        {
+            GetAppointmentsByDoctorAndDateQuery query = new()
+            {
+                PageRequest = pageRequest,
+                DoctorId = doctorId,
+                Date = date
+            };
+
+            GetListResponse<GetAppointmentsByDoctorAndDateResponse> response = await _mediator.Send(query);
             return Ok(response);
         }
     }

@@ -1,0 +1,19 @@
+﻿using Domain.Enums;
+using System;
+
+namespace Application.Features.Appointments.Queries.GetByDoctorAndDate
+{
+    public class GetAppointmentsByDoctorAndDateResponse
+    {
+        public int Id { get; set; }
+        public int PatientId { get; set; }
+        public int DoctorAvailabilityId { get; set; }
+        public AppointmentStatus Status { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime DeletedDate { get; set; }
+    }
+}

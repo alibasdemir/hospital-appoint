@@ -2,7 +2,10 @@
 using Application.Features.Appointments.Commands.Delete;
 using Application.Features.Appointments.Commands.SoftDelete;
 using Application.Features.Appointments.Commands.Update;
+using Application.Features.Appointments.Queries.GetByDoctorAndDate;
+using Application.Features.Appointments.Queries.GetByDoctorAndWeek;
 using Application.Features.Appointments.Queries.GetById;
+using Application.Features.Appointments.Queries.GetByPatient;
 using Application.Features.Appointments.Queries.GetList;
 using Application.Features.DoctorAvailabilities.Commands.Create;
 using Application.Features.PatientReports.Commands.Create;
@@ -41,6 +44,14 @@ namespace Application.Features.Appointments.Profiles
 
             CreateMap<CreatePatientReportCommand, PatientReport>();
             CreateMap<PatientReport, CreatePatientReportResponse>();
+
+            CreateMap<Appointment, GetAppointmentsByDoctorAndWeekResponse>().ReverseMap();
+            CreateMap<IPaginate<Appointment>, GetListResponse<GetListAppointmentResponse>>().ReverseMap();
+            CreateMap<IPaginate<Appointment>, GetListResponse<GetAppointmentsByDoctorAndWeekResponse>>().ReverseMap();
+            CreateMap<Appointment, GetAppointmentsByPatientResponse>().ReverseMap();
+            CreateMap<IPaginate<Appointment>, GetListResponse<GetAppointmentsByPatientResponse>>().ReverseMap();
+            CreateMap<Appointment, GetAppointmentsByDoctorAndDateResponse>().ReverseMap();
+            CreateMap<IPaginate<Appointment>, GetListResponse<GetAppointmentsByDoctorAndDateResponse>>().ReverseMap();
         }
     }
 }

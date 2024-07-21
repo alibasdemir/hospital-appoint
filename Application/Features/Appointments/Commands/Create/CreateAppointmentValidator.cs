@@ -8,7 +8,7 @@ namespace Application.Features.Appointments.Commands.Create
         {
 			RuleFor(i => i.PatientId).NotEmpty().WithMessage("PatientId can not be empty.");
 			RuleFor(i => i.DoctorAvailabilityId).NotEmpty().WithMessage("DoctorAvailabilityId can not be empty.");
-			RuleFor(i => i.Status).NotEmpty().WithMessage("Status can not be empty.");
+			//RuleFor(i => i.Status).NotEmpty().WithMessage("Status can not be empty.");
 			RuleFor(i => i.StartTime).NotEmpty().WithMessage("StartTime can not be empty.");
 			RuleFor(appointment => appointment.StartTime)
 			.NotEmpty().WithMessage("Başlangıç zamanı gereklidir.");

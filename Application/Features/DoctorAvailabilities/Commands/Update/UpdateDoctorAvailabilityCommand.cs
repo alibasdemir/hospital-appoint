@@ -4,11 +4,10 @@ using Application.Services.DoctorService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.DoctorAvailabilities.Constants.DoctorAvailabilityOperationClaims;
-using Application.Features.Doctors.Constants;
+using Application.Features.DoctorAvailabilities.Rules;
 
 namespace Application.Features.DoctorAvailabilities.Commands.Update
 {
@@ -24,28 +23,21 @@ namespace Application.Features.DoctorAvailabilities.Commands.Update
         {
             private readonly IDoctorAvailabilityRepository _doctorAvailabilityRepository;
             private readonly IMapper _mapper;
-            private readonly IDoctorService _doctorService;
+            private readonly DoctorAvailabilityBusinessRules _doctorAvailabilityBusinessRules;
 
-            public UpdateDoctorAvailabilityCommandHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper, IDoctorService doctorService)
+            public UpdateDoctorAvailabilityCommandHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper, DoctorAvailabilityBusinessRules doctorAvailabilityBusinessRules)
             {
                 _doctorAvailabilityRepository = doctorAvailabilityRepository;
                 _mapper = mapper;
-                _doctorService = doctorService;
+                _doctorAvailabilityBusinessRules = doctorAvailabilityBusinessRules;
             }
 
             public async Task<UpdateDoctorAvailabilityResponse> Handle(UpdateDoctorAvailabilityCommand request, CancellationToken cancellationToken)
             {
-                bool isDoctorExist = await _doctorService.DoctorValidationById(request.DoctorId);
                 DoctorAvailability? doctorAvailability = _doctorAvailabilityRepository.Get(i => i.Id == request.Id);
 
-                if (doctorAvailability == null || doctorAvailability.IsDeleted == true)
-                {
-                    throw new NotFoundException(DoctorAvailabilityMessages.DoctorAvailabilityNotExists);
-                }
-                if (!isDoctorExist)
-                {
-                    throw new NotFoundException(DoctorsMessages.DoctorNotExists);
-                }
+                await _doctorAvailabilityBusinessRules.DoctorAvailabilityShouldBeExist(request.Id);
+                await _doctorAvailabilityBusinessRules.DoctorShouldBeExist(request.DoctorId);
 
                 _mapper.Map(request, doctorAvailability);
 

@@ -26,6 +26,8 @@ using Application.Features.PatientReports.Rules;
 using Application.Features.Patients.Rules;
 using Application.Features.SupportRequests.Rules;
 using Application.Features.UserOperationClaims;
+using Application.Features.DoctorAvailabilities.Rules;
+using Application.Features.Appointments.Rules;
 
 
 namespace Application
@@ -82,6 +84,8 @@ namespace Application
             services.AddScoped<PatientBusinessRules>();
             services.AddScoped<SupportRequestBusinessRules>();
             services.AddScoped<UserOperationClaimBusinessRule>();
+            services.AddScoped<DoctorAvailabilityBusinessRules>();
+            services.AddScoped<AppointmentBusinessRules>();
 
             return services;
         }

@@ -1,9 +1,9 @@
 ﻿using Application.Features.Appointments.Constants;
+using Application.Features.Appointments.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -25,21 +25,19 @@ namespace Application.Features.Appointments.Commands.Update
         {
             private readonly IAppointmentRepository _appointmentRepository;
             private readonly IMapper _mapper;
-
-            public UpdateAppointmentCommandHandler(IAppointmentRepository appointmentRepository, IMapper mapper)
+            private readonly AppointmentBusinessRules _appointmentBusinessRules;
+            public UpdateAppointmentCommandHandler(IAppointmentRepository appointmentRepository, IMapper mapper, AppointmentBusinessRules appointmentBusinessRules)
             {
                 _appointmentRepository = appointmentRepository;
                 _mapper = mapper;
+                _appointmentBusinessRules = appointmentBusinessRules;
             }
 
             public async Task<UpdateAppointmentResponse> Handle(UpdateAppointmentCommand request, CancellationToken cancellationToken)
             {
                 Appointment? appointment = await _appointmentRepository.GetAsync(i => i.Id == request.Id);
-                
-                if (appointment == null || appointment.IsDeleted == true) 
-                {
-                    throw new NotFoundException(AppointmentsMessages.AppointmentNotExists);
-                }
+
+                await _appointmentBusinessRules.AppointmentDeleteControl(request.Id);
 
                 _mapper.Map(request, appointment);
 

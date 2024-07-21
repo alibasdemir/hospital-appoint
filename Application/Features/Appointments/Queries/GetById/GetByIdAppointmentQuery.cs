@@ -1,7 +1,7 @@
 ﻿using Application.Features.Appointments.Constants;
+using Application.Features.Appointments.Rules;
 using Application.Repositories;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 
@@ -15,21 +15,20 @@ namespace Application.Features.Appointments.Queries.GetById
         {
             private readonly IAppointmentRepository _appointmentRepository;
             private readonly IMapper _mapper;
+            private readonly AppointmentBusinessRules _appointmentBusinessRules;
 
-            public GetByIdAppointmentQueryHandler(IAppointmentRepository appointmentRepository, IMapper mapper)
+            public GetByIdAppointmentQueryHandler(IAppointmentRepository appointmentRepository, IMapper mapper, AppointmentBusinessRules appointmentBusinessRules)
             {
                 _appointmentRepository = appointmentRepository;
                 _mapper = mapper;
+                _appointmentBusinessRules = appointmentBusinessRules;
             }
 
             public async Task<GetByIdAppointmentResponse> Handle(GetByIdAppointmentQuery request, CancellationToken cancellationToken)
             {
                 Appointment? appointment = await _appointmentRepository.GetAsync(i => i.Id == request.Id);
 
-                if (appointment == null || appointment.IsDeleted == true) 
-                {
-                    throw new NotFoundException(AppointmentsMessages.AppointmentNotExists);
-                }
+                await _appointmentBusinessRules.AppointmentDeleteControl(request.Id);
 
                 GetByIdAppointmentResponse response = _mapper.Map<GetByIdAppointmentResponse>(appointment);
                 return response;

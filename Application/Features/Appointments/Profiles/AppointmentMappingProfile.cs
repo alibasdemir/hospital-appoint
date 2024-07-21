@@ -4,10 +4,13 @@ using Application.Features.Appointments.Commands.SoftDelete;
 using Application.Features.Appointments.Commands.Update;
 using Application.Features.Appointments.Queries.GetById;
 using Application.Features.Appointments.Queries.GetList;
+using Application.Features.DoctorAvailabilities.Commands.Create;
+using Application.Features.PatientReports.Commands.Create;
 using AutoMapper;
 using Core.Paging;
 using Core.Responses;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Features.Appointments.Profiles
 {
@@ -28,6 +31,16 @@ namespace Application.Features.Appointments.Profiles
             CreateMap<Appointment, GetListAppointmentQuery>().ReverseMap();
             CreateMap<Appointment, GetListAppointmentResponse>().ReverseMap();
             CreateMap<IPaginate<Appointment>, GetListResponse<GetListAppointmentResponse>>().ReverseMap();
+
+            CreateMap<CreateAppointmentCommand, Appointment>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => AppointmentStatus.Booked));
+            CreateMap<Appointment, CreateAppointmentResponse>();
+
+            CreateMap<CreateDoctorAvailabilityCommand, DoctorAvailability>();
+            CreateMap<DoctorAvailability, CreateDoctorAvailabilityResponse>();
+
+            CreateMap<CreatePatientReportCommand, PatientReport>();
+            CreateMap<PatientReport, CreatePatientReportResponse>();
         }
     }
 }

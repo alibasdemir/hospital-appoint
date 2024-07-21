@@ -1,4 +1,5 @@
 ﻿using Application.Features.DoctorAvailabilities.Constants;
+using Application.Features.DoctorAvailabilities.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
@@ -15,21 +16,20 @@ namespace Application.Features.DoctorAvailabilities.Queries.GetById
         {
             private readonly IDoctorAvailabilityRepository _doctorAvailabilityRepository;
             private readonly IMapper _mapper;
+            private readonly DoctorAvailabilityBusinessRules _doctorAvailabilityBusinessRules;
 
-            public GetByIdDoctorAvailabilityQueryHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper)
+            public GetByIdDoctorAvailabilityQueryHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper, DoctorAvailabilityBusinessRules doctorAvailabilityBusinessRules)
             {
                 _doctorAvailabilityRepository = doctorAvailabilityRepository;
                 _mapper = mapper;
+                _doctorAvailabilityBusinessRules = doctorAvailabilityBusinessRules;
             }
 
             public async Task<GetByIdDoctorAvailabilityResponse> Handle(GetByIdDoctorAvailabilityQuery request, CancellationToken cancellationToken)
             {
                 DoctorAvailability? doctorAvailability = await _doctorAvailabilityRepository.GetAsync(i => i.Id == request.Id);
 
-                if (doctorAvailability == null || doctorAvailability.IsDeleted == true)
-                {
-                    throw new NotFoundException(DoctorAvailabilityMessages.DoctorAvailabilityNotExists);
-                }
+                await _doctorAvailabilityBusinessRules.DoctorAvailabilityShouldBeExist(request.Id);
 
                 GetByIdDoctorAvailabilityResponse response = _mapper.Map<GetByIdDoctorAvailabilityResponse>(doctorAvailability);
                 return response;

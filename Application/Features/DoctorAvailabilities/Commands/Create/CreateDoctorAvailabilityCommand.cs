@@ -1,14 +1,12 @@
-﻿using Application.Features.DoctorAvailabilities.Constants;
-using Application.Repositories;
+﻿using Application.Repositories;
 using Application.Services.DoctorService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.DoctorAvailabilities.Constants.DoctorAvailabilityOperationClaims;
-using Application.Features.Doctors.Constants;
+using Application.Features.DoctorAvailabilities.Rules;
 
 namespace Application.Features.DoctorAvailabilities.Commands.Create
 {
@@ -19,37 +17,32 @@ namespace Application.Features.DoctorAvailabilities.Commands.Create
 		public DateTime EndTime { get; set; }
 		public int DoctorId { get; set; }
 
-		public class CreateDoctorScheduleCommandHandler : IRequestHandler<CreateDoctorAvailabilityCommand, CreateDoctorAvailabilityResponse>
+		public class CreateDoctorAvailabilityCommandHandler : IRequestHandler<CreateDoctorAvailabilityCommand, CreateDoctorAvailabilityResponse>
 		{
 			private readonly IDoctorAvailabilityRepository _doctorAvailabilityRepository;
 			private readonly IMapper _mapper;
 			private readonly IDoctorService _doctorService;
+			private readonly DoctorAvailabilityBusinessRules _doctorAvailabilityBusinessRules;
 
-			public CreateDoctorScheduleCommandHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper, IDoctorService doctorService)
+            public CreateDoctorAvailabilityCommandHandler(IDoctorAvailabilityRepository doctorAvailabilityRepository, IMapper mapper, IDoctorService doctorService, DoctorAvailabilityBusinessRules doctorAvailabilityBusinessRules)
+            {
+                _doctorAvailabilityRepository = doctorAvailabilityRepository;
+                _mapper = mapper;
+                _doctorService = doctorService;
+                _doctorAvailabilityBusinessRules = doctorAvailabilityBusinessRules;
+            }
+
+            public async Task<CreateDoctorAvailabilityResponse> Handle(CreateDoctorAvailabilityCommand request, CancellationToken cancellationToken)
 			{
-				_doctorAvailabilityRepository = doctorAvailabilityRepository;
-				_mapper = mapper;
-				_doctorService = doctorService;
-			}
+                await _doctorAvailabilityBusinessRules.DoctorShouldBeExist(request.DoctorId);
+                await _doctorAvailabilityBusinessRules.ValidateDoctorAvailability(request);
 
-			public async Task<CreateDoctorAvailabilityResponse> Handle(CreateDoctorAvailabilityCommand request, CancellationToken cancellationToken)
-			{
-				bool isDoctorExist = await _doctorService.DoctorValidationById(request.DoctorId);
-				DoctorAvailability? doctorAvailability = _doctorAvailabilityRepository.Get(i => i.StartTime == request.StartTime);
+                var doctorAvailability = _mapper.Map<DoctorAvailability>(request);
+                await _doctorAvailabilityRepository.AddAsync(doctorAvailability);
 
-				if (!isDoctorExist)
-				{
-					throw new NotFoundException(DoctorsMessages.DoctorNotExists);
-				}
-
-				if (doctorAvailability is null)
-				{
-					doctorAvailability = _mapper.Map<DoctorAvailability>(request);
-					await _doctorAvailabilityRepository.AddAsync(doctorAvailability);
-				}
-					CreateDoctorAvailabilityResponse response = _mapper.Map<CreateDoctorAvailabilityResponse>(doctorAvailability);
-					return response;
-			}
+                CreateDoctorAvailabilityResponse response = _mapper.Map<CreateDoctorAvailabilityResponse>(doctorAvailability);
+                return response;
+            }
 		}
 	}
 }

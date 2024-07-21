@@ -1,9 +1,9 @@
 ﻿using Application.Features.Notifications.Constants;
+using Application.Features.Notifications.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Notifications.Constants.NotificationsOperationClaims;
@@ -19,20 +19,19 @@ namespace Application.Features.Notifications.Commands.Delete
         {
             private readonly INotificationRepository _notificationRepository;
             private readonly IMapper _mapper;
-            public DeleteNotificationCommandHandler(INotificationRepository notificationRepository, IMapper mapper)
+            private readonly NotificationBusinessRules _notificationBusinessRules;
+            public DeleteNotificationCommandHandler(INotificationRepository notificationRepository, IMapper mapper, NotificationBusinessRules notificationBusinessRules)
             {
                 _notificationRepository = notificationRepository;
                 _mapper = mapper;
+                _notificationBusinessRules = notificationBusinessRules;
             }
 
             public async Task<DeleteNotificationResponse> Handle(DeleteNotificationCommand request, CancellationToken cancellationToken)
             {
                 Notification? notification = await _notificationRepository.GetAsync(i => i.Id == request.Id);
 
-                if (notification == null)
-                {
-                    throw new NotFoundException(NotificationsMessages.NotificationNotExists);
-                }
+                await _notificationBusinessRules.NotificationShouldBeExist(request.Id);
 
                 await _notificationRepository.DeleteAsync(notification);
                 DeleteNotificationResponse response = _mapper.Map<DeleteNotificationResponse>(notification);

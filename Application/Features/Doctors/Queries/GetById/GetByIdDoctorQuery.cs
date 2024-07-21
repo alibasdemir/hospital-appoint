@@ -1,8 +1,6 @@
-﻿using Application.Features.Doctors.Constants;
-using Application.Features.Doctors.Rules;
+﻿using Application.Features.Doctors.Rules;
 using Application.Repositories;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 

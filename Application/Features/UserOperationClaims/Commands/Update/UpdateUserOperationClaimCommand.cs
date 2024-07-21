@@ -3,7 +3,6 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Entities;
 using MediatR;
 using static Application.Features.UserOperationClaims.Constants.UserOperationClaimsOperationClaims;
@@ -21,21 +20,20 @@ namespace Application.Features.UserOperationClaims.Commands.Update
         {
             private readonly IUserOperationClaimRepository _userOperationClaimRepository;
             private readonly IMapper _mapper;
+            private readonly UserOperationClaimBusinessRule _userOperationClaimBusinessRule;
 
-            public UpdateUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper)
+            public UpdateUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, UserOperationClaimBusinessRule userOperationClaimBusinessRule)
             {
                 _userOperationClaimRepository = userOperationClaimRepository;
                 _mapper = mapper;
+                _userOperationClaimBusinessRule = userOperationClaimBusinessRule;
             }
 
             public async Task<UpdateUserOperationClaimResponse> Handle(UpdateUserOperationClaimCommand request, CancellationToken cancellationToken)
             {
                 UserOperationClaim? userOperationClaim = await _userOperationClaimRepository.GetAsync(i => i.Id == request.Id);
 
-                if (userOperationClaim == null || userOperationClaim.IsDeleted == true) 
-                {
-                    throw new NotFoundException(UserOperationClaimsMessages.UserOperationClaimNotExists);
-                }
+                await _userOperationClaimBusinessRule.UserOperationClaimDeleteControl(request.Id);
 
                 _mapper.Map(request, userOperationClaim);
 

@@ -1,9 +1,9 @@
 ﻿using Application.Features.PatientReports.Constants;
+using Application.Features.PatientReports.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.PatientReports.Constants.PatientReportsOperationClaims;
@@ -19,20 +19,19 @@ namespace Application.Features.PatientReports.Commands.Delete
         {
             private readonly IPatientReportRepository _patientReportRepository;
             private readonly IMapper _mapper;
-            public DeletePatientReportCommandHandler(IPatientReportRepository patientReportRepository, IMapper mapper)
+            private readonly PatientReportBusinessRules _patientReportBusinessRules;
+            public DeletePatientReportCommandHandler(IPatientReportRepository patientReportRepository, IMapper mapper, PatientReportBusinessRules patientReportBusinessRules)
             {
                 _patientReportRepository = patientReportRepository;
                 _mapper = mapper;
+                _patientReportBusinessRules = patientReportBusinessRules;
             }
 
             public async Task<DeletePatientReportResponse> Handle(DeletePatientReportCommand request, CancellationToken cancellationToken)
             {
                 PatientReport? patientReport = await _patientReportRepository.GetAsync(i => i.Id == request.Id);
 
-                if (patientReport == null)
-                {
-                    throw new NotFoundException(PatientReportsMessages.PatientReportNotExists);
-                }
+                await _patientReportBusinessRules.PatientReportShouldBeExist(request.Id);
 
                 await _patientReportRepository.DeleteAsync(patientReport);
                 DeletePatientReportResponse response = _mapper.Map<DeletePatientReportResponse>(patientReport);

@@ -1,11 +1,9 @@
-﻿using Application.Features.PatientReports.Constants;
-using Application.Features.Users.Constants;
+﻿using Application.Features.Patients.Rules;
 using Application.Repositories;
 using Application.Services.UserService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -33,21 +31,21 @@ namespace Application.Features.Patients.Commands.Create
 			private readonly IPatientRepository _patientRepository;
 			private readonly IMapper _mapper;
 			private readonly IUserService _userService;
+			private readonly PatientBusinessRules _patientBusinessRules;
 
-			public CreatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, IUserService userService)
-			{
-				_patientRepository = patientRepository;
-				_mapper = mapper;
-				_userService = userService;
-			}
+            public CreatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, IUserService userService, PatientBusinessRules patientBusinessRules)
+            {
+                _patientRepository = patientRepository;
+                _mapper = mapper;
+                _userService = userService;
+                _patientBusinessRules = patientBusinessRules;
+            }
 
-			public async Task<CreatePatientResponse> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
+            public async Task<CreatePatientResponse> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
 			{
 				User user = await _userService.GetUserByIdAsync(request.UserId);
-                if (user == null)
-                {
-                    throw new NotFoundException("User not found.");
-                }
+
+                await _patientBusinessRules.UserShouldBeExist(request.UserId);
 
 				user.UserType = "patient";
 				await _userService.UpdateUserAsync(user);

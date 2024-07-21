@@ -1,12 +1,9 @@
 ﻿using Application.Features.PatientReports.Constants;
-using Application.Features.Patients.Constants;
-using Application.Features.Users.Constants;
+using Application.Features.Patients.Rules;
 using Application.Repositories;
-using Application.Services.UserService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -33,20 +30,20 @@ namespace Application.Features.Patients.Commands.Update
 		{
 			private readonly IPatientRepository _patientRepository;
 			private readonly IMapper _mapper;
-			public UpdatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper)
-			{
-				_patientRepository = patientRepository;
-				_mapper = mapper;
-			}
+			private readonly PatientBusinessRules _patientBusinessRules;
 
-			public async Task<UpdatePatientResponse> Handle(UpdatePatientCommand request, CancellationToken cancellationToken)
+            public UpdatePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, PatientBusinessRules patientBusinessRules)
+            {
+                _patientRepository = patientRepository;
+                _mapper = mapper;
+                _patientBusinessRules = patientBusinessRules;
+            }
+
+            public async Task<UpdatePatientResponse> Handle(UpdatePatientCommand request, CancellationToken cancellationToken)
 			{
 				Patient? patient = await _patientRepository.GetAsync(i => i.Id == request.Id);
 
-				if (patient == null || patient.IsDeleted) 
-				{
-					throw new NotFoundException(PatientsMessages.PatientNotExists);
-				}
+				await _patientBusinessRules.PatientDeleteControl(request.Id);
 
 				_mapper.Map(request, patient);
 

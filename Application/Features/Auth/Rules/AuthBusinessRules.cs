@@ -36,6 +36,15 @@ namespace Application.Features.Auth.Rules
             }
         }
 
+        public async Task UserDeleteControl(string email)
+        {
+            User? user = await _userRepisotory.GetAsync(i => i.Email == email);
+            if (user == null || user.IsDeleted == true)
+            {
+                throw new BusinessException(AuthMessages.UserNotExists);
+            }
+        }
+
         public async Task AddUserWithUserType(User user, string userType)
         {
             if (user.UserType.ToLower() == "doctor")

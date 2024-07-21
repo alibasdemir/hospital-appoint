@@ -1,11 +1,9 @@
 ﻿using Application.Features.PatientReports.Constants;
-using Application.Features.Patients.Constants;
+using Application.Features.Patients.Rules;
 using Application.Repositories;
-using Application.Services.UserService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Patients.Constants.PatientsOperationClaims;
@@ -21,35 +19,26 @@ namespace Application.Features.Patients.Commands.SoftDelete
         {
             private readonly IPatientRepository _patientRepository;
             private readonly IMapper _mapper;
-            private readonly IUserService _userService;
+            private readonly PatientBusinessRules _patientBusinessRules;
 
-            public SoftDeletePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, IUserService userService)
+            public SoftDeletePatientCommandHandler(IPatientRepository patientRepository, IMapper mapper, PatientBusinessRules patientBusinessRules)
             {
                 _patientRepository = patientRepository;
                 _mapper = mapper;
-                _userService = userService;
+                _patientBusinessRules = patientBusinessRules;
             }
 
             public async Task<SoftDeletePatientResponse> Handle(SoftDeletePatientCommand request, CancellationToken cancellationToken)
             {
                 Patient? patient = await _patientRepository.GetAsync(i => i.Id == request.Id);
 
-                if (patient == null || patient.IsDeleted == true)
-                {
-                    throw new NotFoundException(PatientsMessages.PatientNotExists);
-                }
+                await _patientBusinessRules.PatientDeleteControl(request.Id);
 
                 await _patientRepository.SoftDeleteAsync(patient);
 
-                if (patient.UserId.HasValue)
-                {
-                    User? user = await _userService.GetUserByIdAsync(patient.UserId.Value);
-                    if (user != null)
-                    {
-                        user.IsDeleted = true;
-                        await _userService.UpdateUserAsync(user);
-                    }
-                }
+                await _patientBusinessRules.PatientDeleteWithUser(request.Id);
+
+                await _patientBusinessRules.PatientDeleteWithUser(request.Id);
 
                 SoftDeletePatientResponse response = _mapper.Map<SoftDeletePatientResponse>(patient);
                 return response;

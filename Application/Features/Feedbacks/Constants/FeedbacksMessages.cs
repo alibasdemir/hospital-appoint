@@ -4,5 +4,6 @@
     {
         public const string FeedbackNotExists = "Feedback not exists.";
         public const string FeedbackExists = "This feedback already exists.";
+        public const string UserNotExists = "User not exists.";
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Application.Features.SupportRequests.Constants;
+using Application.Features.SupportRequests.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.SupportRequests.Constants.SupportRequestsOperationClaims;
@@ -19,21 +19,20 @@ namespace Application.Features.SupportRequests.Commands.SoftDelete
         {
             private readonly ISupportRequestRepository _supportRequestRepository;
             private readonly IMapper _mapper;
+            private readonly SupportRequestBusinessRules _supportRequestBusinessRules;
 
-            public SoftDeleteSupportRequestCommandHandler(ISupportRequestRepository supportRequestRepository, IMapper mapper)
+            public SoftDeleteSupportRequestCommandHandler(ISupportRequestRepository supportRequestRepository, IMapper mapper, SupportRequestBusinessRules supportRequestBusinessRules)
             {
                 _supportRequestRepository = supportRequestRepository;
                 _mapper = mapper;
+                _supportRequestBusinessRules = supportRequestBusinessRules;
             }
 
             public async Task<SoftDeleteSupportRequestResponse> Handle(SoftDeleteSupportRequestCommand request, CancellationToken cancellationToken)
             {
                 SupportRequest? supportRequest = await _supportRequestRepository.GetAsync(i => i.Id == request.Id);
 
-                if (supportRequest == null || supportRequest.IsDeleted == true)
-                {
-                    throw new NotFoundException(SupportRequestsMessages.SupportRequestNotExists);
-                }
+                await _supportRequestBusinessRules.SupportRequestDeleteControl(request.Id);
                 
                 await _supportRequestRepository.SoftDeleteAsync(supportRequest);
 

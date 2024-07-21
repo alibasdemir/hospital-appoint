@@ -1,11 +1,9 @@
 ﻿using Application.Features.Doctors.Constants;
 using Application.Features.Doctors.Rules;
 using Application.Repositories;
-using Application.Services.UserService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
@@ -21,14 +19,12 @@ namespace Application.Features.Doctors.Commands.SoftDelete
         {
             private readonly IDoctorRepository _doctorRepository;
             private readonly IMapper _mapper;
-            private readonly IUserService _userService;
             private readonly DoctorBusinessRules _doctorBusinessRules;
 
-            public SoftDeleteDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper, IUserService userService, DoctorBusinessRules doctorBusinessRules)
+            public SoftDeleteDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper, DoctorBusinessRules doctorBusinessRules)
             {
                 _doctorRepository = doctorRepository;
                 _mapper = mapper;
-                _userService = userService;
                 _doctorBusinessRules = doctorBusinessRules;
             }
 

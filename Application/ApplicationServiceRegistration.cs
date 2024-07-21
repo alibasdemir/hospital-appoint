@@ -19,6 +19,13 @@ using Application.Features.Auth.Rules;
 using Application.Features.Users.Rules;
 using Application.Features.Departments.Rules;
 using Application.Features.Doctors.Rules;
+using Application.Features.Feedbacks.Rules;
+using Application.Features.Notifications.Rules;
+using Application.Features.OperationClaims.Rules;
+using Application.Features.PatientReports.Rules;
+using Application.Features.Patients.Rules;
+using Application.Features.SupportRequests.Rules;
+using Application.Features.UserOperationClaims;
 
 
 namespace Application
@@ -68,6 +75,13 @@ namespace Application
             services.AddScoped<UserBusinessRules>();
             services.AddScoped<DepartmentBusinessRules>();
             services.AddScoped<DoctorBusinessRules>();
+            services.AddScoped<FeedbackBusinessRules>();
+            services.AddScoped<NotificationBusinessRules>();
+            services.AddScoped<OperationClaimBusinessRules>();
+            services.AddScoped<PatientReportBusinessRules>();
+            services.AddScoped<PatientBusinessRules>();
+            services.AddScoped<SupportRequestBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRule>();
 
             return services;
         }

@@ -1,11 +1,9 @@
 ﻿using Application.Features.Feedbacks.Constants;
-using Application.Features.Users.Constants;
+using Application.Features.Feedbacks.Rules;
 using Application.Repositories;
-using Application.Services.UserService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Feedbacks.Constants.FeedbacksOperationClaims;
@@ -24,23 +22,20 @@ namespace Application.Features.Feedbacks.Commands.Update
         {
             private readonly IFeedbackRepository _feedbackRepository;
             private readonly IMapper _mapper;
-			private readonly IUserService _userService;
+			private readonly FeedbackBusinessRules _feedbackBusinessRules;
 
-			public UpdateFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper, IUserService userService)
-			{
-				_feedbackRepository = feedbackRepository;
-				_mapper = mapper;
-				_userService = userService;
-			}
+            public UpdateFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper, FeedbackBusinessRules feedbackBusinessRules)
+            {
+                _feedbackRepository = feedbackRepository;
+                _mapper = mapper;
+                _feedbackBusinessRules = feedbackBusinessRules;
+            }
 
-			public async Task<UpdateFeedbackResponse> Handle(UpdateFeedbackCommand request, CancellationToken cancellationToken)
+            public async Task<UpdateFeedbackResponse> Handle(UpdateFeedbackCommand request, CancellationToken cancellationToken)
             {
 				Feedback? feedback = await _feedbackRepository.GetAsync(i => i.Id == request.Id);
 
-				if (feedback == null || feedback.IsDeleted == true)
-				{
-					throw new NotFoundException(FeedbacksMessages.FeedbackNotExists);
-				}
+                await _feedbackBusinessRules.FeedbackDeleteControl(request.Id);
 
 				_mapper.Map(request, feedback);
 

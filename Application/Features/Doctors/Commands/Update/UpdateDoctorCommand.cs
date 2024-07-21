@@ -1,9 +1,9 @@
 ﻿using Application.Features.Doctors.Constants;
+using Application.Features.Doctors.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Doctors.Constants.DoctorsOperationClaims;
@@ -25,21 +25,20 @@ namespace Application.Features.Doctors.Commands.Update
 		{
 			private readonly IDoctorRepository _doctorRepository;
 			private readonly IMapper _mapper;
+			private readonly DoctorBusinessRules _doctorBusinessRules;
 
-			public UpdateDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper)
-			{
-				_doctorRepository =	doctorRepository;
-				_mapper = mapper;
-			}
+            public UpdateDoctorCommandHandler(IDoctorRepository doctorRepository, IMapper mapper, DoctorBusinessRules doctorBusinessRules)
+            {
+                _doctorRepository = doctorRepository;
+                _mapper = mapper;
+                _doctorBusinessRules = doctorBusinessRules;
+            }
 
-			public async Task<UpdateDoctorResponse> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
+            public async Task<UpdateDoctorResponse> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
 			{
 				Doctor? doctor = await _doctorRepository.GetAsync(i => i.Id == request.Id);
 
-				if (doctor == null || doctor.IsDeleted == true) 
-				{
-					throw new NotFoundException(DoctorsMessages.DoctorNotExists);
-                }
+				await _doctorBusinessRules.DoctorDeleteControl(request.Id);
 
 				_mapper.Map(request, doctor);
 

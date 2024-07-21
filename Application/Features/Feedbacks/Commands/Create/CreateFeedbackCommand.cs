@@ -1,13 +1,11 @@
 ﻿using Application.Repositories;
-using Application.Services.UserService;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Application.Features.Users.Constants;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using static Application.Features.Feedbacks.Constants.FeedbacksOperationClaims;
+using Application.Features.Feedbacks.Rules;
 
 namespace Application.Features.Feedbacks.Commands.Create
 {
@@ -22,23 +20,18 @@ namespace Application.Features.Feedbacks.Commands.Create
         {
             private readonly IFeedbackRepository _feedbackRepository;
             private readonly IMapper _mapper;
-            private readonly IUserService _userService;
+            private readonly FeedbackBusinessRules _feedbackBusinessRules;
 
-			public CreateFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper, IUserService userService)
-			{
-				_feedbackRepository = feedbackRepository;
-				_mapper = mapper;
-				_userService = userService;
-			}
-
-			public async Task<CreateFeedbackResponse> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
+            public CreateFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper, FeedbackBusinessRules feedbackBusinessRules)
             {
-                bool isUserExist = await _userService.UserValidationById(request.UserId);
+                _feedbackRepository = feedbackRepository;
+                _mapper = mapper;
+                _feedbackBusinessRules = feedbackBusinessRules;
+            }
 
-                if (!isUserExist)
-                {
-                    throw new NotFoundException(UsersMessages.UserNotExists);
-                }
+            public async Task<CreateFeedbackResponse> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
+            {
+                await _feedbackBusinessRules.UserShouldBeExist(request.UserId);
 
                 Feedback feedback = _mapper.Map<Feedback>(request);
                 await _feedbackRepository.AddAsync(feedback);

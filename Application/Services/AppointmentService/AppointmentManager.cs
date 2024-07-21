@@ -12,7 +12,13 @@ namespace Application.Services.AppointmentService
 			_appointmentRepository = appointmentRepository;
 		}
 
-		public async Task<bool> AppointmentValidationById(int id)
+        public async Task<Appointment> AppointmentGetById(int id)
+        {
+            Appointment? appointment = await _appointmentRepository.GetAsync(i => i.Id == id);
+			return appointment;
+        }
+
+        public async Task<bool> AppointmentValidationById(int id)
 		{
 			Appointment? appointment = await _appointmentRepository.GetAsync(x => x.Id == id);
 			if (appointment == null)

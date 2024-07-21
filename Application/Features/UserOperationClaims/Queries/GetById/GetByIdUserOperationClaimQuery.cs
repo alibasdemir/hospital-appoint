@@ -1,7 +1,5 @@
-﻿using Application.Features.UserOperationClaims.Constants;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Entities;
 using MediatR;
 
@@ -14,21 +12,20 @@ namespace Application.Features.UserOperationClaims.Queries.GetById
         {
             private readonly IUserOperationClaimRepository _userOperationClaimRepository;
             private readonly IMapper _mapper;
+            private readonly UserOperationClaimBusinessRule _userOperationClaimBusinessRule;
 
-            public GetByIdUserOperationClaimQueryHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper)
+            public GetByIdUserOperationClaimQueryHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, UserOperationClaimBusinessRule userOperationClaimBusinessRule)
             {
                 _userOperationClaimRepository = userOperationClaimRepository;
                 _mapper = mapper;
+                _userOperationClaimBusinessRule = userOperationClaimBusinessRule;
             }
 
             public async Task<GetByIdUserOperationClaimResponse> Handle(GetByIdUserOperationClaimQuery request, CancellationToken cancellationToken)
             {
                 UserOperationClaim? userOperationClaim = await _userOperationClaimRepository.GetAsync(i => i.Id == request.Id);
 
-                if (userOperationClaim == null || userOperationClaim.IsDeleted == true) 
-                {
-                    throw new NotFoundException(UserOperationClaimsMessages.UserOperationClaimNotExists);
-                }
+                await _userOperationClaimBusinessRule.UserOperationClaimDeleteControl(request.Id);
 
                 GetByIdUserOperationClaimResponse response = _mapper.Map<GetByIdUserOperationClaimResponse>(userOperationClaim);
                 return response;

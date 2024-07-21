@@ -1,8 +1,7 @@
-﻿using Application.Features.Notifications.Constants;
+﻿using Application.Features.Notifications.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Notifications.Constants.NotificationsOperationClaims;
@@ -18,20 +17,20 @@ namespace Application.Features.Notifications.Queries.GetById
         {
             private readonly INotificationRepository _notificationRepository;
             private readonly IMapper _mapper;
-            public GetByIdNotificationQueryHandler(INotificationRepository notificationRepository, IMapper mapper)
+            private readonly NotificationBusinessRules _notificationBusinessRules;
+
+            public GetByIdNotificationQueryHandler(INotificationRepository notificationRepository, IMapper mapper, NotificationBusinessRules notificationBusinessRules)
             {
                 _notificationRepository = notificationRepository;
                 _mapper = mapper;
+                _notificationBusinessRules = notificationBusinessRules;
             }
 
             public async Task<GetByIdNotificationResponse> Handle(GetByIdNotificationQuery request, CancellationToken cancellationToken)
             {
                 Notification? notification = await _notificationRepository.GetAsync(i => i.Id == request.Id);
 
-                if (notification == null || notification.IsDeleted == true) 
-                {
-                    throw new NotFoundException(NotificationsMessages.NotificationExists);
-                }
+                await _notificationBusinessRules.NotificationDeleteControl(request.Id);
 
                 GetByIdNotificationResponse response = _mapper.Map<GetByIdNotificationResponse>(notification);
                 return response;

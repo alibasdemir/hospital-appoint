@@ -1,9 +1,9 @@
 ﻿using Application.Features.Feedbacks.Constants;
+using Application.Features.Feedbacks.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.Feedbacks.Constants.FeedbacksOperationClaims;
@@ -19,20 +19,19 @@ namespace Application.Features.Feedbacks.Commands.Delete
         {
             private readonly IFeedbackRepository _feedbackRepository;
             private readonly IMapper _mapper;
-            public DeleteFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper)
+            private readonly FeedbackBusinessRules _feedbackBusinessRules;
+            public DeleteFeedbackCommandHandler(IFeedbackRepository feedbackRepository, IMapper mapper, FeedbackBusinessRules feedbackBusinessRules)
             {
                 _feedbackRepository = feedbackRepository;
                 _mapper = mapper;
+                _feedbackBusinessRules = feedbackBusinessRules;
             }
 
             public async Task<DeleteFeedbackResponse> Handle(DeleteFeedbackCommand request, CancellationToken cancellationToken)
             {
                 Feedback? feedback = await _feedbackRepository.GetAsync(i => i.Id == request.Id);
 
-                if (feedback == null)
-                {
-                    throw new NotFoundException(FeedbacksMessages.FeedbackNotExists);
-                }
+                await _feedbackBusinessRules.FeedbackShouldBeExist(request.Id);
 
                 await _feedbackRepository.DeleteAsync(feedback);
                 DeleteFeedbackResponse response = _mapper.Map<DeleteFeedbackResponse>(feedback);

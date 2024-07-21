@@ -1,4 +1,4 @@
-﻿using Application.Features.Users.Constants;
+﻿using Application.Features.Auth.Rules;
 using Application.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
@@ -18,21 +18,20 @@ namespace Application.Features.Auth.Commands.ChangePassword
         {
             private readonly IUserRepository _userRepository;
             private readonly IMapper _mapper;
+            private readonly AuthBusinessRules _authBusinessRules;
 
-            public ChangePasswordCommandHandler(IUserRepository userRepository, IMapper mapper)
+            public ChangePasswordCommandHandler(IUserRepository userRepository, IMapper mapper, AuthBusinessRules authBusinessRules)
             {
                 _userRepository = userRepository;
                 _mapper = mapper;
+                _authBusinessRules = authBusinessRules;
             }
 
             public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
             {
                 User? user = await _userRepository.GetAsync(i => i.Email == request.Email);
 
-                if (user == null || user.IsDeleted == true)
-                {
-                    throw new NotFoundException(UsersMessages.UserNotExists);
-                }
+                await _authBusinessRules.UserDeleteControl(request.Email);
 
                 bool passwordControl = HashingHelper.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt);
 

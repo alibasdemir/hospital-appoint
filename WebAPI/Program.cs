@@ -56,13 +56,12 @@ TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Ge
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        builder.WithOrigins("http://localhost:4200")
-               .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials() // for SignalR
-                .SetIsOriginAllowed((host) => true);
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();  // for SignalR
     });
 });
 
@@ -97,6 +96,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowSpecificOrigin");
 
 app.ConfigureExceptionMiddlewareExtensions();
 

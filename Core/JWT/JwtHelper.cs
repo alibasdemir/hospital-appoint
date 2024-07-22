@@ -1,5 +1,4 @@
 ﻿using Core.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -46,6 +45,7 @@ namespace Core.JWT
             claims.Add(new Claim(ClaimTypes.NameIdentifier, baseUser.Id.ToString()));
             claims.Add(new Claim(ClaimTypes.Name, baseUser.FirstName));
             claims.Add(new Claim(ClaimTypes.Email, baseUser.Email));
+            claims.Add(new Claim(ClaimTypes.UserData, baseUser.UserType));
 
             foreach (var operationClaim in operationClaims)
             {
